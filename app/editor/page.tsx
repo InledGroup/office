@@ -4,10 +4,11 @@ import { use, useLayoutEffect, useRef, useEffect } from "react";
 import { useAppStore, useResolvedLanguage } from "@/store";
 import { getDocumentType } from "@/utils/editor/utils";
 import io, { MockSocket } from "@/utils/editor/socket";
+import { createFetchProxy } from "@/utils/editor/fetch";
 import { createXHRProxy } from "@/utils/editor/xhr";
 import { DocEditor } from "@/utils/editor/types";
 
-const APP_ROOT = "/v9.3.0.24-1";
+const APP_ROOT = process.env.NEXT_PUBLIC_APP_ROOT || "/v9.3.0.24-1";
 
 export default function Page({ params }: { params: Promise<{}> }) {
   const server = useAppStore((state) => state.server);
@@ -60,14 +61,19 @@ export default function Page({ params }: { params: Promise<{}> }) {
       }
 
       const XHR = createXHRProxy(win.XMLHttpRequest);
+      const fetchProxy = createFetchProxy(win);
       const _Worker = win.Worker;
 
       XHR.use((request: Request) => {
         return server.handleRequest(request);
       });
+      fetchProxy.use((request: Request) => {
+        return server.handleRequest(request);
+      });
       Object.assign(win, {
         io: io,
         XMLHttpRequest: XHR,
+        fetch: fetchProxy,
         Worker: function (url: string, options?: WorkerOptions) {
           const u = new URL(url, location.origin);
           return new _Worker(
@@ -182,6 +188,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
             isDirty.current = false;
           },
         },
+        type: "desktop",
         width: "100%",
         height: "100%",
       });

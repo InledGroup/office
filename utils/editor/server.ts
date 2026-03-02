@@ -466,6 +466,10 @@ export class EditorServer {
       return Response.json({ [pathname]: url });
     }
 
+    if (u.pathname == "/plugins.json") {
+      return fetch("https://office-plugins.ziziyi.com/v9/plugins.json");
+    }
+
     return null;
   }
 }

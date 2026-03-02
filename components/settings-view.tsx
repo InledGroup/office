@@ -47,24 +47,25 @@ export function SettingsView() {
       Illustration: Illustration.ModernLight,
     },
     {
+      id: "theme-light",
+      label: t("Light"),
+      Illustration: Illustration.Light,
+    },
+
+    {
+      id: "theme-classic-light",
+      label: t("Classic Light"),
+      Illustration: Illustration.ClassicLight,
+    },
+    {
       id: "theme-night",
       label: t("Modern Dark"),
       Illustration: Illustration.ModernDark,
     },
     {
-      id: "theme-light",
-      label: t("Light"),
-      Illustration: Illustration.Light,
-    },
-    {
       id: "theme-dark",
       label: t("Dark"),
       Illustration: Illustration.Dark,
-    },
-    {
-      id: "theme-classic-light",
-      label: t("Classic Light"),
-      Illustration: Illustration.ClassicLight,
     },
     {
       id: "theme-contrast-dark",
@@ -136,7 +137,7 @@ export function SettingsView() {
             <Palette className="w-5 h-5 text-primary" />
             <h2>{t("Editor Theme")}</h2>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 min-[450px]:grid-cols-3 gap-3">
             {themes.map((t) => (
               <button
                 key={t.id}
