@@ -5,9 +5,37 @@ import { ProgressProvider } from "@/components/progress-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Web Office Suite by ZIZIYI - Preview & Edit Office Documents Online",
+  metadataBase: new URL("https://office.ziziyi.com"),
+  title: {
+    default: "Web Office Suite by ZIZIYI - Open & Edit Office Documents Online",
+    template: "%s | Web Office Suite by ZIZIYI",
+  },
   description:
     "A local Office file preview and editing application. Open, view, and edit Word, Excel, and PowerPoint documents directly in your browser.",
+  keywords: [
+    "web office",
+    "online office suite",
+    "Word online",
+    "Excel online",
+    "PowerPoint online",
+    "DOCX viewer",
+    "XLSX editor",
+    "serverless office",
+    "ZIZIYI",
+    "OnlyOffice",
+  ],
+  openGraph: {
+    siteName: "Web Office Suite by ZIZIYI",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({

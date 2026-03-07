@@ -1,16 +1,17 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useExtracted } from "next-intl";
-import { Header } from "@/components/header";
-import { Sidebar } from "@/components/sidebar";
+import { Header } from "@/components/main/header";
+import { Sidebar } from "@/components/main/sidebar";
 import { DragDropOverlay } from "@/components/drag-drop-overlay";
 import { useAppStore } from "@/store";
 import { addRecentFile } from "@/utils/recent-files";
 import { cn } from "@/lib/utils";
-import { MobileNav } from "@/components/mobile-nav";
+import { MobileNav } from "@/components/main/mobile-nav";
 import { isDarkTheme } from "@/utils/utils";
+import { APP_ROOT, PRELOAD_HTML } from "@/utils/editor/utils";
 
 export default function MainLayout({
   children,
@@ -21,6 +22,7 @@ export default function MainLayout({
   const pathname = usePathname();
   const t = useExtracted();
   const { server, theme } = useAppStore();
+  const [preloadEditor, setPreloadEditor] = useState(false);
 
   useEffect(() => {
     const isDark = isDarkTheme(theme);
@@ -31,22 +33,9 @@ export default function MainLayout({
     }
   }, [theme]);
 
-  const handleFileSelect = useCallback(
-    async (file: File, handle?: FileSystemFileHandle) => {
-      if (handle) {
-        try {
-          await addRecentFile(handle);
-        } catch (err) {
-          console.error("Failed to save dropped file to recent:", err);
-        }
-      }
-      const { id } = await server.open(file);
-      router.push(`/editor`);
-    },
-    [router, server],
-  );
-
-  const getNewUrl = (type: string) => `/editor?new=${type}`;
+  useEffect(() => {
+    setPreloadEditor(true);
+  }, []);
 
   return (
     <div
@@ -65,7 +54,7 @@ export default function MainLayout({
       <Header></Header>
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row relative z-10">
         <div className="hidden md:flex">
-          <Sidebar pathname={pathname} getNewUrl={getNewUrl} />
+          <Sidebar pathname={pathname} />
         </div>
 
         {/* Main Content Area as a Card */}
@@ -89,7 +78,19 @@ export default function MainLayout({
       </div>
 
       {/* Global Drag and Drop Overlay */}
-      <DragDropOverlay onFileDrop={handleFileSelect} />
+      <DragDropOverlay
+        onFileDrop={async (file, handle) => {
+          if (handle) {
+            try {
+              await addRecentFile(handle);
+            } catch (err) {
+              console.error("Failed to save dropped file to recent:", err);
+            }
+          }
+          await server.open(file);
+          router.push("/editor");
+        }}
+      />
 
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
@@ -113,6 +114,13 @@ export default function MainLayout({
           background: var(--text-secondary);
         }
       `}</style>
+
+      {preloadEditor && (
+        <iframe
+          className="w-0 h-0 hidden absolute -z-10"
+          src={APP_ROOT + PRELOAD_HTML}
+        />
+      )}
     </div>
   );
 }

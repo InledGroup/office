@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useExtracted } from "next-intl";
 import { cn } from "@/lib/utils";
+import { getNewUrl } from "@/utils/editor/utils";
 import { getDocConfig } from "@/lib/document-types";
 import {
   Popover,
@@ -25,10 +26,9 @@ import {
 
 interface SidebarProps {
   pathname: string;
-  getNewUrl?: (type: string) => string;
 }
 
-export function Sidebar({ pathname, getNewUrl }: SidebarProps) {
+export function Sidebar({ pathname }: SidebarProps) {
   const t = useExtracted();
 
   const newDocTypes = [
@@ -78,7 +78,8 @@ export function Sidebar({ pathname, getNewUrl }: SidebarProps) {
                 return (
                   <Link
                     key={type}
-                    href={getNewUrl ? getNewUrl(type) : "#"}
+                    href={getNewUrl(type)}
+                    prefetch={true}
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                       // Light mode: use doc colors; Dark mode: use custom dark styles
@@ -112,6 +113,7 @@ export function Sidebar({ pathname, getNewUrl }: SidebarProps) {
             <Link
               key={item.id}
               href={item.href}
+              prefetch={true}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors text-sm font-medium",
                 isActive
@@ -133,25 +135,8 @@ export function Sidebar({ pathname, getNewUrl }: SidebarProps) {
 
       <div className="p-4 space-y-1">
         <Link
-          href="/about"
-          className={cn(
-            "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors rounded-md",
-            pathname === "/about"
-              ? "bg-primary/10 text-primary"
-              : "text-text-secondary hover:text-foreground hover:bg-sidebar-hover",
-          )}
-        >
-          <Info
-            className={cn(
-              "w-5 h-5",
-              pathname === "/about" ? "text-primary" : "text-text-secondary",
-            )}
-          />
-          {t("About")}
-        </Link>
-
-        <Link
           href="/settings"
+          prefetch={true}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors rounded-md",
             pathname === "/settings"
@@ -166,6 +151,25 @@ export function Sidebar({ pathname, getNewUrl }: SidebarProps) {
             )}
           />
           {t("Settings")}
+        </Link>
+
+        <Link
+          href="/about"
+          prefetch={true}
+          className={cn(
+            "w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors rounded-md",
+            pathname === "/about"
+              ? "bg-primary/10 text-primary"
+              : "text-text-secondary hover:text-foreground hover:bg-sidebar-hover",
+          )}
+        >
+          <Info
+            className={cn(
+              "w-5 h-5",
+              pathname === "/about" ? "text-primary" : "text-text-secondary",
+            )}
+          />
+          {t("About")}
         </Link>
       </div>
     </aside>

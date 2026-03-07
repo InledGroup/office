@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useSyncExternalStore } from "react";
 import { EditorServer } from "@/utils/editor/server";
 import {
   Language,
@@ -7,7 +8,7 @@ import {
   LocaleExtend,
   standardizeLocale,
 } from "@ziziyi/utils";
-import { type OfficeTheme } from "@/utils/editor/types";
+import { type OfficeTheme, type PluginMode } from "@/utils/editor/types";
 
 /**
  * Resolves the language setting to an actual locale code.
@@ -31,25 +32,29 @@ interface AppState {
   // Settings State
   language: Language;
   theme: OfficeTheme;
+  plugins: PluginMode;
 
   // Actions
-  setLanguage: (lang: Language) => void;
-  setTheme: (theme: OfficeTheme) => void;
+  setState: (
+    state: Partial<Pick<AppState, "language" | "theme" | "plugins">>,
+  ) => void;
 }
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Document Initial State
-      server: new EditorServer(),
+      server: new EditorServer({
+        getState: () => get(),
+      }),
 
       // Settings Initial State
       language: LocaleExtend.Auto,
       theme: "theme-white",
+      plugins: "featured",
 
       // Settings Actions
-      setLanguage: (lang) => set({ language: lang }),
-      setTheme: (theme) => set({ theme: theme }),
+      setState: (newState) => set((state) => ({ ...state, ...newState })),
     }),
     {
       name: "office-state",
@@ -57,10 +62,27 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         language: state.language,
         theme: state.theme,
+        plugins: state.plugins,
       }),
     },
   ),
 );
+
+/**
+ * Hook to check if persist rehydration has completed.
+ * Returns false during SSR and before localStorage state is loaded,
+ * then true once the persisted state has been applied.
+ */
+export function useHasHydrated(): boolean {
+  return useSyncExternalStore(
+    (callback) => {
+      const unsub = useAppStore.persist.onFinishHydration(callback);
+      return unsub;
+    },
+    () => useAppStore.persist.hasHydrated(),
+    () => false, // SSR: always false
+  );
+}
 
 /**
  * Hook to get the resolved language (reactive).

@@ -1,19 +1,23 @@
 "use client";
 
 import { use, useLayoutEffect, useRef, useEffect } from "react";
-import { useAppStore, useResolvedLanguage } from "@/store";
-import { getDocumentType } from "@/utils/editor/utils";
+import { useAppStore, useResolvedLanguage, useHasHydrated } from "@/store";
+import {
+  API_JS,
+  APP_ROOT,
+  getDocumentType,
+  PRELOAD_HTML,
+} from "@/utils/editor/utils";
 import io, { MockSocket } from "@/utils/editor/socket";
 import { createFetchProxy } from "@/utils/editor/fetch";
 import { createXHRProxy } from "@/utils/editor/xhr";
 import { DocEditor } from "@/utils/editor/types";
 
-const APP_ROOT = process.env.NEXT_PUBLIC_APP_ROOT || "/v9.3.0.24-1";
-
 export default function Page({ params }: { params: Promise<{}> }) {
   const server = useAppStore((state) => state.server);
   const language = useResolvedLanguage();
   const theme = useAppStore((state) => state.theme);
+  const hasHydrated = useHasHydrated();
   const isDirty = useRef(false);
 
   useEffect(() => {
@@ -30,7 +34,9 @@ export default function Page({ params }: { params: Promise<{}> }) {
   }, []);
 
   useLayoutEffect(() => {
-    const apiUrl = APP_ROOT + "/web-apps/apps/api/documents/api.js";
+    if (!hasHydrated) return;
+
+    const apiUrl = APP_ROOT + API_JS;
     const searchParams = new URLSearchParams(window.location.search);
 
     const fileId = searchParams.get("fileId");
@@ -225,7 +231,8 @@ export default function Page({ params }: { params: Promise<{}> }) {
       MockSocket.off("disconnect", server.handleDisconnect);
       editor?.destroyEditor?.();
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasHydrated]);
 
   return (
     <div>
@@ -233,7 +240,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
         <div id="placeholder">
           <iframe
             className="w-0 h-0 hidden"
-            src={APP_ROOT + "/web-apps/apps/api/documents/preload.html"}
+            src={APP_ROOT + PRELOAD_HTML}
           ></iframe>
         </div>
       </div>

@@ -1,37 +1,43 @@
-"use client";
+import type { Metadata } from "next";
+import { OpenView } from "@/components/main/open-view";
 
-import { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { OpenView } from "@/components/open-view";
-import { useAppStore } from "@/store";
-import { addRecentFile } from "@/utils/recent-files";
+export const metadata: Metadata = {
+  title: "Open & Edit Office Documents Online — ZIZIYI Office",
+  description:
+    "A serverless, privacy-first web office application. Open, view, and edit Word (.docx), Excel (.xlsx), and PowerPoint (.pptx) documents directly in your browser — no upload, no server, fully local.",
+  keywords: [
+    "web office",
+    "online document editor",
+    "open docx in browser",
+    "Word online",
+    "Excel online",
+    "PowerPoint online",
+    "DOCX viewer",
+    "XLSX editor",
+    "PPTX editor",
+    "serverless office",
+    "privacy-first",
+    "ZIZIYI",
+    "OnlyOffice",
+  ],
+  alternates: {
+    canonical: "https://office.ziziyi.com",
+  },
+  openGraph: {
+    title: "Open & Edit Office Documents Online — ZIZIYI Office",
+    description:
+      "Open, view, and edit Word, Excel, and PowerPoint documents entirely in your browser. No upload, no server — your files stay private.",
+    url: "https://office.ziziyi.com",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Open & Edit Office Documents Online — ZIZIYI Office",
+    description:
+      "Open, view, and edit Word, Excel, and PowerPoint documents entirely in your browser. No upload, no server — your files stay private.",
+  },
+};
 
 export default function HomePage() {
-  const router = useRouter();
-  const { server } = useAppStore();
-
-  const handleFileSelect = useCallback(
-    async (file: File, handle?: FileSystemFileHandle) => {
-      if (handle) {
-        try {
-          await addRecentFile(handle);
-        } catch (err) {
-          console.error("Failed to save dropped file to recent:", err);
-        }
-      }
-      const { id } = await server.open(file);
-      router.push(`/editor`);
-    },
-    [router, server],
-  );
-
-  const getNewUrl = (type: string) => `/editor?new=${type}`;
-
-  return (
-    <OpenView
-      setActiveTab={(tab) => router.push(`/${tab === "open" ? "" : tab}`)}
-      onFileSelect={handleFileSelect}
-      getNewUrl={getNewUrl}
-    />
-  );
+  return <OpenView />;
 }

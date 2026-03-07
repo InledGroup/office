@@ -1,7 +1,15 @@
 "use client";
 
 import { useAppStore } from "@/store";
-import { Globe, Palette, Check } from "lucide-react";
+import {
+  Globe,
+  Palette,
+  Check,
+  Puzzle,
+  Star,
+  Layers,
+  ShieldOff,
+} from "lucide-react";
 import * as Illustration from "@/components/svg";
 import { useExtracted } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -34,7 +42,7 @@ const sortedLanguages = [
 
 export function SettingsView() {
   const t = useExtracted();
-  const { language, theme, setLanguage, setTheme } = useAppStore();
+  const { language, theme, plugins, setState } = useAppStore();
 
   const themes: {
     id: OfficeTheme;
@@ -82,7 +90,7 @@ export function SettingsView() {
       const themeValue = isDarkTheme(newTheme) ? "dark" : "light";
       document.cookie = `theme=${themeValue}; path=/`;
     }
-    setTheme(newTheme);
+    setState({ theme: newTheme });
   };
 
   return (
@@ -103,7 +111,7 @@ export function SettingsView() {
           </div>
           <Select
             value={language}
-            onValueChange={(value) => setLanguage(value as Language)}
+            onValueChange={(value) => setState({ language: value as Language })}
           >
             <SelectTrigger className="w-80">
               <SelectValue placeholder={t("Select language")}>
@@ -166,6 +174,53 @@ export function SettingsView() {
                     <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
                       <Check className="w-3 h-3 text-white" strokeWidth={3} />
                     </div>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <Puzzle className="w-5 h-5 text-primary" />
+            <h2>{t("Plugins")}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { id: "featured", label: t("Load Featured Plugins"), icon: Star },
+              { id: "all", label: t("Load All Plugins"), icon: Layers },
+              { id: "none", label: t("Disable Plugins"), icon: ShieldOff },
+            ].map((mode) => (
+              <button
+                key={mode.id}
+                onClick={() => setState({ plugins: mode.id as any })}
+                className={cn(
+                  "flex items-center gap-3 p-3 rounded-xl border transition-all text-left group relative",
+                  plugins === mode.id
+                    ? "border-primary bg-primary/5 ring-1 ring-primary/15 shadow-sm"
+                    : "border-border hover:border-primary/20 hover:bg-sidebar-hover",
+                )}
+              >
+                <div
+                  className={cn(
+                    "w-9 h-9 rounded-lg flex items-center justify-center transition-colors shrink-0",
+                    plugins === mode.id
+                      ? "bg-primary/15 text-primary"
+                      : "bg-muted text-text-secondary group-hover:bg-primary/10 group-hover:text-primary",
+                  )}
+                >
+                  <mode.icon className="w-[18px] h-[18px]" />
+                </div>
+                <div className="flex-1 flex items-center justify-between min-w-0 pr-1">
+                  <span className="text-xs font-bold leading-none truncate pr-2">
+                    {mode.label}
+                  </span>
+                  {plugins === mode.id && (
+                    <Check
+                      className="w-3.5 h-3.5 text-primary shrink-0"
+                      strokeWidth={3}
+                    />
                   )}
                 </div>
               </button>

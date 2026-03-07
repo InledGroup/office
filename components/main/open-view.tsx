@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FolderOpen, Clock, X, Loader2 } from "lucide-react";
 import { useExtracted } from "next-intl";
 import { cn } from "@/lib/utils";
+import { getNewUrl } from "@/utils/editor/utils";
 import { FilePickerCard } from "@/components/file-picker-card";
 import { DocumentIcon } from "@/components/document-icon";
 import { getDocConfig } from "@/lib/document-types";
@@ -19,17 +20,7 @@ import {
   type RecentFileRecord,
 } from "@/utils/recent-files";
 
-interface OpenViewProps {
-  setActiveTab: (tab: any) => void;
-  onFileSelect?: (file: File, handle?: FileSystemFileHandle) => void;
-  getNewUrl?: (type: string) => string;
-}
-
-export function OpenView({
-  setActiveTab,
-  onFileSelect,
-  getNewUrl,
-}: OpenViewProps) {
+export function OpenView() {
   const t = useExtracted();
   const [recentFiles, setRecentFiles] = useState<RecentFileRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,9 +61,9 @@ export function OpenView({
   const handleRecentFileClick = async (record: RecentFileRecord) => {
     try {
       const file = await openRecentFile(record);
-      if (file && onFileSelect) {
-        onFileSelect(file, record.handle);
-      } else if (!file) {
+      if (file) {
+        await handleFileSelectWithHandle(file, record.handle);
+      } else {
         // File couldn't be opened, refresh the list
         await loadRecentFiles();
       }
@@ -120,10 +111,9 @@ export function OpenView({
       }
     }
 
-    // Call the original onFileSelect
-    if (onFileSelect) {
-      onFileSelect(file, handle);
-    }
+    // Open the file and navigate to editor
+    await server.open(file);
+    router.push("/editor");
   };
 
   const newDocTypes = [
@@ -160,7 +150,7 @@ export function OpenView({
             return (
               <Link
                 key={type}
-                href={getNewUrl ? getNewUrl(type) : "#"}
+                href={getNewUrl(type)}
                 className="flex flex-col items-center justify-center gap-2 p-4 bg-muted/40 dark:bg-white/5 border border-border rounded-2xl hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all group overflow-hidden md:flex-1 md:min-w-0"
               >
                 <DocumentIcon
@@ -185,7 +175,7 @@ export function OpenView({
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">{t("Recommended")}</h2>
           <button
-            onClick={() => setActiveTab("template")}
+            onClick={() => router.push("/template")}
             className="text-xs text-primary font-medium hover:underline"
           >
             {t("More templates")}
