@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/settings", "/api/"],
       },
     ],
-    sitemap: "https://office.ziziyi.com/sitemap.xml",
+    sitemap: "https://office.inled.es/sitemap.xml",
   };
 }

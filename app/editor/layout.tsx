@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "serverless document editor",
     "local file editor",
     "no upload office editor",
-    "ZIZIYI office",
+    "Inled InSuite",
   ],
   openGraph: {
     title: "Online Document Editor - Edit Word, Excel & PowerPoint Files",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: "https://office.ziziyi.com/editor",
+    canonical: "https://office.inled.es/editor",
   },
 };
 

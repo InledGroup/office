@@ -43,8 +43,6 @@ next-env.d.ts
 
 *.local
 
-# Tencent Cloud EdgeOne
-.env
-.edgeone/*
-.tef_dist/*
+# OnlyOffice assets
+public/v*
   

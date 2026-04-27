@@ -27,17 +27,16 @@ export function AboutView() {
 
         <div className="pt-6 flex justify-center">
           <a
-            href="https://www.producthunt.com/products/serverless-web-office-by-ziziyi?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-serverless-web-office-by-ziziyi"
+            href="https://office.inled.es"
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
-              alt="Serverless Web Office by ZIZIYI - Serverless Web Office: Private, In-Browser editing via WASM. | Product Hunt"
+              alt="Inled InSuite - Local-first Web Office"
               width="250"
               height="54"
-              src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1067951&theme=${
-                isDark ? "dark" : "light"
-              }&t=1769359248898`}
+              src={`https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1067951&theme=${isDark ? "dark" : "light"
+                }&t=1769359248898`}
             />
           </a>
         </div>

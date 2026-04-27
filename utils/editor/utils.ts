@@ -77,6 +77,6 @@ export function getNewUrl(type: string) {
   return `/editor?new=${type}`;
 }
 
-export const APP_ROOT = process.env.NEXT_PUBLIC_APP_ROOT || "/v9.3.0.24-1";
+export const APP_ROOT = process.env.NEXT_PUBLIC_APP_ROOT || "/v9.3.1-1";
 export const PRELOAD_HTML = "/web-apps/apps/api/documents/preload.html";
 export const API_JS = "/web-apps/apps/api/documents/api.js";

@@ -48,7 +48,7 @@ export function Header({ children }: PropsWithChildren<{}>) {
           <img src="/logo.svg" className="w-10 h-10" alt="logo" />
         </div>
         <h1 className="text-lg font-bold tracking-normal text-foreground leading-5 pt-1 text-justify [text-align-last:justify]">
-          {"ZIZIYI Office"}
+          {"Inled InSuite"}
           <span className="block text-xs font-normal opacity-85 scale-[1] origin-top-left">
             Docs Sheets Slides
           </span>

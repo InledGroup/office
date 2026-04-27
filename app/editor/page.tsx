@@ -145,8 +145,8 @@ export default function Page({ params }: { params: Promise<{}> }) {
             //   label: "Guest",
             // },
             logo: {
-              image: location.origin + "/logo-name_black.svg",
-              imageDark: location.origin + "/logo-name_white.svg",
+              image: "https://hosted.inled.es/insuite.svg",
+              imageDark: "https://hosted.inled.es/insuite.svg",
               url: location.origin,
               // visible: false,
             },

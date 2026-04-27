@@ -1,0 +1,53 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Extract OnlyOffice Assets
+        run: |
+          # Usamos la versión definida en el Dockerfile o la que prefieras
+          DS_VERSION="9.3.1"
+          HASH="1"
+          ASSET_DIR="public/v${DS_VERSION}-${HASH}"
+          mkdir -p $ASSET_DIR
+          
+          docker run --rm -v "$(pwd)/$ASSET_DIR:/tmp/out" onlyoffice/documentserver:$DS_VERSION bash -c " \
+            cp -r /var/www/onlyoffice/documentserver/sdkjs /tmp/out/ && \
+            cp -r /var/www/onlyoffice/documentserver/web-apps /tmp/out/ && \
+            cp -r /var/www/onlyoffice/documentserver/fonts /tmp/out/ && \
+            cp /var/www/onlyoffice/documentserver/web-apps/apps/api/documents/api.js.tpl /tmp/out/web-apps/apps/api/documents/api.js"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_APP_ROOT: /v9.3.1-1
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy out --project-name=inled-insuite

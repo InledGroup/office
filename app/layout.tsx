@@ -5,10 +5,10 @@ import { ProgressProvider } from "@/components/progress-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://office.ziziyi.com"),
+  metadataBase: new URL("https://office.inled.es"),
   title: {
-    default: "Web Office Suite by ZIZIYI - Open & Edit Office Documents Online",
-    template: "%s | Web Office Suite by ZIZIYI",
+    default: "Inled InSuite - Open & Edit Office Documents Online",
+    template: "%s | Inled InSuite",
   },
   description:
     "A local Office file preview and editing application. Open, view, and edit Word, Excel, and PowerPoint documents directly in your browser.",
@@ -21,11 +21,12 @@ export const metadata: Metadata = {
     "DOCX viewer",
     "XLSX editor",
     "serverless office",
-    "ZIZIYI",
+    "Inled",
+    "InSuite",
     "OnlyOffice",
   ],
   openGraph: {
-    siteName: "Web Office Suite by ZIZIYI",
+    siteName: "Inled InSuite",
     type: "website",
     locale: "en_US",
   },

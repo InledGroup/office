@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./public/logo.svg" width="120" height="120" alt="Office App Logo">
+  <img src="./public/logo.svg" width="120" height="120" alt="InSuite Logo">
 </p>
 
-<h1 align="center">ZIZIYI Office</h1>
+<h1 align="center">Inled InSuite</h1>
 
 <p align="center">
   <strong>A modern, local-first Office document preview and editing solution.</strong>
@@ -12,32 +12,31 @@
   <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/framework-Next.js%2015-black.svg" alt="Framework">
   <img src="https://img.shields.io/badge/license-AGPL%20v3-orange.svg" alt="License">
-  <a href="https://office.ziziyi.com/">
-    <img src="https://img.shields.io/badge/website-office.ziziyi.com-blue.svg" alt="Website">
+  <a href="https://office.inled.es/">
+    <img src="https://img.shields.io/badge/website-office.inled.es-blue.svg" alt="Website">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://office.ziziyi.com/"><strong>🚀 Live Demo</strong></a> | <a href="README.zh-CN.md">中文版</a> | <span>English</span>
+  <a href="https://office.inled.es/"><strong>🚀 Live Demo</strong></a> | <a href="README.zh-CN.md">中文版</a> | <span>English</span>
 </p>
 
 <p align="center">
   <strong>Quick Create:</strong>
-  <a href="https://office.ziziyi.com/editor?new=docx">📄 Word</a> | 
-  <a href="https://office.ziziyi.com/editor?new=xlsx">📊 Excel</a> | 
-  <a href="https://office.ziziyi.com/editor?new=pptx">📽️ PowerPoint</a>
+  <a href="https://office.inled.es/editor?new=docx">📄 Word</a> | 
+  <a href="https://office.inled.es/editor?new=xlsx">📊 Excel</a> | 
+  <a href="https://office.inled.es/editor?new=pptx">📽️ PowerPoint</a>
 </p>
 
 ---
 
 ## 🚀 Overview
 
-**ZIZIYI Office** is a powerful web application designed to provide a seamless experience for viewing and editing Office documents (Word, Excel, PowerPoint) directly in your browser. Built with a "local-first" philosophy, it ensures your documents remain private and secure while providing a desktop-class editing experience.
+**Inled InSuite** is a powerful web application designed to provide a seamless experience for viewing and editing Office documents (Word, Excel, PowerPoint) directly in your browser. Built with a "local-first" philosophy, it ensures your documents remain private and secure while providing a desktop-class editing experience.
 
 ### 🌍 Access Options
 
-- **Global ([office.ziziyi.com](https://office.ziziyi.com/))**: Hosted on Cloudflare Pages. Recommended for users outside the Asia-Pacific region.
-- **Asia-Pacific Optimized ([o.ziziyi.com](https://o.ziziyi.com/))**: Hosted on EdgeOne. Features a shorter, easier-to-remember domain and offers faster access for users in the Asia-Pacific region (e.g., China, Japan, Singapore).
+- **Main Domain ([office.inled.es](https://office.inled.es/))**: Recommended for all users.
 
 ## ✨ Key Features
 
