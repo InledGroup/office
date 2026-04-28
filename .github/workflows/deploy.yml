@@ -34,6 +34,9 @@ jobs:
             /usr/bin/documentserver-generate-allfonts.sh false >&2 && \
             cp /var/www/onlyoffice/documentserver/web-apps/apps/api/documents/api.js.tpl /var/www/onlyoffice/documentserver/web-apps/apps/api/documents/api.js && \
             tar -cC /var/www/onlyoffice/documentserver sdkjs web-apps fonts" | tar -xC $ASSET_DIR/
+          
+          # Corregimos los permisos ya que los archivos extraídos pueden pertenecer a root
+          sudo chown -R $USER:$USER $ASSET_DIR
 
       - name: Fix HTML paths and Base Href
         run: |
