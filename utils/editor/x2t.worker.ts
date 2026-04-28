@@ -44,12 +44,20 @@ async function initX2t(): Promise<void> {
 
   // Create working directories
   try {
-    x2t.FS.mkdir("/working");
-    x2t.FS.mkdir("/working/media");
-    x2t.FS.mkdir("/working/fonts");
-    x2t.FS.mkdir("/working/themes");
+    const createDir = (path: string) => {
+      const parts = path.split("/").filter(Boolean);
+      let current = "";
+      for (const part of parts) {
+        current += "/" + part;
+        try { x2t.FS.mkdir(current); } catch (e) {}
+      }
+    };
+
+    createDir("/working/media");
+    createDir("/working/fonts");
+    createDir("/working/themes");
+    createDir("/usr/share/fonts/truetype/msttcorefonts");
   } catch (err) {
-    // Directories may already exist
     console.error("[x2t.worker] mkdir error:", err);
   }
 
@@ -128,6 +136,7 @@ function writeInputs({
   formatTo,
   data,
   media,
+  fonts,
 }: X2tConvertParams) {
   const params = {
     m_sFileFrom: fileFrom,
@@ -167,6 +176,32 @@ ${content}
       }
     }
   }
+
+  if (fonts) {
+    console.log(`[x2t.worker] Processing ${Object.keys(fonts).length} fonts for conversion`);
+    const systemFontDir = "/usr/share/fonts/truetype/msttcorefonts/";
+    
+    for (const [key, value] of Object.entries(fonts)) {
+      try {
+        if (key === "font_selection.bin") {
+          // font_selection.bin debe estar en /working/ para que el conversor lo use como índice
+          x2t.FS.writeFile("/working/font_selection.bin", value);
+          x2t.FS.writeFile("/working/fonts/font_selection.bin", value);
+        } else {
+          // Escribimos en ambas rutas para máxima compatibilidad
+          x2t.FS.writeFile("/working/fonts/" + key, value);
+          x2t.FS.writeFile(systemFontDir + key, value);
+          
+          // Fallback para Arial si detectamos una fuente que pueda servir
+          if (key.toLowerCase().includes("arial") || key.toLowerCase().includes("inter_24pt-regular")) {
+            x2t.FS.writeFile(systemFontDir + "Arial.ttf", value);
+          }
+        }
+      } catch (err) {
+        console.error("[x2t.worker] Error writing font to FS:", key, err);
+      }
+    }
+  }
 }
 
 /**
@@ -193,6 +228,7 @@ async function convert({
     formatTo,
     data,
     media,
+    fonts,
   });
 
   if (

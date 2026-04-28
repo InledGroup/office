@@ -2,17 +2,57 @@
   "name": "inled-insuite",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "svgr": "npx @svgr/cli --out-dir components/svg --typescript -- public/svg",
-    "setup:local": "DS_VERSION=9.3.1 && HASH=1 && ASSET_DIR=public/v${DS_VERSION}-${HASH} && mkdir -p $ASSET_DIR && docker run --rm -v \"$(pwd)/$ASSET_DIR:/tmp/out\" onlyoffice/documentserver:$DS_VERSION bash -c \"cp -r /var/www/onlyoffice/documentserver/sdkjs /tmp/out/ && cp -r /var/www/onlyoffice/documentserver/web-apps /tmp/out/ && cp -r /var/www/onlyoffice/documentserver/fonts /tmp/out/ && cp /var/www/onlyoffice/documentserver/web-apps/apps/api/documents/api.js.tpl /tmp/out/web-apps/apps/api/documents/api.js\"",
+    "setup:local": "DS_VERSION=9.3.1 && HASH=1 && ASSET_DIR=public/v${DS_VERSION}-${HASH} && mkdir -p $ASSET_DIR && docker run --rm -v \"$(pwd)/$ASSET_DIR:/tmp/out\" onlyoffice/documentserver:$DS_VERSION bash -c \"documentserver-generate-allfonts.sh false && cp -r /var/www/onlyoffice/documentserver/sdkjs /tmp/out/ && cp -r /var/www/onlyoffice/documentserver/web-apps /tmp/out/ && cp -r /var/www/onlyoffice/documentserver/fonts /tmp/out/ && cp /var/www/onlyoffice/documentserver/web-apps/apps/api/documents/api.js.tpl /tmp/out/web-apps/apps/api/documents/api.js\"",
     "pages:dev": "npx wrangler pages dev ./out",
     "deploy": "pnpm build && npx wrangler pages deploy ./out --project-name=inled-insuite",
     "deploy:full": "pnpm setup:local && pnpm build && npx wrangler pages deploy ./out --project-name=inled-insuite",
-    "deploy:preview": "pnpm build && npx wrangler pages deploy ./out --project-name=inled-insuite --branch=preview"
+    "deploy:preview": "pnpm build && npx wrangler pages deploy ./out --project-name=inled-insuite --branch=preview",
+    "electron:dev": "concurrently \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "pnpm build && electron-builder"
+  },
+  "build": {
+    "appId": "com.inled.insuite",
+    "productName": "InSuite Office",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "fileAssociations": [
+      {
+        "ext": "docx",
+        "name": "Word Document",
+        "role": "Editor"
+      },
+      {
+        "ext": "xlsx",
+        "name": "Excel Spreadsheet",
+        "role": "Editor"
+      },
+      {
+        "ext": "pptx",
+        "name": "PowerPoint Presentation",
+        "role": "Editor"
+      },
+      {
+        "ext": "pdf",
+        "name": "PDF Document",
+        "role": "Editor"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    }
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
@@ -44,10 +84,14 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.4.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wait-on": "^9.0.5"
   }
 }

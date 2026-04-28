@@ -2,7 +2,7 @@ import { converter } from "./x2t";
 import { MockSocket } from "./socket";
 import { User, Participant, AscSaveTypes, ServerOptions } from "./types";
 import { emptyDocx, emptyPdf, emptyPptx, emptyXlsx } from "./empty";
-import { getDocumentType, getFileExt } from "./utils";
+import { APP_ROOT, getDocumentType, getFileExt } from "./utils";
 import { allPlugins, featuredPlugins, getPluginsData } from "./plugins";
 
 function mergeBuffers(buffers: Uint8Array[]) {
@@ -51,6 +51,52 @@ export class EditorServer {
 
   private downloadId: string = "";
   private downloadParts: Uint8Array[] = [];
+
+  private loadedFonts: Record<string, Uint8Array> | null = null;
+
+  private async loadFonts() {
+    if (this.loadedFonts) return this.loadedFonts;
+    const fonts: Record<string, Uint8Array> = {};
+    const fontPromises: Promise<void>[] = [];
+    console.log("[server] Loading dynamic font index and all TTF assets...");
+
+    // 1. Cargar el mapeo crítico
+    fontPromises.push(
+      fetch(`${APP_ROOT}/fonts/font_selection.bin`)
+        .then((r) => r.arrayBuffer())
+        .then((buf) => {
+          fonts["font_selection.bin"] = new Uint8Array(buf);
+        })
+        .catch((e) => console.error("Error crítico: font_selection.bin", e))
+    );
+
+    // 2. Cargar el índice de fuentes y luego cada archivo
+    try {
+      const indexResponse = await fetch("/fonts-ttf/fonts-index.json");
+      if (indexResponse.ok) {
+        const fontList: string[] = await indexResponse.json();
+        console.log(`[server] Cargando ${fontList.length} fuentes TTF...`);
+        
+        for (const fontName of fontList) {
+          fontPromises.push(
+            fetch(`/fonts-ttf/${fontName}`)
+              .then((r) => r.ok ? r.arrayBuffer() : null)
+              .then((buf) => {
+                if (buf) fonts[fontName] = new Uint8Array(buf);
+              })
+              .catch(() => {})
+          );
+        }
+      }
+    } catch (e) {
+      console.error("[server] No se pudo cargar el índice de fuentes", e);
+    }
+
+    await Promise.all(fontPromises);
+    console.log(`[server] Entorno x2t listo con ${Object.keys(fonts).length} archivos.`);
+    this.loadedFonts = fonts;
+    return fonts;
+  }
 
   private options: ServerOptions = {};
 
@@ -399,12 +445,18 @@ export class EditorServer {
           fileFrom = "from.pdf";
         }
 
+        let fonts = undefined;
+        if (cmd.format == "pdf" || formatTo === 513 || fileTo.endsWith(".pdf")) {
+          fonts = await this.loadFonts();
+        }
+
         let { output } = await converter.convert({
           data: input.buffer,
           fileFrom: fileFrom,
           fileTo: fileTo,
           formatTo: formatTo,
           media: Object.fromEntries(this.fsMap),
+          fonts: fonts,
         });
         if (!output && cmd.format == "pdf") {
           output = input;
@@ -416,16 +468,20 @@ export class EditorServer {
         }
         const blob = new Blob([new Uint8Array(output)]);
         const url = URL.createObjectURL(blob);
+        
+        // Manual download trigger
         const a = document.createElement("a");
         a.href = url;
         a.download = cmd.title || "test.docx";
         a.click();
-        URL.revokeObjectURL(url);
+        
+        // We do not revoke the URL immediately so OnlyOffice doesn't break if it tries to use it.
+        // URL.revokeObjectURL(url);
 
-        return { status: "ok" };
+        return { status: "ok", url };
       };
 
-      let result = {
+      let result: { status: string; url?: string } = {
         status: "ok",
       };
 
@@ -457,8 +513,8 @@ export class EditorServer {
             type: "save",
             // status: "ok",
             status: result.status,
-            data: "data:,",
-            filetype: "pptx",
+            data: result.url || "javascript:void(0);",
+            filetype: cmd.title.split(".").pop() || "pptx",
           },
         });
       }, 100);
