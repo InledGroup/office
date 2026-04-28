@@ -78,7 +78,7 @@ export function AboutView() {
         </div>
       </div>
 
-      <div className="p-10 bg-linear-to-br from-primary/10 to-orange-500/10 dark:from-primary/15 dark:to-orange-500/5 border border-primary/20 dark:border-primary/30 rounded-3xl text-center space-y-6 shadow-lg shadow-primary/5">
+      <div className="p-10 bg-linear-to-br from-primary/10 to-blue-500/10 dark:from-primary/15 dark:to-blue-500/5 border border-primary/20 dark:border-primary/30 rounded-3xl text-center space-y-6 shadow-lg shadow-primary/5">
         <Heart className="w-8 h-8 text-red-500 dark:text-red-400 mx-auto fill-red-500 dark:fill-red-400 animate-pulse" />
         <div className="space-y-2">
           <h3 className="text-2xl font-bold">{t("Our Commitment")}</h3>

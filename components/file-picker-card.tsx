@@ -288,11 +288,11 @@ export function FilePickerCard({
                   e.stopPropagation();
                   handleFolderPick("downloads");
                 }}
-                className="flex items-center gap-1.5 px-4 py-2 bg-white/80 border border-border/50 rounded-lg hover:border-orange-400 hover:bg-orange-50 transition-all text-sm font-medium group shadow-sm"
-              >
-                <Download className="w-4 h-4 text-orange-600 group-hover:text-orange-700" />
-                <span className="text-gray-700 group-hover:text-orange-700">
-                  {t("Downloads")}
+                className="flex items-center gap-1.5 px-4 py-2 bg-white/80 border border-border/50 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all text-sm font-medium group shadow-sm"
+                >
+                <Download className="w-4 h-4 text-blue-600 group-hover:text-blue-700" />
+                <span className="text-gray-700 group-hover:text-blue-700">
+                  {t("Download Template")}
                 </span>
               </button>
             </div>

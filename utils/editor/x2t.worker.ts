@@ -57,6 +57,7 @@ async function initX2t(): Promise<void> {
     createDir("/working/fonts");
     createDir("/working/themes");
     createDir("/usr/share/fonts/truetype/msttcorefonts");
+    createDir("/var/www/onlyoffice/documentserver/core-fonts");
   } catch (err) {
     console.error("[x2t.worker] mkdir error:", err);
   }
@@ -137,6 +138,7 @@ function writeInputs({
   data,
   media,
   fonts,
+  themes,
 }: X2tConvertParams) {
   const params = {
     m_sFileFrom: fileFrom,
@@ -161,6 +163,7 @@ function writeInputs({
 ${content}
 </TaskQueueDataConvert>`;
 
+  console.log("[x2t.worker] Task XML:", xml);
   x2t.FS.writeFile(xmlPath, xml);
   if (data) {
     x2t.FS.writeFile(fileFrom, new Uint8Array(data));
@@ -177,30 +180,76 @@ ${content}
     }
   }
 
+  if (themes) {
+    for (const [key, value] of Object.entries(themes)) {
+      try {
+        // Asegurar que el directorio existe
+        const pathParts = key.split("/");
+        if (pathParts.length > 1) {
+          let currentPath = "/working/themes";
+          for (let i = 0; i < pathParts.length - 1; i++) {
+            currentPath += "/" + pathParts[i];
+            try { x2t.FS.mkdir(currentPath); } catch (e) {}
+          }
+        }
+        x2t.FS.writeFile("/working/themes/" + key, value);
+      } catch (err) {
+        console.error("[x2t.worker] Error writing theme file:", key, err);
+      }
+    }
+  }
+
   if (fonts) {
     console.log(`[x2t.worker] Processing ${Object.keys(fonts).length} fonts for conversion`);
     const systemFontDir = "/usr/share/fonts/truetype/msttcorefonts/";
+    const systemFontDir2 = "/var/www/onlyoffice/documentserver/core-fonts/";
     
     for (const [key, value] of Object.entries(fonts)) {
       try {
         if (key === "font_selection.bin") {
-          // font_selection.bin debe estar en /working/ para que el conversor lo use como índice
           x2t.FS.writeFile("/working/font_selection.bin", value);
           x2t.FS.writeFile("/working/fonts/font_selection.bin", value);
         } else {
-          // Escribimos en ambas rutas para máxima compatibilidad
           x2t.FS.writeFile("/working/fonts/" + key, value);
           x2t.FS.writeFile(systemFontDir + key, value);
+          x2t.FS.writeFile(systemFontDir2 + key, value);
           
-          // Fallback para Arial si detectamos una fuente que pueda servir
-          if (key.toLowerCase().includes("arial") || key.toLowerCase().includes("inter_24pt-regular")) {
+          const klow = key.toLowerCase();
+          // Mapeo exhaustivo de Arial usando Liberation
+          if (klow.includes("arial") || klow === "liberationsans-regular.ttf") {
             x2t.FS.writeFile(systemFontDir + "Arial.ttf", value);
+            x2t.FS.writeFile(systemFontDir2 + "Arial.ttf", value);
+          }
+          if (klow.includes("arial_bold") || klow === "liberationsans-bold.ttf") {
+            x2t.FS.writeFile(systemFontDir + "Arial_Bold.ttf", value);
+            x2t.FS.writeFile(systemFontDir2 + "Arial_Bold.ttf", value);
+          }
+          if (klow.includes("arial_italic") || klow === "liberationsans-italic.ttf") {
+            x2t.FS.writeFile(systemFontDir + "Arial_Italic.ttf", value);
+            x2t.FS.writeFile(systemFontDir2 + "Arial_Italic.ttf", value);
+          }
+          if (klow.includes("arial_bolditalic") || klow === "liberationsans-bolditalic.ttf") {
+            x2t.FS.writeFile(systemFontDir + "Arial_BoldItalic.ttf", value);
+            x2t.FS.writeFile(systemFontDir2 + "Arial_BoldItalic.ttf", value);
           }
         }
       } catch (err) {
         console.error("[x2t.worker] Error writing font to FS:", key, err);
       }
     }
+
+    // Asegurar que Arial.ttf existe de alguna manera si no se escribió arriba
+    try {
+      if (!x2t.FS.analyzePath(systemFontDir + "Arial.ttf").exists) {
+        // Buscar Liberation o Inter como último recurso
+        const fallbackKey = Object.keys(fonts).find(k => k.includes("LiberationSans-Regular")) || 
+                            Object.keys(fonts).find(k => k.toLowerCase().includes("inter"));
+        if (fallbackKey) {
+          console.log(`[x2t.worker] Emergency final fallback: using ${fallbackKey} as Arial.ttf`);
+          x2t.FS.writeFile(systemFontDir + "Arial.ttf", fonts[fallbackKey]);
+        }
+      }
+    } catch (e) {}
   }
 }
 

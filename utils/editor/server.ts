@@ -75,21 +75,26 @@ export class EditorServer {
       const indexResponse = await fetch("/fonts-ttf/fonts-index.json");
       if (indexResponse.ok) {
         const fontList: string[] = await indexResponse.json();
-        console.log(`[server] Cargando ${fontList.length} fuentes TTF...`);
+        console.log(`[server] Índice de fuentes cargado: ${fontList.length} archivos.`);
         
         for (const fontName of fontList) {
           fontPromises.push(
             fetch(`/fonts-ttf/${fontName}`)
-              .then((r) => r.ok ? r.arrayBuffer() : null)
+              .then((r) => {
+                if (!r.ok) console.warn(`[server] No se pudo cargar la fuente: ${fontName}`);
+                return r.ok ? r.arrayBuffer() : null;
+              })
               .then((buf) => {
                 if (buf) fonts[fontName] = new Uint8Array(buf);
               })
-              .catch(() => {})
+              .catch((err) => console.error(`[server] Error en fetch de fuente ${fontName}:`, err))
           );
         }
+      } else {
+        console.error("[server] Error al cargar fonts-index.json:", indexResponse.status);
       }
     } catch (e) {
-      console.error("[server] No se pudo cargar el índice de fuentes", e);
+      console.error("[server] Excepción al cargar el índice de fuentes:", e);
     }
 
     await Promise.all(fontPromises);
@@ -450,12 +455,35 @@ export class EditorServer {
           fonts = await this.loadFonts();
         }
 
+        const allFiles = Object.fromEntries(this.fsMap);
+        const media: Record<string, Uint8Array> = {};
+        const themes: Record<string, Uint8Array> = {};
+
+        console.log("[server] fsMap keys:", Object.keys(allFiles));
+
+        for (const [path, data] of Object.entries(allFiles)) {
+          const isTheme = path.includes("theme") || 
+                          path.endsWith(".xml") || 
+                          path.endsWith(".rels") ||
+                          path.includes("styles") || 
+                          path.includes("settings");
+
+          if (isTheme) {
+            themes[path] = data;
+          } else {
+            media[path] = data;
+          }
+        }
+
+        console.log(`[server] Conversion data: ${Object.keys(media).length} media files, ${Object.keys(themes).length} theme/style files.`);
+
         let { output } = await converter.convert({
           data: input.buffer,
           fileFrom: fileFrom,
           fileTo: fileTo,
           formatTo: formatTo,
-          media: Object.fromEntries(this.fsMap),
+          media: media,
+          themes: themes,
           fonts: fonts,
         });
         if (!output && cmd.format == "pdf") {

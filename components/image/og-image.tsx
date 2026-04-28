@@ -8,7 +8,7 @@ interface OgImageProps {
   brandName?: string;
 }
 
-const ORANGE = "#FF5900";
+const ORANGE = "#3DB5FF";
 const LOGO_PATH = path.join(process.cwd(), "public", "logo.png");
 const CARD_STYLE = {
   border: "1px solid rgba(255,255,255,0.3)",

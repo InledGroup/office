@@ -5,7 +5,7 @@
 
 :root {
   /* --primary: #b7472a; */
-  --primary: hsl(12, 65%, 50%);
+  --primary: #3DB5FF;
   --primary-foreground: oklch(0.985 0 0);
   --sidebar-bg: #ffffff;
   --sidebar-hover: #f3f2f1;
@@ -101,7 +101,7 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: hsl(12, 80%, 60%);
+  --primary: #3DB5FF;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: hsl(12, 15%, 25%);
   --secondary-foreground: oklch(0.985 0 0);
