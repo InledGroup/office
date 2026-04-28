@@ -2,7 +2,7 @@
   <img src="./public/logo.svg" width="120" height="120" alt="InSuite Logo">
 </p>
 
-<h1 align="center">Inled InSuite</h1>
+<h1 align="center">Inled InSuite Office</h1>
 
 <p align="center">
   <strong>Modern, local-first, private, offline, in-browser Office Editor based in OnlyOffice.</strong>
@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://office.inled.es/"><strong>🚀 Live Demo</strong></a> | <a href="README.zh-CN.md">中文版</a> | <span>English</span>
+  <a href="https://office.inled.es/"><strong>🚀 Live Demo</strong></a>
 </p>
 
 <p align="center">
@@ -45,7 +45,6 @@
 - **⚡ Fast & Responsive**: Built with Next.js 15+ and optimized for performance.
 - **🛠️ Rich Tools**: Integrated with advanced editing capabilities.
 - **📦 Persistent Storage**: Uses IndexedDB for local file management.
-- **🌐 Cloud Integration**: Easy file selection via Uppy (Google Drive, Dropbox, OneDrive).
 
 ## 🛠️ Technology Stack
 

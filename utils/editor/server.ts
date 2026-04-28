@@ -440,144 +440,157 @@ export class EditorServer {
 
   async handleRequest(req: Request) {
     const u = new URL(req.url);
-
     const { id: key, send } = this;
-    // console.log("[msg] server: ", u, key);
 
-    if (u.pathname.endsWith("/downloadas/" + key)) {
-      const cmd = JSON.parse(u.searchParams.get("cmd") || "{}");
-      const buffer = await req.arrayBuffer();
-
-      console.log("downloadAs -> ", cmd, buffer);
-
-      const fileTo = "doc." + cmd.title.split(".").pop();
-      let formatTo = cmd.outputformat;
-      if (!formatTo && fileTo.endsWith(".pdf")) {
-        formatTo = 513;
+    // More flexible matching for key-based paths (downloadfile, downloadas, etc.)
+    const isKeyPath = u.pathname.includes("/" + key);
+    
+    if (isKeyPath) {
+      // If it's a simple GET/POST to fetch the file data (including the main URL /id)
+      if (req.method === "GET" || (req.method === "POST" && !u.searchParams.has("cmd"))) {
+        const data = this.fsMap.get("Editor.bin");
+        if (data) {
+          return new Response(new Blob([data as any]), {
+            headers: { 
+              "Content-Type": "application/octet-stream",
+              "Access-Control-Allow-Origin": "*" 
+            }
+          });
+        }
       }
 
-      const download = async () => {
-        const input = mergeBuffers(this.downloadParts);
-        let fileFrom = "from.bin";
-        if (cmd.format == "pdf") {
-          fileFrom = "from.pdf";
+      if (u.pathname.includes("/downloadas/") || u.pathname.includes("/downloadfile/")) {
+        const cmd = JSON.parse(u.searchParams.get("cmd") || "{}");
+        const buffer = await req.arrayBuffer();
+
+        console.log("downloadAs -> ", cmd, buffer);
+
+        const fileTo = "doc." + cmd.title.split(".").pop();
+        let formatTo = cmd.outputformat;
+        if (!formatTo && fileTo.endsWith(".pdf")) {
+          formatTo = 513;
         }
 
-        let fonts = undefined;
-        if (cmd.format == "pdf" || formatTo === 513 || fileTo.endsWith(".pdf")) {
-          fonts = await this.loadFonts();
-        }
-
-        const allFiles = Object.fromEntries(this.fsMap);
-        const media: Record<string, Uint8Array> = {};
-        const themes: Record<string, Uint8Array> = {};
-
-        console.log("[server] fsMap keys:", Object.keys(allFiles));
-
-        for (const [path, data] of Object.entries(allFiles)) {
-          const isTheme = path.includes("theme") || 
-                          path.endsWith(".xml") || 
-                          path.endsWith(".rels") ||
-                          path.includes("styles") || 
-                          path.includes("settings");
-
-          if (isTheme) {
-            themes[path] = data;
-          } else {
-            media[path] = data;
+        const download = async () => {
+          const input = mergeBuffers(this.downloadParts);
+          let fileFrom = "from.bin";
+          if (cmd.format == "pdf") {
+            fileFrom = "from.pdf";
           }
+
+          let fonts = undefined;
+          if (cmd.format == "pdf" || formatTo === 513 || fileTo.endsWith(".pdf")) {
+            fonts = await this.loadFonts();
+          }
+
+          const allFiles = Object.fromEntries(this.fsMap);
+          const media: Record<string, Uint8Array> = {};
+          const themes: Record<string, Uint8Array> = {};
+
+          console.log("[server] fsMap keys:", Object.keys(allFiles));
+
+          for (const [path, data] of Object.entries(allFiles)) {
+            const isTheme = path.includes("theme") || 
+                            path.endsWith(".xml") || 
+                            path.endsWith(".rels") ||
+                            path.includes("styles") || 
+                            path.includes("settings");
+
+            if (isTheme) {
+              themes[path] = data;
+            } else {
+              media[path] = data;
+            }
+          }
+
+          console.log(`[server] Conversion data: ${Object.keys(media).length} media files, ${Object.keys(themes).length} theme/style files.`);
+
+          let { output } = await converter.convert({
+            data: input.buffer,
+            fileFrom: fileFrom,
+            fileTo: fileTo,
+            formatTo: formatTo,
+            media: media,
+            themes: themes,
+            fonts: fonts,
+          });
+          if (!output && cmd.format == "pdf") {
+            output = input;
+          }
+          if (!output) {
+            console.error("Conversion failed");
+            // TODO: error message
+            return { status: "error" };
+          }
+
+          // Save to Cloud Storage
+          const fileExt = cmd.title.split(".").pop() || this.fileType;
+          const cloudFile = await saveCloudFile({
+            id: this.cloudId || this.id || randomId(),
+            name: cmd.title || this.title || "Document",
+            type: fileExt,
+            data: new Uint8Array(output),
+            folderId: null, // Always root on auto-save from editor for now
+          });
+          this.cloudId = cloudFile.id;
+          this.id = cloudFile.id;
+
+          const blob = new Blob([new Uint8Array(output)]);
+          const url = URL.createObjectURL(blob);
+          
+          // Manual download trigger
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = cmd.title || "test.docx";
+          a.click();
+          
+          return { status: "ok", url };
+        };
+
+        let result: { status: string; url?: string } = {
+          status: "ok",
+        };
+
+        switch (cmd.savetype) {
+          case AscSaveTypes.PartStart:
+            this.downloadId = "_" + Math.round(Math.random() * 1000);
+            this.downloadParts = [new Uint8Array(buffer)];
+            break;
+          case AscSaveTypes.Part:
+            this.downloadParts.push(new Uint8Array(buffer));
+            break;
+          case AscSaveTypes.Complete:
+            this.downloadParts.push(new Uint8Array(buffer));
+            result = await download();
+            this.downloadParts = [];
+            break;
+          case AscSaveTypes.CompleteAll:
+            this.downloadId = "_" + Math.round(Math.random() * 1000);
+            this.downloadParts = [new Uint8Array(buffer)];
+            result = await download();
+            this.downloadParts = [];
+            break;
         }
 
-        console.log(`[server] Conversion data: ${Object.keys(media).length} media files, ${Object.keys(themes).length} theme/style files.`);
+        setTimeout(() => {
+          send({
+            type: "documentOpen",
+            data: {
+              type: "save",
+              // status: "ok",
+              status: result.status,
+              data: result.url || "javascript:void(0);",
+              filetype: cmd.title.split(".").pop() || "pptx",
+            },
+          });
+        }, 100);
 
-        let { output } = await converter.convert({
-          data: input.buffer,
-          fileFrom: fileFrom,
-          fileTo: fileTo,
-          formatTo: formatTo,
-          media: media,
-          themes: themes,
-          fonts: fonts,
+        return Response.json({
+          status: result.status,
+          type: "save",
+          data: this.downloadId,
         });
-        if (!output && cmd.format == "pdf") {
-          output = input;
-        }
-        if (!output) {
-          console.error("Conversion failed");
-          // TODO: error message
-          return { status: "error" };
-        }
-
-        // Save to Cloud Storage
-        const fileExt = cmd.title.split(".").pop() || this.fileType;
-        const cloudFile = await saveCloudFile({
-          id: this.cloudId || this.id || randomId(),
-          name: cmd.title || this.title || "Document",
-          type: fileExt,
-          data: new Uint8Array(output),
-          folderId: null, // Always root on auto-save from editor for now
-        });
-        this.cloudId = cloudFile.id;
-        this.id = cloudFile.id;
-
-        const blob = new Blob([new Uint8Array(output)]);
-        const url = URL.createObjectURL(blob);
-        
-        // Manual download trigger
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = cmd.title || "test.docx";
-        a.click();
-        
-        // We do not revoke the URL immediately so OnlyOffice doesn't break if it tries to use it.
-        // URL.revokeObjectURL(url);
-
-        return { status: "ok", url };
-      };
-
-      let result: { status: string; url?: string } = {
-        status: "ok",
-      };
-
-      switch (cmd.savetype) {
-        case AscSaveTypes.PartStart:
-          this.downloadId = "_" + Math.round(Math.random() * 1000);
-          this.downloadParts = [new Uint8Array(buffer)];
-          break;
-        case AscSaveTypes.Part:
-          this.downloadParts.push(new Uint8Array(buffer));
-          break;
-        case AscSaveTypes.Complete:
-          this.downloadParts.push(new Uint8Array(buffer));
-          result = await download();
-          this.downloadParts = [];
-          break;
-        case AscSaveTypes.CompleteAll:
-          this.downloadId = "_" + Math.round(Math.random() * 1000);
-          this.downloadParts = [new Uint8Array(buffer)];
-          result = await download();
-          this.downloadParts = [];
-          break;
       }
-
-      setTimeout(() => {
-        send({
-          type: "documentOpen",
-          data: {
-            type: "save",
-            // status: "ok",
-            status: result.status,
-            data: result.url || "javascript:void(0);",
-            filetype: cmd.title.split(".").pop() || "pptx",
-          },
-        });
-      }, 100);
-
-      return Response.json({
-        status: result.status,
-        type: "save",
-        data: this.downloadId,
-      });
     }
 
     if (u.pathname.endsWith("/upload/" + key)) {
