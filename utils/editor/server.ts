@@ -208,7 +208,7 @@ export class EditorServer {
       fileType: this.fileType,
       key: this.id,
       title: this.title,
-      url: "/" + this.id,
+      url: (typeof window !== "undefined" ? window.location.origin : "") + "/" + this.id,
     };
   }
 
