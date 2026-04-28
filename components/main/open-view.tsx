@@ -62,7 +62,7 @@ export function OpenView() {
     try {
       const file = await openRecentFile(record);
       if (file) {
-        await handleFileSelectWithHandle(file, record.handle);
+        await handleFileSelectWithHandle(file, record.handle, record.cloudId);
       } else {
         // File couldn't be opened, refresh the list
         await loadRecentFiles();
@@ -100,6 +100,7 @@ export function OpenView() {
   const handleFileSelectWithHandle = async (
     file: File,
     handle?: FileSystemFileHandle,
+    cloudId?: string,
   ) => {
     // Only save files with FileHandle (can be reopened)
     if (handle) {
@@ -112,7 +113,7 @@ export function OpenView() {
     }
 
     // Open the file and navigate to editor
-    await server.open(file);
+    await server.open(file, { cloudId });
     router.push("/editor");
   };
 
@@ -260,9 +261,16 @@ export function OpenView() {
                   <DocumentIcon type={file.type} size="sm" />
                   <div className="text-left">
                     <p className="font-semibold text-sm">{file.name}</p>
-                    <p className="text-[10px] text-text-secondary">
-                      {formatRelativeTime(file.updatedAt)}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[10px] text-text-secondary">
+                        {formatRelativeTime(file.updatedAt)}
+                      </p>
+                      {file.cloudId && (
+                        <span className="text-[8px] px-1 bg-primary/10 text-primary rounded font-bold uppercase">
+                          {t("Cloud")}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <button

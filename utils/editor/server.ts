@@ -4,6 +4,7 @@ import { User, Participant, AscSaveTypes, ServerOptions } from "./types";
 import { emptyDocx, emptyPdf, emptyPptx, emptyXlsx } from "./empty";
 import { APP_ROOT, getDocumentType, getFileExt } from "./utils";
 import { allPlugins, featuredPlugins, getPluginsData } from "./plugins";
+import { saveCloudFile } from "../cloud-storage";
 
 function mergeBuffers(buffers: Uint8Array[]) {
   const totalLength = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
@@ -44,6 +45,7 @@ export class EditorServer {
   private loadPromise: Promise<void> | null = null;
 
   private file: File | null = null;
+  private cloudId: string | null = null;
   private fileType: string = "docx";
   private title: string = "";
   private fsMap: Map<string, Uint8Array> = new Map();
@@ -114,12 +116,13 @@ export class EditorServer {
 
   async open(
     file: File,
-    { fileType, fileName }: { fileType?: string; fileName?: string } = {},
+    { fileType, fileName, cloudId }: { fileType?: string; fileName?: string; cloudId?: string } = {},
   ) {
     const title = fileName || file.name;
     this.fileType = fileType || getFileExt(file.name) || "docx";
     const documentType = getDocumentType(this.fileType);
-    this.id = randomId();
+    this.id = cloudId || randomId();
+    this.cloudId = cloudId || null;
     this.file = file;
     this.title = title;
     const buffer = await file.arrayBuffer();
@@ -134,7 +137,8 @@ export class EditorServer {
   openNew(fileType?: string) {
     this.fileType = fileType || "docx";
     // TODO: should generate new id?
-    this.id = this.id || randomId();
+    this.id = randomId();
+    this.cloudId = null;
     this.title = "New Document";
     const documentType = getDocumentType(this.fileType);
 
@@ -176,6 +180,7 @@ export class EditorServer {
     this.fileType = fileType || getFileExt(title) || "docx";
     const documentType = getDocumentType(this.fileType);
     this.id = randomId();
+    this.cloudId = null;
     this.title = title;
     const buffer = () => fetch(url).then((res) => res.arrayBuffer());
     this.loadPromise = this.loadDocument(buffer, this.fileType);
@@ -494,6 +499,19 @@ export class EditorServer {
           // TODO: error message
           return { status: "error" };
         }
+
+        // Save to Cloud Storage
+        const fileExt = cmd.title.split(".").pop() || this.fileType;
+        const cloudFile = await saveCloudFile({
+          id: this.cloudId || this.id || randomId(),
+          name: cmd.title || this.title || "Document",
+          type: fileExt,
+          data: new Uint8Array(output),
+          folderId: null, // Always root on auto-save from editor for now
+        });
+        this.cloudId = cloudFile.id;
+        this.id = cloudFile.id;
+
         const blob = new Blob([new Uint8Array(output)]);
         const url = URL.createObjectURL(blob);
         

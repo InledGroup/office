@@ -1,13 +1,15 @@
 "use client";
 
 import { openDB, DBSchema, IDBPDatabase } from "idb";
+import { getAllCloudFiles } from "./cloud-storage";
 
 // Recent file record structure for UI display
 export interface RecentFileRecord {
-  path: string; // File path as the unique key
+  path: string; // File path or Cloud ID as the unique key
   name: string;
   type: string;
-  handle: FileSystemFileHandle;
+  handle?: FileSystemFileHandle; // Optional for local files
+  cloudId?: string; // Optional for cloud files
   updatedAt: number;
 }
 
@@ -107,14 +109,38 @@ export async function getRecentFiles(): Promise<RecentFileRecord[]> {
     }
   }
 
+  // Add Cloud Files
+  try {
+    const cloudFiles = await getAllCloudFiles();
+    for (const cf of cloudFiles) {
+      records.push({
+        path: cf.id,
+        name: cf.name,
+        type: cf.type,
+        cloudId: cf.id,
+        updatedAt: cf.updatedAt,
+      });
+    }
+  } catch (e) {
+    console.error("Failed to fetch cloud files for recents:", e);
+  }
+
   // Sort by updatedAt descending (newest first)
   return records.sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
-// Remove a recent file by path
+// Remove a recent file by path or cloud ID
 export async function removeRecentFile(path: string): Promise<void> {
   const db = await getDB();
   await db.delete(STORE_NAME, path);
+  
+  // Also try to delete from cloud storage
+  try {
+    const { deleteCloudFile } = await import("./cloud-storage");
+    await deleteCloudFile(path);
+  } catch (e) {
+    // Might not be a cloud file or error, ignore
+  }
 }
 
 // Clear all recent files
@@ -123,10 +149,17 @@ export async function clearRecentFiles(): Promise<void> {
   await db.clear(STORE_NAME);
 }
 
-// Request permission and get file from handle
+// Request permission and get file from handle or Cloud
 export async function openRecentFile(
   record: RecentFileRecord
 ): Promise<File | null> {
+  if (record.cloudId) {
+    const { getCloudFile } = await import("./cloud-storage");
+    const cf = await getCloudFile(record.cloudId);
+    if (!cf) return null;
+    return new File([cf.data as BlobPart], cf.name, { type: "application/octet-stream" });
+  }
+
   if (!record.handle) {
     return null;
   }

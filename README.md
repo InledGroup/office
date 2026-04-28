@@ -5,7 +5,7 @@
 <h1 align="center">Inled InSuite</h1>
 
 <p align="center">
-  <strong>A modern, local-first Office document preview and editing solution.</strong>
+  <strong>Modern, local-first, private, offline, in-browser Office Editor based in OnlyOffice.</strong>
 </p>
 
 <p align="center">
