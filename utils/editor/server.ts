@@ -63,13 +63,21 @@ export class EditorServer {
     console.log("[server] Loading dynamic font index and all TTF assets...");
 
     // 1. Cargar el mapeo crítico
+    const fontBinUrl = `${APP_ROOT}/fonts/font_selection.bin`.startsWith("/") 
+      ? `${APP_ROOT}/fonts/font_selection.bin` 
+      : `/${APP_ROOT}/fonts/font_selection.bin`;
+
     fontPromises.push(
-      fetch(`${APP_ROOT}/fonts/font_selection.bin`)
-        .then((r) => r.arrayBuffer())
+      fetch(fontBinUrl)
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.arrayBuffer();
+        })
         .then((buf) => {
           fonts["font_selection.bin"] = new Uint8Array(buf);
+          console.log("[server] font_selection.bin cargado correctamente");
         })
-        .catch((e) => console.error("Error crítico: font_selection.bin", e))
+        .catch((e) => console.error(`Error crítico: no se pudo cargar ${fontBinUrl}`, e))
     );
 
     // 2. Cargar el índice de fuentes y luego cada archivo

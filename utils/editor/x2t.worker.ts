@@ -205,6 +205,10 @@ ${content}
     const systemFontDir2 = "/var/www/onlyoffice/documentserver/core-fonts/";
     
     for (const [key, value] of Object.entries(fonts)) {
+      if (!value || value.length === 0) {
+        console.warn(`[x2t.worker] Skipping empty font file: ${key}`);
+        continue;
+      }
       try {
         if (key === "font_selection.bin") {
           x2t.FS.writeFile("/working/font_selection.bin", value);
