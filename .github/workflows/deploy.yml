@@ -36,7 +36,9 @@ jobs:
             tar -cC /var/www/onlyoffice/documentserver sdkjs web-apps fonts" | tar -xC $ASSET_DIR/
           
           # Corregimos los permisos ya que los archivos extraídos pueden pertenecer a root
+          # y además pueden venir como solo lectura
           sudo chown -R $USER:$USER $ASSET_DIR
+          chmod -R u+w $ASSET_DIR
 
       - name: Fix HTML paths and Base Href
         run: |
