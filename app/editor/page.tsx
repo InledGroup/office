@@ -140,6 +140,8 @@ export default function Page({ params }: { params: Promise<{}> }) {
                 change: false,
               },
             },
+            feedback: { visible: false },
+            forcesave: true,
             // anonymous: {
             //   request: false,
             //   label: "Guest",

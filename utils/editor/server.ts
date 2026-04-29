@@ -442,18 +442,28 @@ export class EditorServer {
     const u = new URL(req.url);
     const { id: key, send } = this;
 
-    // More flexible matching for key-based paths (downloadfile, downloadas, etc.)
-    const isKeyPath = u.pathname.includes("/" + key);
+    // Broad matching for ANY request containing the key
+    const isKeyPath = u.pathname.includes(key) && key.length > 0;
     
     if (isKeyPath) {
-      // If it's a simple GET/POST to fetch the file data (including the main URL /id)
-      if (req.method === "GET" || (req.method === "POST" && !u.searchParams.has("cmd"))) {
+      console.log(`[server] Intercepting ${req.method} request to ${u.pathname}`);
+
+      // If it's a request to fetch the document data (GET or POST)
+      // OnlyOffice sometimes uses POST for fetching if it's a partial download
+      const isDownloadReq = u.pathname.includes("/downloadfile/") || 
+                           u.pathname.includes("/downloadas/") ||
+                           u.pathname === "/" + key ||
+                           u.pathname.endsWith(key);
+
+      if (isDownloadReq && (!u.searchParams.has("cmd") || req.method === "GET")) {
         const data = this.fsMap.get("Editor.bin");
         if (data) {
           return new Response(new Blob([data as any]), {
             headers: { 
               "Content-Type": "application/octet-stream",
-              "Access-Control-Allow-Origin": "*" 
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+              "Access-Control-Allow-Headers": "*"
             }
           });
         }
