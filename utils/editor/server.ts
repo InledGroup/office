@@ -53,6 +53,11 @@ export class EditorServer {
 
   private downloadId: string = "";
   private downloadParts: Uint8Array[] = [];
+  private isAutoSave: boolean = false;
+
+  public setAutoSave(value: boolean) {
+    this.isAutoSave = value;
+  }
 
   private loadedFonts: Record<string, Uint8Array> | null = null;
 
@@ -548,11 +553,13 @@ export class EditorServer {
           const blob = new Blob([new Uint8Array(output)]);
           const url = URL.createObjectURL(blob);
           
-          // Manual download trigger
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = cmd.title || "test.docx";
-          a.click();
+          // Manual download trigger (Only if not auto-saving)
+          if (!this.isAutoSave) {
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = cmd.title || "test.docx";
+            a.click();
+          }
           
           return { status: "ok", url };
         };

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useLayoutEffect, useRef, useEffect } from "react";
+import { use, useLayoutEffect, useRef, useEffect, useState } from "react";
 import { useAppStore, useResolvedLanguage, useHasHydrated } from "@/store";
 import {
   API_JS,
@@ -18,11 +18,35 @@ export default function Page({ params }: { params: Promise<{}> }) {
   const language = useResolvedLanguage();
   const theme = useAppStore((state) => state.theme);
   const hasHydrated = useHasHydrated();
-  const isDirty = useRef(false);
+  
+  const [isDirty, setIsDirty] = useState(false);
+  const autoSaveTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-save logic
+  useEffect(() => {
+    if (!isDirty) return;
+
+    if (autoSaveTimer.current) {
+      clearTimeout(autoSaveTimer.current);
+    }
+
+    autoSaveTimer.current = setTimeout(() => {
+      const editor = (window as any).editor;
+      if (editor && isDirty) {
+        console.log("[editor] Auto-saving changes...");
+        server.setAutoSave(true);
+        editor.downloadAs();
+      }
+    }, 3000);
+
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    };
+  }, [isDirty, server]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isDirty.current) {
+      if (isDirty) {
         e.preventDefault();
         e.returnValue = "";
       }
@@ -31,7 +55,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []);
+  }, [isDirty]);
 
   useLayoutEffect(() => {
     if (!hasHydrated) return;
@@ -165,7 +189,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
           onDocumentStateChange: (e: { data: boolean; target: unknown }) => {
             console.log("Document state change", e);
             if (e.data) {
-              isDirty.current = true;
+              setIsDirty(true);
             }
           },
           onRequestOpen: (e: unknown) => {
@@ -185,18 +209,21 @@ export default function Page({ params }: { params: Promise<{}> }) {
           },
           onSaveDocument: (e: unknown) => {
             console.log("onSaveDocument", e);
-            isDirty.current = false;
+            setIsDirty(false);
+            server.setAutoSave(false);
           },
           onDownloadAs: (e: unknown) => {
             console.log("onDownloadAs", e);
           },
           onSave: (e: unknown) => {
             console.log("onSave", e);
-            isDirty.current = false;
+            setIsDirty(false);
+            server.setAutoSave(false);
           },
           writeFile: async (e: unknown) => {
             console.log("writeFile", e);
-            isDirty.current = false;
+            setIsDirty(false);
+            server.setAutoSave(false);
           },
         },
         type: "desktop",
