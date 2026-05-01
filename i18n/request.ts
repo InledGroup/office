@@ -4,9 +4,8 @@ import { getTimeZone } from "./config";
 
 const defaultLocale = Locale.EN;
 
-export default getRequestConfig(async () => {
-  // const locale = (await requestLocale) || defaultLocale;
-  const locale = defaultLocale;
+export default getRequestConfig(async ({ requestLocale }) => {
+  const locale = (await requestLocale) || defaultLocale;
   return {
     locale,
     messages: (await import(`../messages/${locale}.json`)).default,

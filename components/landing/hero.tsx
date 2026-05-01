@@ -48,13 +48,10 @@ export function LandingHero() {
           <Link
             href="/"
             onClick={markVisited}
-            className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 relative"
+            className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3"
           >
             {t("hero.ctaPrimary")}
             <ArrowRight className="w-5 h-5" />
-            <span className="absolute -top-3 -right-3 px-2 py-1 bg-yellow-400 text-black text-[10px] font-black rounded-full border-2 border-white rotate-12 shadow-md animate-bounce">
-              DEPLOY TEST
-            </span>
           </Link>
           <a
             href="#features"
