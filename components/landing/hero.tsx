@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useAppStore } from "@/store";
 import { ArrowRight, Sparkles, FileText, FileSpreadsheet, Presentation } from "lucide-react";
 import { EmbeddedEditor } from "./embedded-editor";
 import { cn } from "@/lib/utils";
 
 export function LandingHero() {
+  const t = useTranslations("landing");
+  const { language } = useAppStore();
   const [activeTab, setActiveTab] = useState<"docx" | "xlsx" | "pptx">("docx");
   const markVisited = () => localStorage.setItem('visited', 'true');
 
@@ -26,18 +30,18 @@ export function LandingHero() {
 
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <span>Beta</span>
+          <span>{t("hero.badge")}</span>
         </div>
         
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700">
-          El Office gratuito, abierto y <br className="hidden md:block" />
+          {t("hero.title")} <br className="hidden md:block" />
           <span className="inline-block mt-2 px-4 py-1 bg-red-600 text-yellow-300 transform -rotate-1 rounded-sm shadow-lg">
-            Made in Spain
+            {t("hero.titleAccent")}
           </span>
         </h1>
         
         <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150">
-          Privacidad total sin instalaciones. Abre, edita y guarda tus documentos directamente en el navegador. Tus archivos nunca abandonan tu ordenador.
+          {t("hero.description")}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
@@ -46,14 +50,14 @@ export function LandingHero() {
             onClick={markVisited}
             className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3"
           >
-            Empezar a usar gratis
+            {t("hero.ctaPrimary")}
             <ArrowRight className="w-5 h-5" />
           </Link>
           <a
             href="#features"
             className="w-full sm:w-auto px-8 py-4 bg-zinc-50 border border-border text-foreground rounded-xl font-bold text-lg hover:bg-zinc-100 transition-all flex items-center justify-center"
           >
-            Ver características
+            {t("hero.ctaSecondary")}
           </a>
         </div>
 
@@ -87,7 +91,7 @@ export function LandingHero() {
                         </div>
                     </div>
                     <div className="text-[10px] md:text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                      Pruébalo!
+                      {t("hero.editorTry")}
                     </div>
                 </div>
                 
@@ -110,7 +114,7 @@ export function LandingHero() {
                 {/* The Embedded Editor */}
                 <div className="flex-1 min-h-0 bg-white">
                     <EmbeddedEditor 
-                      key={activeTab}
+                      key={`${activeTab}-${language}`}
                       fileUrl={tabs.find(t => t.id === activeTab)!.url}
                       fileType={activeTab}
                     />
@@ -119,7 +123,9 @@ export function LandingHero() {
             
             {/* Legend / Info below the editor */}
             <p className="mt-6 text-sm text-text-secondary font-medium">
-              Interactúa con el editor. Es una instancia real ejecutándose <span className="text-primary">100% en tu navegador</span> vía WebAssembly.
+              {t.rich("hero.editorLegend", {
+                span: (chunks) => <span className="text-primary">{chunks}</span>
+              })}
             </p>
         </div>
       </div>

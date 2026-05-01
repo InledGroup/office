@@ -19,14 +19,14 @@
   "QfGqDe": "Our goal is to provide a seamless, local-first office experience while maintaining the highest standards of compatibility and open-source compliance.",
   "Nej9RW": "New {type}",
   "JfG49w": "Open",
-  "fiPvwY": "Cloud",
+  "fiPvwY": "Storage",
   "3JxaKs": "Template",
   "D3idYv": "Settings",
   "g5pX+a": "About",
   "confirmDelete": "Are you sure you want to delete this file?",
   "confirmDeleteFolder": "Are you sure you want to delete this folder and all its content?",
   "renamePrompt": "Enter new name:",
-  "ZUPGgf": "Cloud Storage",
+  "ZUPGgf": "Local Storage",
   "WvBIKK": "New Folder",
   "9vqPaF": "Root",
   "43Gtif": "Folder name...",
@@ -74,5 +74,130 @@
   "W2sXxa": "Search for templates (e.g. 'Resume', 'Report', 'Pitch')...",
   "sc2DN9": "Use Template",
   "F03jGl": "No templates found matching your criteria.",
-  "jKKg2o": "Clear all filters"
+  "jKKg2o": "Clear all filters",
+  "landing": {
+    "seo": {
+      "title": "Inled InSuite — Free, Private Online Office Suite",
+      "description": "Open and edit Word, Excel, and PowerPoint for free. 100% private, no install required. Your files never leave your browser.",
+      "keywords": "free office online, edit word online, private excel online, office without registration, digital sovereignty, inled insuite"
+    },
+    "header": {
+      "subtitle": "Docs Sheets Slides",
+      "features": "Features",
+      "editors": "Editors",
+      "about": "About",
+      "cta": "Start now"
+    },
+    "hero": {
+      "badge": "Beta",
+      "title": "The free, open, and",
+      "titleAccent": "Made in Spain Office",
+      "description": "Total privacy without installations. Open, edit, and save your documents directly in the browser. Your files never leave your computer.",
+      "ctaPrimary": "Start for free",
+      "ctaSecondary": "View features",
+      "editorTry": "Try it!",
+      "editorLegend": "Interact with the editor. It's a real instance running 100% in your browser via WebAssembly."
+    },
+    "features": {
+      "tagline": "Why choose InSuite?",
+      "description": "Because it's made with you in mind, not for financial gain. Because it's free, private, and made in Spain.",
+      "feature1": {
+        "title": "Made in Spain",
+        "desc": "The free, no-installation, 100% compatible office suite created in Spain for Spain."
+      },
+      "feature2": {
+        "title": "100% Private",
+        "desc": "Nothing is uploaded to the storage. Everything stays in your browser. We comply with the strictest European and Spanish privacy regulations by not collecting a single piece of data, not even analytics."
+      },
+      "feature3": {
+        "title": "No installation required",
+        "desc": "Everything works in the browser; you only need a file explorer to upload documents and a browser to use the editor."
+      }
+    },
+    "editors": {
+      "title": "Professional Tools",
+      "subtitle": "Powerful desktop editors, now in your browser. 100% compatible with your usual files.",
+      "docx": {
+        "name": "Documents",
+        "desc": "Compatible with .docx. The same power as Microsoft Word, but a thousand times better than Google Docs."
+      },
+      "xlsx": {
+        "name": "Spreadsheets",
+        "desc": "Compatible with .xlsx. Perform complex analysis and formulas with full compatibility."
+      },
+      "pptx": {
+        "name": "Presentations",
+        "desc": "Compatible with .pptx. Create impactful slides directly in your browser."
+      },
+      "plugins": {
+        "title": "Plugins",
+        "desc": "Translation, local AI, spell check, and more. Customize your office with our catalog."
+      }
+    },
+    "comparison": {
+      "title": "Honest comparison",
+      "subtitle": "The best way for you to see why InSuite is the best choice is to compare it with other options on the market.",
+      "headers": {
+        "suite": "Suite",
+        "privacy": "Privacy",
+        "auditable": "Auditable",
+        "compatibility": "Compatibility",
+        "noInstall": "No Install",
+        "price": "Price",
+        "keyDiffs": "Key differences"
+      },
+      "suites": {
+        "insuite": {
+          "diff": "Supports Export PDF, IndexedDB, Not Chinese"
+        },
+        "ziziyi": {
+          "diff": "Subject to Chinese regulations. Cannot export to PDF. No browser saving."
+        },
+        "onlyoffice": {
+          "diff": "Certain components are not auditable. Related to Russia"
+        },
+        "libreoffice": {
+          "diff": "Poor interface, requires installation, low compatibility with Office"
+        },
+        "msoffice": {
+          "diff": "Proprietary, expensive, data spying"
+        }
+      },
+      "privacy": {
+        "local": "Local",
+        "cloud": "Storage/Self-hosted",
+        "lowCloud": "Low (Storage)"
+      },
+      "price": {
+        "free": "Free",
+        "freemium": "Freemium",
+        "subscription": "Subscription"
+      }
+    },
+    "cta": {
+      "title": "It's time, ",
+      "titleAccent": "you decide",
+      "description": "Don't let your data stay in the storage, be charged for simply editing documents, be forced to install something, or be subjected to foreign regulations.",
+      "primary": "Start now",
+      "secondary": "Review the code",
+      "footer": "By using InSuite, you are using free, private, and Spanish software"
+    },
+    "about": {
+      "title": "About Inled Group",
+      "description": "Inled Group is a software brand focused on privacy, Spanish technological sovereignty, and local AI. We use free technologies, AI agents for development, and we are Linux fans.",
+      "stats": {
+        "private": "Private",
+        "openSource": "Open Source",
+        "madeInSpain": "Made in Spain"
+      }
+    },
+    "footer": {
+      "desc": "The sovereign, private, and free office suite made in Spain for the world.",
+      "product": "Product",
+      "company": "Company",
+      "social": "Social",
+      "openSource": "Open Source",
+      "copyright": "Licensed under the original license except for changes, which are licensed under MIT-INLED."
+    }
+  }
 }

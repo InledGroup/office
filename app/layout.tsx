@@ -102,7 +102,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ProgressProvider>
           <I18nProvider initialMessages={messages}>{children}</I18nProvider>
         </ProgressProvider>

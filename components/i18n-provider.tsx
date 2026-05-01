@@ -11,6 +11,8 @@ const messagesCache: Partial<Record<Locale, AbstractIntlMessages>> = {};
 
 // Load messages for a locale (with fallback to English)
 async function loadMessages(locale: Locale): Promise<AbstractIntlMessages> {
+  // Normalize locale for file loading (e.g. es-419 -> es) if specific file doesn't exist
+  // But first try exact match
   if (messagesCache[locale]) {
     return messagesCache[locale]!;
   }
@@ -20,6 +22,16 @@ async function loadMessages(locale: Locale): Promise<AbstractIntlMessages> {
     messagesCache[locale] = messages;
     return messages;
   } catch {
+    // If es-419 fails, try es
+    if (locale.includes("-")) {
+      const baseLocale = locale.split("-")[0] as Locale;
+      try {
+        const messages = (await import(`@/messages/${baseLocale}.json`)).default;
+        messagesCache[locale] = messages;
+        return messages;
+      } catch (e) {}
+    }
+
     // Fallback to English if locale file doesn't exist
     if (locale !== Locale.EN) {
       console.warn(
@@ -37,15 +49,11 @@ interface I18nProviderProps {
   initialMessages: AbstractIntlMessages;
 }
 
-/**
- * Client-side i18n provider that switches language based on store setting.
- * Dynamically loads message files when language changes.
- */
 export function I18nProvider({ children, initialMessages }: I18nProviderProps) {
   const locale = useResolvedLanguage();
   const [messages, setMessages] =
     useState<AbstractIntlMessages>(initialMessages);
-  const [currentLocale, setCurrentLocale] = useState<Locale>(Locale.EN);
+  const [currentLocale, setCurrentLocale] = useState<Locale>(locale);
 
   useEffect(() => {
     // Load messages when locale changes
@@ -60,6 +68,11 @@ export function I18nProvider({ children, initialMessages }: I18nProviderProps) {
       locale={currentLocale}
       messages={messages}
       timeZone={getTimeZone(currentLocale)}
+      onError={() => {}} // Silence missing message errors in production/dev if desired
+      getMessageFallback={({ key, namespace }) => {
+        // Fallback to the key itself if message is missing
+        return namespace ? `${namespace}.${key}` : key;
+      }}
     >
       {children}
     </NextIntlClientProvider>

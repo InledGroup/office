@@ -198,7 +198,7 @@ export function EmbeddedEditor({ fileUrl, fileType }: EmbeddedEditorProps) {
           <p className="text-xs text-text-secondary mt-2">Todo se ejecuta localmente en tu navegador</p>
         </div>
       )}
-      <div id={placeholderId} className="w-full h-full" />
+      {hasHydrated && <div id={placeholderId} className="w-full h-full" />}
       <iframe className="w-0 h-0 hidden" src={APP_ROOT + PRELOAD_HTML} />
     </div>
   );

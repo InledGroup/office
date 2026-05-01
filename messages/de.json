@@ -60,5 +60,130 @@
   "QJAllU": "Plugins",
   "rET/Cl": "Ausgewählte Plugins laden",
   "mfU/qe": "Alle Plugins laden",
-  "6PEpzR": "Plugins deaktivieren"
+  "6PEpzR": "Plugins deaktivieren",
+  "landing": {
+    "seo": {
+      "title": "Inled InSuite — Kostenloses, privates Online-Office",
+      "description": "Word, Excel und PowerPoint kostenlos öffnen und bearbeiten. 100 % privat, keine Installation. Ihre Dateien verlassen nie den Browser.",
+      "keywords": "office online kostenlos, word online bearbeiten, excel online privat, office ohne registrierung, digitale souveränität, inled insuite"
+    },
+    "header": {
+      "subtitle": "Dokumente Tabellen Präsentationen",
+      "features": "Funktionen",
+      "editors": "Editoren",
+      "about": "Über uns",
+      "cta": "Jetzt starten"
+    },
+    "hero": {
+      "badge": "Beta",
+      "title": "Das freie, offene und",
+      "titleAccent": "Made in Spain Office",
+      "description": "Volle Privatsphäre ohne Installation. Öffnen, bearbeiten und speichern Sie Ihre Dokumente direkt im Browser. Ihre Dateien verlassen niemals Ihren Computer.",
+      "ctaPrimary": "Kostenlos starten",
+      "ctaSecondary": "Funktionen ansehen",
+      "editorTry": "Probieren Sie es aus!",
+      "editorLegend": "Interagieren Sie mit dem Editor. Es ist eine echte Instanz, die zu 100 % in Ihrem Browser über WebAssembly läuft."
+    },
+    "features": {
+      "tagline": "Warum InSuite wählen?",
+      "description": "Weil es für Sie gemacht ist, nicht für finanziellen Gewinn. Weil es frei, privat und in Spanien hergestellt ist.",
+      "feature1": {
+        "title": "Made in Spain",
+        "desc": "Die freie, installationsfreie, 100 % kompatible Office-Suite, die in Spanien für Spanien entwickelt wurde."
+      },
+      "feature2": {
+        "title": "100 % Privat",
+        "desc": "Nichts wird in die Cloud hochgeladen. Alles bleibt in Ihrem Browser. Wir halten uns an die strengsten europäischen und spanischen Datenschutzbestimmungen, indem wir kein einziges Datum sammeln, nicht einmal Analysen."
+      },
+      "feature3": {
+        "title": "Keine Installation erforderlich",
+        "desc": "Alles funktioniert im Browser; Sie benötigen nur einen Dateiexplorer zum Hochladen von Dokumenten und einen Browser zur Nutzung des Editors."
+      }
+    },
+    "editors": {
+      "title": "Professionelle Werkzeuge",
+      "subtitle": "Leistungsstarke Desktop-Editoren, jetzt in Ihrem Browser. 100 % kompatibel mit Ihren gewohnten Dateien.",
+      "docx": {
+        "name": "Dokumente",
+        "desc": "Kompatibel mit .docx. Dieselbe Leistung wie Microsoft Word, aber tausendmal besser als Google Docs."
+      },
+      "xlsx": {
+        "name": "Tabellenkalkulationen",
+        "desc": "Kompatibel mit .xlsx. Führen Sie komplexe Analysen und Formeln mit voller Kompatibilität durch."
+      },
+      "pptx": {
+        "name": "Präsentationen",
+        "desc": "Kompatibel mit .pptx. Erstellen Sie beeindruckende Folien direkt in Ihrem Browser."
+      },
+      "plugins": {
+        "title": "Plugins",
+        "desc": "Übersetzung, lokale KI, Rechtschreibprüfung und mehr. Personalisieren Sie Ihr Büro mit unserem Katalog."
+      }
+    },
+    "comparison": {
+      "title": "Ehrlicher Vergleich",
+      "subtitle": "Der beste Weg, um zu sehen, warum InSuite die beste Wahl ist, ist der Vergleich mit anderen Optionen auf dem Markt.",
+      "headers": {
+        "suite": "Suite",
+        "privacy": "Privatsphäre",
+        "auditable": "Prüfbar",
+        "compatibility": "Kompatibilität",
+        "noInstall": "Ohne Installation",
+        "price": "Preis",
+        "keyDiffs": "Hauptunterschiede"
+      },
+      "suites": {
+        "insuite": {
+          "diff": "Unterstützt PDF-Export, IndexedDB, Nicht Chinesisch"
+        },
+        "ziziyi": {
+          "diff": "Unterliegt chinesischen Vorschriften. Kein PDF-Export möglich. Keine Speicherung im Browser."
+        },
+        "onlyoffice": {
+          "diff": "Einige Komponenten sind nicht prüfbar. Verbindung zu Russland"
+        },
+        "libreoffice": {
+          "diff": "Schlechte Benutzeroberfläche, Installation erforderlich, geringe Kompatibilität mit Office"
+        },
+        "msoffice": {
+          "diff": "Proprietär, teuer, Datenspionage"
+        }
+      },
+      "privacy": {
+        "local": "Lokal",
+        "cloud": "Cloud/Self-hosted",
+        "lowCloud": "Niedrig (Cloud)"
+      },
+      "price": {
+        "free": "Kostenlos",
+        "freemium": "Freemium",
+        "subscription": "Abonnement"
+      }
+    },
+    "cta": {
+      "title": "Es ist Zeit, ",
+      "titleAccent": "Sie entscheiden",
+      "description": "Lassen Sie nicht zu, dass Ihre Daten in der Club bleiben, dass Ihnen das einfache Bearbeiten von Dokumenten in Rechnung gestellt wird, dass Sie zur Installation von Programmen gezwungen werden oder ausländischen Vorschriften unterliegen.",
+      "primary": "Jetzt starten",
+      "secondary": "Code überprüfen",
+      "footer": "Mit der Nutzung von InSuite verwenden Sie freie, private und spanische Software"
+    },
+    "about": {
+      "title": "Über Inled Group",
+      "description": "Inled Group ist eine Softwaremarke, die sich auf Privatsphäre, spanische technologische Souveränität und lokale KI konzentriert. Wir verwenden freie Technologien, KI-Agenten für die Entwicklung und sind Linux-Fans.",
+      "stats": {
+        "private": "Privat",
+        "openSource": "Open Source",
+        "madeInSpain": "Made in Spain"
+      }
+    },
+    "footer": {
+      "desc": "Die souveräne, private und kostenlose Office-Suite, hergestellt in Spanien für die Welt.",
+      "product": "Produkt",
+      "company": "Unternehmen",
+      "social": "Soziales",
+      "openSource": "Quelloffen",
+      "copyright": "Lizenziert unter der Originallizenz, mit Ausnahme der Änderungen, die unter MIT-INLED lizenziert sind."
+    }
+  }
 }

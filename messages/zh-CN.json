@@ -60,5 +60,130 @@
   "QJAllU": "插件",
   "rET/Cl": "加载精选插件",
   "mfU/qe": "加载所有插件",
-  "6PEpzR": "禁用插件"
+  "6PEpzR": "禁用插件",
+  "landing": {
+    "seo": {
+      "title": "Inled InSuite — 免费、私密的在线办公套件",
+      "description": "免费打开和编辑 Word、Excel 和 PowerPoint。100% 私密，无需安装。您的文件永远不会离开浏览器。",
+      "keywords": "免费在线办公, 在线编辑word, 私密在线excel, 无需注册的office, 数字主权, inled insuite"
+    },
+    "header": {
+      "subtitle": "文档 表格 幻灯片",
+      "features": "功能",
+      "editors": "编辑器",
+      "about": "关于",
+      "cta": "立即开始"
+    },
+    "hero": {
+      "badge": "测试版",
+      "title": "免费、开放且",
+      "titleAccent": "西班牙制造的 Office",
+      "description": "无需安装即可享受完全的隐私。直接在浏览器中打开、编辑和保存您的文档。您的文件永远不会离开您的电脑。",
+      "ctaPrimary": "免费开始使用",
+      "ctaSecondary": "查看功能",
+      "editorTry": "立即尝试！",
+      "editorLegend": "与编辑器互动。这是一个通过 WebAssembly 在您的浏览器中 100% 运行的真实实例。"
+    },
+    "features": {
+      "tagline": "为什么选择 InSuite？",
+      "description": "因为它为您而生，而非为了经济利益。因为它免费、私密且在西班牙制造。",
+      "feature1": {
+        "title": "西班牙制造",
+        "desc": "专为西班牙打造的免费、无需安装、100% 兼容的自由办公套件。"
+      },
+      "feature2": {
+        "title": "100% 私密",
+        "desc": "没有任何内容上传到云端。一切都保留在您的浏览器中。我们不收集任何数据，甚至不收集分析数据，从而遵守最严格的欧洲和西班牙隐私法规。"
+      },
+      "feature3": {
+        "title": "无需安装任何内容",
+        "desc": "一切都在浏览器中运行；您只需要一个文件资源管理器来上传文档，以及一个浏览器来使用编辑器。"
+      }
+    },
+    "editors": {
+      "title": "专业工具",
+      "subtitle": "强大的桌面编辑器，现在就在您的浏览器中。100% 兼容您的常用文件。",
+      "docx": {
+        "name": "文档",
+        "desc": "兼容 .docx。拥有与 Microsoft Word 相同的强大功能，但比 Google Docs 好上千倍。"
+      },
+      "xlsx": {
+        "name": "电子表格",
+        "desc": "兼容 .xlsx。完全兼容地执行复杂的分析和公式。"
+      },
+      "pptx": {
+        "name": "演示文稿",
+        "desc": "兼容 .pptx。直接在浏览器中创建具有影响力的幻灯片。"
+      },
+      "plugins": {
+        "title": "插件",
+        "desc": "翻译、本地 AI、拼写检查等。通过我们的目录定制您的办公空间。"
+      }
+    },
+    "comparison": {
+      "title": "诚实的对比",
+      "subtitle": "看清 InSuite 为何是最佳选择的最佳方法是将其与市场上的其他选项进行对比。",
+      "headers": {
+        "suite": "套件",
+        "privacy": "隐私",
+        "auditable": "可审计",
+        "compatibility": "兼容性",
+        "noInstall": "无需安装",
+        "price": "价格",
+        "keyDiffs": "核心差异"
+      },
+      "suites": {
+        "insuite": {
+          "diff": "支持导出 PDF, IndexedDB, 非中国背景"
+        },
+        "ziziyi": {
+          "diff": "受中国法律约束。无法导出为 PDF。无浏览器保存功能。"
+        },
+        "onlyoffice": {
+          "diff": "某些组件不可审计。与俄罗斯有关联"
+        },
+        "libreoffice": {
+          "diff": "界面糟糕，需要安装，与 Office 兼容性低"
+        },
+        "msoffice": {
+          "diff": "私有软件，价格昂贵，存在数据监听"
+        }
+      },
+      "privacy": {
+        "local": "本地",
+        "cloud": "云端/自托管",
+        "lowCloud": "低（云端）"
+      },
+      "price": {
+        "free": "免费",
+        "freemium": "免费增值",
+        "subscription": "订阅制"
+      }
+    },
+    "cta": {
+      "title": "就是现在，",
+      "titleAccent": "由您决定",
+      "description": "不要让您的数据留在云端，不要为了简单的编辑文档而付费，不要被迫安装任何东西，也不要被迫接受外国法律的监管。",
+      "primary": "立即开始",
+      "secondary": "查看代码",
+      "footer": "使用 InSuite，即表示您正在使用自由、私密且由西班牙开发的软件"
+    },
+    "about": {
+      "title": "关于 Inled Group",
+      "description": "Inled Group 是一个专注于隐私、西班牙技术主权和本地 AI 的软件品牌。我们使用自由技术、AI 代理进行开发，并且是 Linux 的爱好者。",
+      "stats": {
+        "private": "私密",
+        "openSource": "开源",
+        "madeInSpain": "西班牙制造"
+      }
+    },
+    "footer": {
+      "desc": "专为世界打造的、来自西班牙的主权、私密且免费的办公套件。",
+      "product": "产品",
+      "company": "公司",
+      "social": "社交",
+      "openSource": "开源",
+      "copyright": "根据原许可证授权，除修改部分外，修改部分根据 MIT-INLED 授权。"
+    }
+  }
 }

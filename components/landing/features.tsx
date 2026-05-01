@@ -1,24 +1,27 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ShieldCheck, DownloadCloud, Flag } from "lucide-react";
 
 export function LandingFeatures() {
+  const t = useTranslations("landing");
+
   const features = [
     {
-      title: "Made in Spain",
-      description: "El office libre, sin instalación, gratuito y 100% compatible que ha sido creado en España para España.",
+      title: t("features.feature1.title"),
+      description: t("features.feature1.desc"),
       icon: Flag,
       color: "bg-red-50 text-red-600",
     },
     {
-      title: "Privado 100%",
-      description: "Nada se sube a la nube. Todo se queda en tu navegador. Cumplimos con las normativas de privacidad europeas y españolas más estrictas al no recoger ni un solo dato, ni de analíticas.",
+      title: t("features.feature2.title"),
+      description: t("features.feature2.desc"),
       icon: ShieldCheck,
       color: "bg-blue-50 text-blue-600",
     },
     {
-      title: "Sin instalar nada",
-      description: "Todo funciona en el navegador, no necesitas más que un explorador de archivos con el que subir documentos y un navegador para usar el editor.",
+      title: t("features.feature3.title"),
+      description: t("features.feature3.desc"),
       icon: DownloadCloud,
       color: "bg-green-50 text-green-600",
     },
@@ -28,9 +31,9 @@ export function LandingFeatures() {
     <section id="features" className="py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">¿Por qué elegir InSuite?</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">{t("features.tagline")}</h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Por que está hecho pensando en tí, no en sacar rédito económico. Por que es libre, privado y está hecho en España.
+            {t("features.description")}
           </p>
         </div>
 

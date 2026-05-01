@@ -61,10 +61,10 @@
   "rET/Cl": "Cargar complementos destacados",
   "mfU/qe": "Cargar todos los complementos",
   "6PEpzR": "Desactivar complementos",
-  "fiPvwY": "Nube",
+  "fiPvwY": "Almacenamiento",
   "confirmDelete": "¿Estás seguro de que deseas eliminar este archivo?",
   "confirmDeleteFolder": "¿Estás seguro de que deseas eliminar esta carpeta y todo su contenido?",
-  "ZUPGgf": "Almacenamiento en la Nube",
+  "ZUPGgf": "Almacenamiento Local",
   "WvBIKK": "Nueva carpeta",
   "9vqPaF": "Raíz",
   "43Gtif": "Nombre de la carpeta...",
@@ -75,5 +75,125 @@
   "Lbo63c": "Mover a...",
   "iXNbPf": "Renombrar",
   "renamePrompt": "Introduce el nuevo nombre:",
-  "K3r6DQ": "Eliminar"
+  "K3r6DQ": "Eliminar",
+  "landing": {
+    "header": {
+      "subtitle": "Docs Sheets Slides",
+      "features": "Características",
+      "editors": "Editores",
+      "about": "Acerca de",
+      "cta": "Empezar ahora"
+    },
+    "hero": {
+      "badge": "Beta",
+      "title": "El Office gratuito, abierto y",
+      "titleAccent": "Made in Spain",
+      "description": "Privacidad total sin instalaciones. Abre, edita y guarda tus documentos directamente en el navegador. Tus archivos nunca abandonan tu ordenador.",
+      "ctaPrimary": "Empezar a usar gratis",
+      "ctaSecondary": "Ver características",
+      "editorTry": "Pruébalo!",
+      "editorLegend": "Interactúa con el editor. Es una instancia real ejecutándose 100% en tu navegador vía WebAssembly."
+    },
+    "features": {
+      "tagline": "¿Por qué elegir InSuite?",
+      "description": "Por que está hecho pensando en tí, no en sacar rédito económico. Por que es libre, privado y está hecho en España.",
+      "feature1": {
+        "title": "Made in Spain",
+        "desc": "El office libre, sin instalación, gratuito y 100% compatible que ha sido creado en España para España."
+      },
+      "feature2": {
+        "title": "Privado 100%",
+        "desc": "Nada se sube al almacenamiento. Todo se queda en tu navegador. Cumplimos con las normativas de privacidad europeas y españolas más estrictas al no recoger ni un solo dato, ni de analíticas."
+      },
+      "feature3": {
+        "title": "Sin instalar nada",
+        "desc": "Todo funciona en el navegador, no necesitas más que un explorador de archivos con el que subir documentos y un navegador para usar el editor."
+      }
+    },
+    "editors": {
+      "title": "Herramientas Profesionales",
+      "subtitle": "Editores de escritorio potentes, ahora en tu navegador. 100% compatibles con tus archivos de siempre.",
+      "docx": {
+        "name": "Documentos",
+        "desc": "Compatible con .docx. La misma potencia que Microsoft Word, pero mil veces mejor que Google Docs."
+      },
+      "xlsx": {
+        "name": "Hojas de Cálculo",
+        "desc": "Compatible con .xlsx. Realiza análisis complejos y fórmulas con total compatibilidad."
+      },
+      "pptx": {
+        "name": "Presentaciones",
+        "desc": "Compatible con .pptx. Crea slides impactantes directamente en tu navegador."
+      },
+      "plugins": {
+        "title": "Plugins",
+        "desc": "Traducción, IA local, corrección ortográfica y más. Personaliza tu oficina con nuestro catálogo."
+      }
+    },
+    "comparison": {
+      "title": "Comparativa honesta",
+      "subtitle": "La mejor forma de que veas por qué InSuite es la mejor opción es comparándolo con el resto de opciones del mercado.",
+      "headers": {
+        "suite": "Suite",
+        "privacy": "Privacidad",
+        "auditable": "Auditable",
+        "compatibility": "Compatibilidad",
+        "noInstall": "Sin Instalar",
+        "price": "Precio",
+        "keyDiffs": "Diferencias clave"
+      },
+      "suites": {
+        "insuite": {
+          "diff": "Soporta Export PDF, IndexedDB, No es Chino"
+        },
+        "ziziyi": {
+          "diff": "Sujeto a normativa china. No puedes exportar a PDF. Sin guardado en navegador."
+        },
+        "onlyoffice": {
+          "diff": "Ciertos componentes no son auditables. Relacionado con Rusia"
+        },
+        "libreoffice": {
+          "diff": "Interfaz pésima, necesidad de instalación, baja compatibilidad con Office"
+        },
+        "msoffice": {
+          "diff": "Propietario, caro, espionaje de datos"
+        }
+      },
+      "privacy": {
+        "local": "Local",
+        "cloud": "Almacenamiento/Self-hosted",
+        "lowCloud": "Baja (Almacenamiento)"
+      },
+      "price": {
+        "free": "Gratis",
+        "freemium": "Freemium",
+        "subscription": "Suscripción"
+      }
+    },
+    "cta": {
+      "title": "Es el momento, ",
+      "titleAccent": "tú decides",
+      "description": "No permitas que tus datos se queden en el almacenamiento, que te cobren por simplemente editar documentos, que te obliguen a instalar algo o que te hagan pasar por regulaciones de países extranjeros",
+      "primary": "Empezar ahora",
+      "secondary": "Revisa el código",
+      "footer": "Al usar InSuite, estás usando software libre, privado y español"
+    },
+    "about": {
+      "title": "Acerca de Inled Group",
+      "description": "Inled Group es una marca de software enfocada en la privacidad, la soberanía tecnológica Española y la IA local. Usamos tecnologías libres, agentes de IA para desarrollar y somos fans de Linux.",
+      "stats": {
+        "private": "Privado",
+        "openSource": "Open Source",
+        "madeInSpain": "Made in Spain"
+      }
+    },
+    "footer": {
+      "desc": "La suite ofimática soberana, privada y gratuita hecha en España para el mundo.",
+      "product": "Producto",
+      "company": "Compañía",
+      "social": "Social",
+      "openSource": "Código Abierto",
+      "copyright": "Licenciado bajo la licencia original a excepción de los cambios, que están licenciados bajo MIT-INLED."
+    }
+  }
 }
