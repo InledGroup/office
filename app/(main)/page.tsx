@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { OpenView } from "@/components/main/open-view";
+import { RedirectHandler } from "@/components/redirect-handler";
 
 export const metadata: Metadata = {
   title: "Open & Edit Office Documents Online — Inled InSuite",
@@ -39,5 +40,10 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <OpenView />;
+  return (
+    <>
+      <RedirectHandler />
+      <OpenView />
+    </>
+  );
 }
