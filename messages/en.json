@@ -19,14 +19,14 @@
   "QfGqDe": "Our goal is to provide a seamless, local-first office experience while maintaining the highest standards of compatibility and open-source compliance.",
   "Nej9RW": "New {type}",
   "JfG49w": "Open",
-  "fiPvwY": "Storage",
+  "DUIDEq": "Storage",
   "3JxaKs": "Template",
   "D3idYv": "Settings",
   "g5pX+a": "About",
   "confirmDelete": "Are you sure you want to delete this file?",
   "confirmDeleteFolder": "Are you sure you want to delete this folder and all its content?",
   "renamePrompt": "Enter new name:",
-  "ZUPGgf": "Local Storage",
+  "ZUPGgf": "Cloud Storage",
   "WvBIKK": "New Folder",
   "9vqPaF": "Root",
   "43Gtif": "Folder name...",
@@ -49,6 +49,7 @@
   "WUGpoH": "No recent files",
   "IbM/m2": "Files you open will appear here for quick access",
   "U/6uYa": "Click to reopen this file",
+  "fiPvwY": "Cloud",
   "6PcFGr": "Remove from recent",
   "FI/NWR": "Modern Light",
   "3cc4Ct": "Light",
@@ -75,49 +76,50 @@
   "sc2DN9": "Use Template",
   "F03jGl": "No templates found matching your criteria.",
   "jKKg2o": "Clear all filters",
-  "Storage": "Storage",
+  "OnbqrE": "Downloads",
+  "+4MjlG": "Office",
   "landing": {
     "seo": {
-      "title": "Inled InSuite — Free, Private Online Office Suite",
-      "description": "Open and edit Word, Excel, and PowerPoint for free. 100% private, no installation. Your files never leave the browser.",
-      "keywords": "free online office, edit word online, private online excel, office without registration, digital sovereignty, inled insuite"
+      "title": "Inled InSuite — Free, Private & Open Office on the Web",
+      "description": "Open and edit Word, Excel, and PowerPoint for free. 100% private, no installation required, made in Spain. Your files never leave your browser.",
+      "keywords": "free online office, edit word online, private online excel, office without registration, technological sovereignty, inled insuite"
     },
     "header": {
       "subtitle": "Docs Sheets Slides",
       "features": "Features",
       "editors": "Editors",
       "about": "About",
-      "cta": "Start now"
+      "cta": "Get Started"
     },
     "hero": {
       "badge": "Beta",
-      "title": "The free, open, and",
-      "titleAccent": "Made in Spain Office",
-      "description": "Total privacy without installations. Open, edit, and save your documents directly in the browser. Your files never leave your computer.",
-      "ctaPrimary": "Start for free",
+      "title": "The free, open, and private Office",
+      "titleAccent": "Made in Spain",
+      "description": "Total privacy with no installation. Open, edit, and save your documents directly in the browser. Your files never leave your computer.",
+      "ctaPrimary": "Start using for free",
       "ctaSecondary": "View features",
-      "editorTry": "Try it!",
-      "editorLegend": "Interact with the editor. It is a real instance running 100% in your browser via WebAssembly."
+      "editorTry": "Try it out!",
+      "editorLegend": "Interact with the editor. It's a real instance running 100% in your browser via WebAssembly."
     },
     "features": {
       "tagline": "Why choose InSuite?",
-      "description": "Because it is made with you in mind, not for financial gain. Because it is free, private, and made in Spain.",
+      "description": "Because it's built with you in mind, not for profit. Because it's free, private, and made in Spain.",
       "feature1": {
         "title": "Made in Spain",
-        "desc": "The free, no-installation, 100% compatible office suite created in Spain for Spain."
+        "desc": "The free, open-source, and 100% compatible office suite created in Spain for the world."
       },
       "feature2": {
         "title": "100% Private",
-        "desc": "Nothing is uploaded to storage. Everything stays in your browser. We comply with the strictest European and Spanish privacy regulations by not collecting a single piece of data, not even analytics."
+        "desc": "Nothing is uploaded to storage. Everything stays in your browser. We comply with the strictest European privacy regulations by not collecting a single piece of data, not even analytics."
       },
       "feature3": {
-        "title": "No installation required",
-        "desc": "Everything works in the browser; you only need a file explorer to upload documents and a browser to use the editor."
+        "title": "Zero Installation",
+        "desc": "Everything works in the browser. All you need is a file explorer to upload documents and a browser to use the editor."
       }
     },
     "editors": {
       "title": "Professional Tools",
-      "subtitle": "Powerful desktop editors, now in your browser. 100% compatible with your usual files.",
+      "subtitle": "Powerful desktop editors, now in your browser. 100% compatible with your existing files.",
       "docx": {
         "name": "Documents",
         "desc": "Compatible with .docx. The same power as Microsoft Word, but a thousand times better than Google Docs."
@@ -136,8 +138,8 @@
       }
     },
     "comparison": {
-      "title": "Honest comparison",
-      "subtitle": "The best way for you to see why InSuite is the best choice is to compare it with other options on the market.",
+      "title": "Honest Comparison",
+      "subtitle": "The best way to see why InSuite is the best choice is to compare it with other options on the market.",
       "headers": {
         "suite": "Suite",
         "privacy": "Privacy",
@@ -145,11 +147,11 @@
         "compatibility": "Compatibility",
         "noInstall": "No Install",
         "price": "Price",
-        "keyDiffs": "Key differences"
+        "keyDiffs": "Key Differences"
       },
       "suites": {
         "insuite": {
-          "diff": "Supports Export PDF, IndexedDB"
+          "diff": "Supports PDF Export, IndexedDB"
         },
         "ziziyi": {
           "diff": "Cannot export to PDF. No browser saving."
@@ -158,7 +160,7 @@
           "diff": "Certain components are not auditable."
         },
         "libreoffice": {
-          "diff": "Poor interface, requires installation, low compatibility with Office"
+          "diff": "Poor interface, requires installation, low Office compatibility"
         },
         "msoffice": {
           "diff": "Proprietary, expensive, data spying"
@@ -166,8 +168,8 @@
       },
       "privacy": {
         "local": "Local",
-        "cloud": "Storage/Self-hosted",
-        "lowCloud": "Low (Storage)"
+        "cloud": "Cloud/Self-hosted",
+        "lowCloud": "Low (Cloud)"
       },
       "price": {
         "free": "Free",
@@ -176,12 +178,12 @@
       }
     },
     "cta": {
-      "title": "It is time, ",
+      "title": "It's time, ",
       "titleAccent": "you decide",
-      "description": "Do not let your data stay in storage, be charged for simply editing documents, be forced to install something, or be subjected to foreign regulations.",
+      "description": "Don't let your data stay in the cloud, don't let them charge you just for editing documents, don't let them force you to install anything or pass through foreign regulations.",
       "primary": "Start now",
-      "secondary": "Review the code",
-      "footer": "By using InSuite, you are using free, private, and Spanish software"
+      "secondary": "Check the code",
+      "footer": "By using InSuite, you are using free, private software made in Spain."
     },
     "about": {
       "title": "About Inled Group",
