@@ -134,13 +134,13 @@
       },
       "suites": {
         "insuite": {
-          "diff": "Supporte l'export PDF, IndexedDB, Non Chinois"
+          "diff": "Supporte l'export PDF, IndexedDB"
         },
         "ziziyi": {
-          "diff": "Soumis à la réglementation chinoise. Impossible d'exporter en PDF. Pas de sauvegarde dans le navigateur."
+          "diff": "Impossible d'exporter en PDF. Pas de sauvegarde dans le navigateur."
         },
         "onlyoffice": {
-          "diff": "Certains composants ne sont pas auditables. Lié à la Russie"
+          "diff": "Certains composants ne sont pas auditables. "
         },
         "libreoffice": {
           "diff": "Interface médiocre, nécessite une installation, faible compatibilité avec Office"
@@ -185,5 +185,6 @@
       "openSource": "Code Ouvert",
       "copyright": "Sous licence originale à l'exception des modifications, qui sont sous licence MIT-INLED."
     }
-  }
+  },
+  "Storage": "Stockage"
 }

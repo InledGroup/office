@@ -134,13 +134,13 @@
       },
       "suites": {
         "insuite": {
-          "diff": "Unterstützt PDF-Export, IndexedDB, Nicht Chinesisch"
+          "diff": "Unterstützt PDF-Export, IndexedDB"
         },
         "ziziyi": {
-          "diff": "Unterliegt chinesischen Vorschriften. Kein PDF-Export möglich. Keine Speicherung im Browser."
+          "diff": " Kein PDF-Export möglich. Keine Speicherung im Browser."
         },
         "onlyoffice": {
-          "diff": "Einige Komponenten sind nicht prüfbar. Verbindung zu Russland"
+          "diff": "Einige Komponenten sind nicht prüfbar. "
         },
         "libreoffice": {
           "diff": "Schlechte Benutzeroberfläche, Installation erforderlich, geringe Kompatibilität mit Office"
@@ -185,5 +185,6 @@
       "openSource": "Quelloffen",
       "copyright": "Lizenziert unter der Originallizenz, mit Ausnahme der Änderungen, die unter MIT-INLED lizenziert sind."
     }
-  }
+  },
+  "Storage": "Speicher"
 }

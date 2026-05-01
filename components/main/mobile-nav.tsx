@@ -15,7 +15,7 @@ export function MobileNav({ pathname, className }: MobileNavProps) {
 
   const navItems = [
     { id: "open", label: t("Open"), icon: FolderOpen, href: "/" },
-    { id: "nube", label: t("Cloud"), icon: Files, href: "/nube" },
+    { id: "nube", label: t("Storage"), icon: Files, href: "/nube" },
     {
       id: "template",
       label: t("Template"),

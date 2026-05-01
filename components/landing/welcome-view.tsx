@@ -11,7 +11,7 @@ import { LandingAboutInled } from "@/components/landing/about-inled";
 
 export function WelcomeView() {
   return (
-    <div className="min-h-screen bg-white text-foreground selection:bg-primary/20">
+    <div className="theme-light min-h-screen bg-white text-foreground selection:bg-primary/20">
       <LandingHeader />
       <main>
         <LandingHero />

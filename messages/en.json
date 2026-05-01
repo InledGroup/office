@@ -75,6 +75,7 @@
   "sc2DN9": "Use Template",
   "F03jGl": "No templates found matching your criteria.",
   "jKKg2o": "Clear all filters",
+  "Storage": "Storage",
   "landing": {
     "seo": {
       "title": "Inled InSuite — Free, Private Online Office Suite",
@@ -148,13 +149,13 @@
       },
       "suites": {
         "insuite": {
-          "diff": "Supports Export PDF, IndexedDB, Not Chinese"
+          "diff": "Supports Export PDF, IndexedDB"
         },
         "ziziyi": {
-          "diff": "Subject to Chinese regulations. Cannot export to PDF. No browser saving."
+          "diff": "Cannot export to PDF. No browser saving."
         },
         "onlyoffice": {
-          "diff": "Certain components are not auditable. Related to Russia"
+          "diff": "Certain components are not auditable."
         },
         "libreoffice": {
           "diff": "Poor interface, requires installation, low compatibility with Office"
