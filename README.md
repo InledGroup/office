@@ -98,7 +98,8 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 
 ## 📜 License
 
-This project is licensed under the **GNU Affero General Public License Version 3 (AGPL v3)**.
+The original code of OnlyOffice and Ziziyi Office is licensed under **GNU Affero General Public License Version 3 (AGPL v3)**.
+Changes made by Inled Group are licensed under [MIT-Inled](https://license.inled.es)
 
 ## 🙏 Acknowledgments
 
