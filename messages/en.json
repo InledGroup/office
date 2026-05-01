@@ -78,8 +78,8 @@
   "landing": {
     "seo": {
       "title": "Inled InSuite — Free, Private Online Office Suite",
-      "description": "Open and edit Word, Excel, and PowerPoint for free. 100% private, no install required. Your files never leave your browser.",
-      "keywords": "free office online, edit word online, private excel online, office without registration, digital sovereignty, inled insuite"
+      "description": "Open and edit Word, Excel, and PowerPoint for free. 100% private, no installation. Your files never leave the browser.",
+      "keywords": "free online office, edit word online, private online excel, office without registration, digital sovereignty, inled insuite"
     },
     "header": {
       "subtitle": "Docs Sheets Slides",
@@ -96,18 +96,18 @@
       "ctaPrimary": "Start for free",
       "ctaSecondary": "View features",
       "editorTry": "Try it!",
-      "editorLegend": "Interact with the editor. It's a real instance running 100% in your browser via WebAssembly."
+      "editorLegend": "Interact with the editor. It is a real instance running 100% in your browser via WebAssembly."
     },
     "features": {
       "tagline": "Why choose InSuite?",
-      "description": "Because it's made with you in mind, not for financial gain. Because it's free, private, and made in Spain.",
+      "description": "Because it is made with you in mind, not for financial gain. Because it is free, private, and made in Spain.",
       "feature1": {
         "title": "Made in Spain",
         "desc": "The free, no-installation, 100% compatible office suite created in Spain for Spain."
       },
       "feature2": {
         "title": "100% Private",
-        "desc": "Nothing is uploaded to the storage. Everything stays in your browser. We comply with the strictest European and Spanish privacy regulations by not collecting a single piece of data, not even analytics."
+        "desc": "Nothing is uploaded to storage. Everything stays in your browser. We comply with the strictest European and Spanish privacy regulations by not collecting a single piece of data, not even analytics."
       },
       "feature3": {
         "title": "No installation required",
@@ -175,9 +175,9 @@
       }
     },
     "cta": {
-      "title": "It's time, ",
+      "title": "It is time, ",
       "titleAccent": "you decide",
-      "description": "Don't let your data stay in the storage, be charged for simply editing documents, be forced to install something, or be subjected to foreign regulations.",
+      "description": "Do not let your data stay in storage, be charged for simply editing documents, be forced to install something, or be subjected to foreign regulations.",
       "primary": "Start now",
       "secondary": "Review the code",
       "footer": "By using InSuite, you are using free, private, and Spanish software"

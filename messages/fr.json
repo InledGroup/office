@@ -151,8 +151,8 @@
       },
       "privacy": {
         "local": "Local",
-        "cloud": "Cloud/Auto-hébergé",
-        "lowCloud": "Faible (Cloud)"
+        "cloud": "Stockage/Auto-hébergé",
+        "lowCloud": "Faible (Stockage)"
       },
       "price": {
         "free": "Gratis",

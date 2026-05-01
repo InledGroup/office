@@ -93,7 +93,7 @@
       },
       "feature2": {
         "title": "100 % Privat",
-        "desc": "Nichts wird in die Cloud hochgeladen. Alles bleibt in Ihrem Browser. Wir halten uns an die strengsten europäischen und spanischen Datenschutzbestimmungen, indem wir kein einziges Datum sammeln, nicht einmal Analysen."
+        "desc": "Nichts wird in die Speicher hochgeladen. Alles bleibt in Ihrem Browser. Wir halten uns an die strengsten europäischen und spanischen Datenschutzbestimmungen, indem wir kein einziges Datum sammeln, nicht einmal Analysen."
       },
       "feature3": {
         "title": "Keine Installation erforderlich",
@@ -151,8 +151,8 @@
       },
       "privacy": {
         "local": "Lokal",
-        "cloud": "Cloud/Self-hosted",
-        "lowCloud": "Niedrig (Cloud)"
+        "cloud": "Speicher/Self-hosted",
+        "lowCloud": "Niedrig (Speicher)"
       },
       "price": {
         "free": "Kostenlos",
