@@ -1,4 +1,13 @@
 {
+  "ysS5xi": "拖放以打开",
+  "4UBbxg": "Word, Excel, PowerPoint 及更多",
+  "rWGXO2": "将文件拖放到此处",
+  "h/ftND": "选择文件",
+  "Ouci9t": "将 Office 文档拖放到此处，或点击从计算机浏览",
+  "LSeDhV": "Supports: DOCX, DOC, XLSX, XLS, PPTX, PPT, PDF",
+  "/6/sPX": "文档",
+  "tHSb8p": "桌面",
+  "/vMjn3": "",
   "s+IiJN": "关于 Web Office",
   "rMPZlP": "专为未来生产力打造的现代化、高性能 Web Office 套件。",
   "Xd0J7Y": "开源",
@@ -8,17 +17,30 @@
   "y2xRtY": "本项目构建于 OnlyOffice 开源代码的坚实基础之上。我们严格遵守并支持 OnlyOffice 的开源协议，致力于维护文档处理的可持续生态系统。",
   "PC7jTa": "我们的承诺",
   "QfGqDe": "我们的目标是提供流畅、本地优先的办公体验，同时保持最高标准的兼容性和开源合规性。",
-  "ysS5xi": "拖放以打开",
-  "4UBbxg": "Word, Excel, PowerPoint 及更多",
-  "rWGXO2": "将文件拖放到此处",
-  "h/ftND": "选择文件",
-  "Ouci9t": "将 Office 文档拖放到此处，或点击从计算机浏览",
-  "LSeDhV": "Supports: DOCX, DOC, XLSX, XLS, PPTX, PPT, PDF",
-  "/6/sPX": "文档",
-  "tHSb8p": "桌面",
-  "OnbqrE": "下载",
-  "+4MjlG": "Office",
   "Nej9RW": "新建 {type}",
+  "JfG49w": "打开",
+  "DUIDEq": "",
+  "3JxaKs": "模板",
+  "D3idYv": "设置",
+  "g5pX+a": "关于",
+  "confirmDelete": "",
+  "confirmDeleteFolder": "",
+  "renamePrompt": "",
+  "ZUPGgf": "",
+  "WvBIKK": "",
+  "9vqPaF": "",
+  "43Gtif": "",
+  "ebFmPX": "",
+  "uXO/Jk": "",
+  "xVPOTw": "",
+  "iXNbPf": "",
+  "K3r6DQ": "",
+  "5q3qC0": "",
+  "Lbo63c": "",
+  "Document": "文档",
+  "Spreadsheet": "电子表格",
+  "Presentation": "演示文稿",
+  "PDF": "PDF",
   "bW7B87": "新建",
   "VKfWR3": "推荐",
   "f39KOE": "更多模板",
@@ -27,26 +49,23 @@
   "WUGpoH": "无最近文件",
   "IbM/m2": "您打开的文件将显示在此处，以便快速访问",
   "U/6uYa": "点击重新打开此文件",
+  "fiPvwY": "",
   "6PcFGr": "从最近列表中移除",
   "FI/NWR": "现代浅色",
-  "sD9QpP": "现代深色",
   "3cc4Ct": "浅色",
-  "tOdNiY": "深色",
   "dwMR5h": "经典浅色",
-  "eVlu1R": "选择语言",
+  "sD9QpP": "现代深色",
+  "tOdNiY": "深色",
   "Wd4ooZ": "高对比度",
-  "D3idYv": "设置",
   "xmKp7U": "配置您的首选语言和编辑器主题。",
   "y1Z3or": "语言",
+  "eVlu1R": "选择语言",
   "gEcvtY": "编辑器主题",
+  "QJAllU": "插件",
+  "rET/Cl": "加载精选插件",
+  "mfU/qe": "加载所有插件",
+  "6PEpzR": "禁用插件",
   "lgDYNz": "更改这些设置将影响 OnlyOffice 编辑器界面。某些更改可能需要重新加载编辑器才能完全生效。",
-  "JfG49w": "打开",
-  "3JxaKs": "模板",
-  "g5pX+a": "关于",
-  "Document": "文档",
-  "Spreadsheet": "电子表格",
-  "Presentation": "演示文稿",
-  "PDF": "PDF",
   "zQvVDJ": "全部",
   "TGazyx": "Word",
   "vwxVnf": "Excel",
@@ -56,135 +75,5 @@
   "W2sXxa": "搜索模板（例如“简历”、“报告”、“演示文稿”）...",
   "sc2DN9": "使用模板",
   "F03jGl": "未找到符合您条件的模板。",
-  "jKKg2o": "清除所有筛选",
-  "QJAllU": "插件",
-  "rET/Cl": "加载精选插件",
-  "mfU/qe": "加载所有插件",
-  "6PEpzR": "禁用插件",
-  "landing": {
-    "seo": {
-      "title": "Inled InSuite — 免费、私密的在线办公套件",
-      "description": "免费打开和编辑 Word、Excel 和 PowerPoint。100% 私密，无需安装。您的文件永远不会离开浏览器。",
-      "keywords": "免费在线办公, 在线编辑word, 私密在线excel, 无需注册的office, 数字主权, inled insuite"
-    },
-    "header": {
-      "subtitle": "文档 表格 幻灯片",
-      "features": "功能",
-      "editors": "编辑器",
-      "about": "关于",
-      "cta": "立即开始"
-    },
-    "hero": {
-      "badge": "测试版",
-      "title": "免费、开放且",
-      "titleAccent": "西班牙制造的 Office",
-      "description": "无需安装即可享受完全的隐私。直接在浏览器中打开、编辑和保存您的文档。您的文件永远不会离开您的电脑。",
-      "ctaPrimary": "免费开始使用",
-      "ctaSecondary": "查看功能",
-      "editorTry": "立即尝试！",
-      "editorLegend": "与编辑器互动。这是一个通过 WebAssembly 在您的浏览器中 100% 运行的真实实例。"
-    },
-    "features": {
-      "tagline": "为什么选择 InSuite？",
-      "description": "因为它为您而生，而非为了经济利益。因为它免费、私密且在西班牙制造。",
-      "feature1": {
-        "title": "西班牙制造",
-        "desc": "专为西班牙打造的免费、无需安装、100% 兼容的自由办公套件。"
-      },
-      "feature2": {
-        "title": "100% 私密",
-        "desc": "没有任何内容上传到存储端。一切都保留在您的浏览器中。我们不收集任何数据，甚至不收集分析数据，从而遵守最严格的欧洲和西班牙隐私法规。"
-      },
-      "feature3": {
-        "title": "无需安装任何内容",
-        "desc": "一切都在浏览器中运行；您只需要一个文件资源管理器来上传文档，以及一个浏览器来使用编辑器。"
-      }
-    },
-    "editors": {
-      "title": "专业工具",
-      "subtitle": "强大的桌面编辑器，现在就在您的浏览器中。100% 兼容您的常用文件。",
-      "docx": {
-        "name": "文档",
-        "desc": "兼容 .docx。拥有与 Microsoft Word 相同的强大功能，但比 Google Docs 好上千倍。"
-      },
-      "xlsx": {
-        "name": "电子表格",
-        "desc": "兼容 .xlsx。完全兼容地执行复杂的分析和公式。"
-      },
-      "pptx": {
-        "name": "演示文稿",
-        "desc": "兼容 .pptx。直接在浏览器中创建具有影响力的幻灯片。"
-      },
-      "plugins": {
-        "title": "插件",
-        "desc": "翻译、本地 AI、拼写检查等。通过我们的目录定制您的办公空间。"
-      }
-    },
-    "comparison": {
-      "title": "诚实的对比",
-      "subtitle": "看清 InSuite 为何是最佳选择的最佳方法是将其与市场上的其他选项进行对比。",
-      "headers": {
-        "suite": "套件",
-        "privacy": "隐私",
-        "auditable": "可审计",
-        "compatibility": "兼容性",
-        "noInstall": "无需安装",
-        "price": "价格",
-        "keyDiffs": "核心差异"
-      },
-      "suites": {
-        "insuite": {
-          "diff": "支持导出 PDF, IndexedDB, 非中国背景"
-        },
-        "ziziyi": {
-          "diff": "受中国法律约束。无法导出为 PDF。无浏览器保存功能。"
-        },
-        "onlyoffice": {
-          "diff": "某些组件不可审计。与俄罗斯有关联"
-        },
-        "libreoffice": {
-          "diff": "界面糟糕，需要安装，与 Office 兼容性低"
-        },
-        "msoffice": {
-          "diff": "私有软件，价格昂贵，存在数据监听"
-        }
-      },
-      "privacy": {
-        "local": "本地",
-        "cloud": "存储端/自托管",
-        "lowCloud": "低（存储端）"
-      },
-      "price": {
-        "free": "免费",
-        "freemium": "免费增值",
-        "subscription": "订阅制"
-      }
-    },
-    "cta": {
-      "title": "就是现在，",
-      "titleAccent": "由您决定",
-      "description": "不要让您的数据留在存储端，不要为了简单的编辑文档而付费，不要被迫安装任何东西，也不要被迫接受外国法律的监管。",
-      "primary": "立即开始",
-      "secondary": "查看代码",
-      "footer": "使用 InSuite，即表示您正在使用自由、私密且由西班牙开发的软件"
-    },
-    "about": {
-      "title": "关于 Inled Group",
-      "description": "Inled Group 是一个专注于隐私、西班牙技术主权和本地 AI 的软件品牌。我们使用自由技术、AI 代理进行开发，并且是 Linux 的爱好者。",
-      "stats": {
-        "private": "私密",
-        "openSource": "开源",
-        "madeInSpain": "西班牙制造"
-      }
-    },
-    "footer": {
-      "desc": "专为世界打造的、来自西班牙的主权、私密且免费的办公套件。",
-      "product": "产品",
-      "company": "公司",
-      "social": "社交",
-      "openSource": "开源",
-      "copyright": "根据原许可证授权，除修改部分外，修改部分根据 MIT-INLED 授权。"
-    }
-  },
-  "Storage": "存储"
+  "jKKg2o": "清除所有筛选"
 }

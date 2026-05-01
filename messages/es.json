@@ -1,4 +1,13 @@
 {
+  "ysS5xi": "Soltar para abrir",
+  "4UBbxg": "Word, Excel, PowerPoint y más",
+  "rWGXO2": "Suelta tu archivo aquí",
+  "h/ftND": "Elegir un archivo",
+  "Ouci9t": "Arrastra y suelta tu documento de Office aquí, o haz clic para buscar en tu computadora",
+  "LSeDhV": "Soporta: DOCX, DOC, XLSX, XLS, PPTX, PPT, PDF",
+  "/6/sPX": "Documentos",
+  "tHSb8p": "Escritorio",
+  "/vMjn3": "",
   "s+IiJN": "Acerca de Web Office",
   "rMPZlP": "Una suite ofimática moderna, de alto rendimiento y basada en la web, diseñada para el futuro de la productividad.",
   "Xd0J7Y": "Código abierto",
@@ -8,17 +17,30 @@
   "y2xRtY": "Este proyecto se basa en la sólida base del código abierto de OnlyOffice. Nos adherimos estrictamente y apoyamos la licencia de código abierto de OnlyOffice, garantizando un ecosistema sostenible para el procesamiento de documentos.",
   "PC7jTa": "Nuestro compromiso",
   "QfGqDe": "Nuestro objetivo es proporcionar una experiencia de oficina fluida y local, manteniendo los más altos estándares de compatibilidad y cumplimiento de código abierto.",
-  "ysS5xi": "Soltar para abrir",
-  "4UBbxg": "Word, Excel, PowerPoint y más",
-  "rWGXO2": "Suelta tu archivo aquí",
-  "h/ftND": "Elegir un archivo",
-  "Ouci9t": "Arrastra y suelta tu documento de Office aquí, o haz clic para buscar en tu computadora",
-  "LSeDhV": "Soporta: DOCX, DOC, XLSX, XLS, PPTX, PPT, PDF",
-  "/6/sPX": "Documentos",
-  "tHSb8p": "Escritorio",
-  "OnbqrE": "Descargas",
-  "+4MjlG": "Office",
   "Nej9RW": "Nuevo {type}",
+  "JfG49w": "Abrir",
+  "DUIDEq": "",
+  "3JxaKs": "Plantilla",
+  "D3idYv": "Configuración",
+  "g5pX+a": "Acerca de",
+  "confirmDelete": "¿Estás seguro de que deseas eliminar este archivo?",
+  "confirmDeleteFolder": "¿Estás seguro de que deseas eliminar esta carpeta y todo su contenido?",
+  "renamePrompt": "Introduce el nuevo nombre:",
+  "ZUPGgf": "Almacenamiento Local",
+  "WvBIKK": "Nueva carpeta",
+  "9vqPaF": "Raíz",
+  "43Gtif": "Nombre de la carpeta...",
+  "ebFmPX": "Cargando tus archivos...",
+  "uXO/Jk": "Esta carpeta está vacía",
+  "xVPOTw": "Guarda documentos desde el editor para verlos aquí",
+  "iXNbPf": "Renombrar",
+  "K3r6DQ": "Eliminar",
+  "5q3qC0": "Descargar",
+  "Lbo63c": "Mover a...",
+  "Document": "Documento",
+  "Spreadsheet": "Hoja de cálculo",
+  "Presentation": "Presentación",
+  "PDF": "PDF",
   "bW7B87": "Nuevo",
   "VKfWR3": "Recomendado",
   "f39KOE": "Más plantillas",
@@ -27,26 +49,23 @@
   "WUGpoH": "No hay archivos recientes",
   "IbM/m2": "Los archivos que abras aparecerán aquí para un acceso rápido",
   "U/6uYa": "Haz clic para volver a abrir este archivo",
+  "fiPvwY": "Almacenamiento",
   "6PcFGr": "Eliminar de recientes",
   "FI/NWR": "Moderno claro",
-  "sD9QpP": "Moderno oscuro",
   "3cc4Ct": "Claro",
-  "tOdNiY": "Oscuro",
   "dwMR5h": "Clásico claro",
-  "eVlu1R": "Seleccionar idioma",
+  "sD9QpP": "Moderno oscuro",
+  "tOdNiY": "Oscuro",
   "Wd4ooZ": "Alto contraste",
-  "D3idYv": "Configuración",
   "xmKp7U": "Configure su idioma preferido y el tema del editor.",
   "y1Z3or": "Idioma",
+  "eVlu1R": "Seleccionar idioma",
   "gEcvtY": "Tema del editor",
+  "QJAllU": "Plugins",
+  "rET/Cl": "Cargar plugins destacados",
+  "mfU/qe": "Cargar todos los plugins",
+  "6PEpzR": "Desactivar plugins",
   "lgDYNz": "Cambiar esta configuración afectará la interfaz del editor de OnlyOffice. Algunos cambios pueden requerir volver a cargar el editor para que surtan efecto completo.",
-  "JfG49w": "Abrir",
-  "3JxaKs": "Plantilla",
-  "g5pX+a": "Acerca de",
-  "Document": "Documento",
-  "Spreadsheet": "Hoja de cálculo",
-  "Presentation": "Presentación",
-  "PDF": "PDF",
   "zQvVDJ": "Todo",
   "TGazyx": "Word",
   "vwxVnf": "Excel",
@@ -56,150 +75,5 @@
   "W2sXxa": "Buscar plantillas (ej. 'Currículum', 'Informe', 'Presentación')...",
   "sc2DN9": "Usar plantilla",
   "F03jGl": "No se encontraron plantillas que coincidan con sus criterios.",
-  "jKKg2o": "Borrar todos los filtros",
-  "QJAllU": "Plugins",
-  "rET/Cl": "Cargar plugins destacados",
-  "mfU/qe": "Cargar todos los plugins",
-  "6PEpzR": "Desactivar plugins",
-  "fiPvwY": "Almacenamiento",
-  "confirmDelete": "¿Estás seguro de que deseas eliminar este archivo?",
-  "confirmDeleteFolder": "¿Estás seguro de que deseas eliminar esta carpeta y todo su contenido?",
-  "ZUPGgf": "Almacenamiento Local",
-  "WvBIKK": "Nueva carpeta",
-  "9vqPaF": "Raíz",
-  "43Gtif": "Nombre de la carpeta...",
-  "ebFmPX": "Cargando tus archivos...",
-  "uXO/Jk": "Esta carpeta está vacía",
-  "xVPOTw": "Guarda documentos desde el editor para verlos aquí",
-  "5q3qC0": "Descargar",
-  "Lbo63c": "Mover a...",
-  "iXNbPf": "Renombrar",
-  "renamePrompt": "Introduce el nuevo nombre:",
-  "K3r6DQ": "Eliminar",
-  "landing": {
-    "seo": {
-      "title": "Inled InSuite — Office Libre, Privado y Gratuito en la Web",
-      "description": "Abre y edita Word, Excel y PowerPoint gratis. 100% privado, sin instalaciones y hecho en España. Tus archivos nunca salen de tu navegador.",
-      "keywords": "office online gratis, editar word online, excel online privado, office sin registro, soberanía tecnológica, inled insuite"
-    },
-    "header": {
-      "subtitle": "Docs Sheets Slides",
-      "features": "Características",
-      "editors": "Editores",
-      "about": "Acerca de",
-      "cta": "Empezar ahora"
-    },
-    "hero": {
-      "badge": "Beta",
-      "title": "El Office gratuito, abierto y",
-      "titleAccent": "Made in Spain",
-      "description": "Privacidad total sin instalaciones. Abre, edita y guarda tus documentos directamente en el navegador. Tus archivos nunca abandonan tu ordenador.",
-      "ctaPrimary": "Empezar a usar gratis",
-      "ctaSecondary": "Ver características",
-      "editorTry": "Pruébalo!",
-      "editorLegend": "Interactúa con el editor. Es una instancia real ejecutándose 100% en tu navegador vía WebAssembly."
-    },
-    "features": {
-      "tagline": "¿Por qué elegir InSuite?",
-      "description": "Por que está hecho pensando en tí, no en sacar rédito económico. Por que es libre, privado y está hecho en España.",
-      "feature1": {
-        "title": "Made in Spain",
-        "desc": "El office libre, sin instalación, gratuito y 100% compatible que ha sido creado en España para España."
-      },
-      "feature2": {
-        "title": "Privado 100%",
-        "desc": "Nada se sube al almacenamiento. Todo se queda en tu navegador. Cumplimos con las normativas de privacidad europeas y españolas más estrictas al no recoger ni un solo dato, ni de analíticas."
-      },
-      "feature3": {
-        "title": "Sin instalar nada",
-        "desc": "Todo funciona en el navegador, no necesitas más que un explorador de archivos con el que subir documentos y un navegador para usar el editor."
-      }
-    },
-    "editors": {
-      "title": "Herramientas Profesionales",
-      "subtitle": "Editores de escritorio potentes, ahora en tu navegador. 100% compatibles con tus archivos de siempre.",
-      "docx": {
-        "name": "Documentos",
-        "desc": "Compatible con .docx. La misma potencia que Microsoft Word, pero mil veces mejor que Google Docs."
-      },
-      "xlsx": {
-        "name": "Hojas de Cálculo",
-        "desc": "Compatible con .xlsx. Realiza análisis complejos y fórmulas con total compatibilidad."
-      },
-      "pptx": {
-        "name": "Presentaciones",
-        "desc": "Compatible con .pptx. Crea slides impactantes directamente en tu navegador."
-      },
-      "plugins": {
-        "title": "Plugins",
-        "desc": "Traducción, IA local, corrección ortográfica y más. Personaliza tu oficina con nuestro catálogo."
-      }
-    },
-    "comparison": {
-      "title": "Comparativa honesta",
-      "subtitle": "La mejor forma de que veas por qué InSuite es la mejor opción es comparándolo con el resto de opciones del mercado.",
-      "headers": {
-        "suite": "Suite",
-        "privacy": "Privacidad",
-        "auditable": "Auditable",
-        "compatibility": "Compatibilidad",
-        "noInstall": "Sin Instalar",
-        "price": "Precio",
-        "keyDiffs": "Diferencias clave"
-      },
-      "suites": {
-        "insuite": {
-          "diff": "Soporta Export PDF, IndexedDB"
-        },
-        "ziziyi": {
-          "diff": " No puedes exportar a PDF. Sin guardado en navegador."
-        },
-        "onlyoffice": {
-          "diff": "Ciertos componentes no son auditables."
-        },
-        "libreoffice": {
-          "diff": "Interfaz pésima, necesidad de instalación, baja compatibilidad con Office"
-        },
-        "msoffice": {
-          "diff": "Propietario, caro, espionaje de datos"
-        }
-      },
-      "privacy": {
-        "local": "Local",
-        "cloud": "Almacenamiento/Self-hosted",
-        "lowCloud": "Baja (Almacenamiento)"
-      },
-      "price": {
-        "free": "Gratis",
-        "freemium": "Freemium",
-        "subscription": "Suscripción"
-      }
-    },
-    "cta": {
-      "title": "Es el momento, ",
-      "titleAccent": "tú decides",
-      "description": "No permitas que tus datos se queden en el almacenamiento, que te cobren por simplemente editar documentos, que te obliguen a instalar algo o que te hagan pasar por regulaciones de países extranjeros",
-      "primary": "Empezar ahora",
-      "secondary": "Revisa el código",
-      "footer": "Al usar InSuite, estás usando software libre, privado y español"
-    },
-    "about": {
-      "title": "Acerca de Inled Group",
-      "description": "Inled Group es una marca de software enfocada en la privacidad, la soberanía tecnológica Española y la IA local. Usamos tecnologías libres, agentes de IA para desarrollar y somos fans de Linux.",
-      "stats": {
-        "private": "Privado",
-        "openSource": "Open Source",
-        "madeInSpain": "Made in Spain"
-      }
-    },
-    "footer": {
-      "desc": "La suite ofimática soberana, privada y gratuita hecha en España para el mundo.",
-      "product": "Producto",
-      "company": "Compañía",
-      "social": "Social",
-      "openSource": "Código Abierto",
-      "copyright": "Licenciado bajo la licencia original a excepción de los cambios, que están licenciados bajo MIT-INLED."
-    }
-  },
-  "Storage": "Almacenamiento"
+  "jKKg2o": "Borrar todos los filtros"
 }
