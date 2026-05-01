@@ -10,7 +10,7 @@ const withNextIntl = createNextIntlPlugin({
     messages: {
       path: "./messages",
       format: "json",
-      locales: ["en"],
+      locales: ["en", "es", "zh-CN", "zh-TW", "ja", "ko"],
     },
   },
 });
