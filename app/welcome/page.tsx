@@ -1,35 +1,23 @@
 import { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
 import { WelcomeView } from "@/components/landing/welcome-view";
 
 export async function generateMetadata(): Promise<Metadata> {
-  // We use the default locale for server-side metadata generation
-  // Since the actual language is determined on the client via store/cookies
-  const t = await getTranslations("landing.seo");
-
   return {
-    title: t("title"),
-    description: t("description"),
-    keywords: t("keywords"),
+    title: "Inled InSuite — Office Libre, Privado y Gratuito en la Web",
+    description: "Abre y edita Word, Excel y PowerPoint gratis. 100% privado, sin instalaciones y hecho en España. Tus archivos nunca salen de tu navegador.",
+    keywords: "office online gratis, editar word online, excel online privado, office sin registro, soberanía tecnológica, inled insuite",
     alternates: {
       canonical: "https://office.inled.es/welcome",
-      languages: {
-        "es-ES": "https://office.inled.es/welcome?lang=es",
-        "en-US": "https://office.inled.es/welcome?lang=en",
-        "de-DE": "https://office.inled.es/welcome?lang=de",
-        "fr-FR": "https://office.inled.es/welcome?lang=fr",
-        "zh-CN": "https://office.inled.es/welcome?lang=zh-CN",
-      },
     },
     openGraph: {
-      title: t("title"),
-      description: t("description"),
+      title: "Inled InSuite — Office Libre, Privado y Gratuito en la Web",
+      description: "Abre y edita Word, Excel y PowerPoint gratis. 100% privado, sin instalaciones y hecho en España.",
       images: ["https://hosted.inled.es/insuite-office-matrix.gif"],
     },
     twitter: {
       card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
+      title: "Inled InSuite — Office Libre, Privado y Gratuito en la Web",
+      description: "Abre y edita Word, Excel y PowerPoint gratis. 100% privado, sin instalaciones y hecho en España.",
       images: ["https://hosted.inled.es/insuite-office-matrix.gif"],
     },
   };

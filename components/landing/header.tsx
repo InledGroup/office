@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import { useAppStore, useHasHydrated } from "@/store";
 import { LocaleName, Language } from "@ziziyi/utils";
 import { Globe } from "lucide-react";
@@ -16,7 +15,6 @@ import {
 const landingLanguages = ["es", "en", "de", "fr", "zh-CN"];
 
 export function LandingHeader() {
-  const t = useTranslations("landing");
   const { language, setState } = useAppStore();
   const hasHydrated = useHasHydrated();
 
@@ -26,18 +24,20 @@ export function LandingHeader() {
         <div className="flex items-center justify-center">
           <img src="/logo.svg" className="w-10 h-10" alt="logo" />
         </div>
-        <h1 className="text-xl font-bold tracking-tight text-foreground leading-5 pt-1">
-          {"Inled InSuite Office"}
-          <span className="block text-xs font-normal opacity-70">
-            {t("header.subtitle")}
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold tracking-tight text-foreground leading-5 pt-1">
+            Inled InSuite Office
+          </h1>
+          <span className="text-[10px] md:text-xs font-normal opacity-70">
+            Docs Sheets Slides
           </span>
-        </h1>
+        </div>
       </div>
 
       <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
-        <a href="#features" className="hover:text-primary transition-colors">{t("header.features")}</a>
-        <a href="#editors" className="hover:text-primary transition-colors">{t("header.editors")}</a>
-        <a href="#about" className="hover:text-primary transition-colors">{t("header.about")}</a>
+        <a href="#features" className="hover:text-primary transition-colors">Características</a>
+        <a href="#editors" className="hover:text-primary transition-colors">Editores</a>
+        <a href="#about" className="hover:text-primary transition-colors">Acerca de</a>
       </nav>
 
       <div className="flex items-center gap-3 md:gap-4">
@@ -73,7 +73,7 @@ export function LandingHeader() {
           className="px-4 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-lg font-semibold text-xs md:text-sm shadow-md hover:bg-primary/90 transition-all active:scale-[0.98]"
           onClick={() => localStorage.setItem('visited', 'true')}
         >
-          {t("header.cta")}
+          Empezar ahora
         </Link>
       </div>
     </header>

@@ -1,31 +1,28 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { FileText, FileSpreadsheet, Presentation, Puzzle } from "lucide-react";
 
 export function LandingEditors() {
-  const t = useTranslations("landing");
-
   const editors = [
     {
-      name: t("editors.docx.name"),
-      desc: t("editors.docx.desc"),
+      name: "Documentos",
+      desc: "Compatible con .docx. La misma potencia que Microsoft Word, pero mil veces mejor que Google Docs.",
       icon: FileText,
       color: "border-blue-200",
       iconColor: "text-blue-600",
       bgColor: "bg-blue-50",
     },
     {
-      name: t("editors.xlsx.name"),
-      desc: t("editors.xlsx.desc"),
+      name: "Hojas de Cálculo",
+      desc: "Compatible con .xlsx. Realiza análisis complejos y fórmulas con total compatibilidad.",
       icon: FileSpreadsheet,
       color: "border-green-200",
       iconColor: "text-green-600",
       bgColor: "bg-green-50",
     },
     {
-      name: t("editors.pptx.name"),
-      desc: t("editors.pptx.desc"),
+      name: "Presentaciones",
+      desc: "Compatible con .pptx. Crea slides impactantes directamente en tu navegador.",
       icon: Presentation,
       color: "border-orange-200",
       iconColor: "text-orange-600",
@@ -37,9 +34,9 @@ export function LandingEditors() {
     <section id="editors" className="py-24 px-6 bg-zinc-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">{t("editors.title")}</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">Herramientas Profesionales</h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            {t("editors.subtitle")}
+            Editores de escritorio potentes, ahora en tu navegador. 100% compatibles con tus archivos de siempre.
           </p>
         </div>
 
@@ -65,9 +62,9 @@ export function LandingEditors() {
             <div className="w-16 h-16 mb-6 bg-primary rounded-2xl flex items-center justify-center text-white group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20">
               <Puzzle className="w-10 h-10" />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-primary">{t("editors.plugins.title")}</h3>
+            <h3 className="text-xl font-bold mb-3 text-primary">Plugins</h3>
             <p className="text-text-secondary text-sm leading-relaxed">
-              {t("editors.plugins.desc")}
+              Traducción, IA local, corrección ortográfica y más. Personaliza tu oficina con nuestro catálogo.
             </p>
           </div>
         </div>
