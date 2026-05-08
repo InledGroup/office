@@ -1,24 +1,27 @@
 "use client";
 
 import { ShieldCheck, DownloadCloud, Flag } from "lucide-react";
+import { useExtracted } from "next-intl";
 
 export function LandingFeatures() {
+  const t = useExtracted();
+
   const features = [
     {
-      title: "Made in Spain",
-      description: "El office libre, sin instalación, gratuito y 100% compatible que ha sido creado en España para España.",
+      title: t("Made in Spain"),
+      description: t("The free, no-install, free of charge and 100% compatible office created in Spain for Spain."),
       icon: Flag,
       color: "bg-red-50 text-red-600",
     },
     {
-      title: "Privado 100%",
-      description: "Nada se sube al servidor. Todo se queda en tu navegador. Cumplimos con las normativas de privacidad europeas y españolas más estrictas al no recoger ni un solo dato.",
+      title: t("100% Private"),
+      description: t("Nothing is uploaded to the server. Everything stays in your browser. We comply with the strictest European and Spanish privacy regulations by not collecting a single piece of data."),
       icon: ShieldCheck,
       color: "bg-blue-50 text-blue-600",
     },
     {
-      title: "Sin instalar nada",
-      description: "Todo funciona en el navegador, no necesitas más que un explorador de archivos con el que subir documentos y un navegador para usar el editor.",
+      title: t("No installation needed"),
+      description: t("Everything works in the browser, you only need a file explorer to upload documents and a browser to use the editor."),
       icon: DownloadCloud,
       color: "bg-green-50 text-green-600",
     },
@@ -28,9 +31,9 @@ export function LandingFeatures() {
     <section id="features" className="py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">¿Por qué elegir InSuite?</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">{t("Why choose InSuite?")}</h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Porque está hecho pensando en tí, no en sacar rédito económico. Porque es libre, privado y está hecho en España.
+            {t("Because it is made thinking of you, not for profit. Because it is free, private and made in Spain.")}
           </p>
         </div>
 

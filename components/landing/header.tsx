@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAppStore, useHasHydrated } from "@/store";
 import { LocaleName, Language } from "@ziziyi/utils";
 import { Globe } from "lucide-react";
+import { useExtracted } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -17,6 +18,7 @@ const landingLanguages = ["es", "en", "de", "fr", "zh-CN"];
 export function LandingHeader() {
   const { language, setState } = useAppStore();
   const hasHydrated = useHasHydrated();
+  const t = useExtracted();
 
   return (
     <header className="h-20 flex items-center justify-between px-6 md:px-12 w-full shrink-0 bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-border">
@@ -35,9 +37,9 @@ export function LandingHeader() {
       </div>
 
       <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
-        <a href="#features" className="hover:text-primary transition-colors">Características</a>
-        <a href="#editors" className="hover:text-primary transition-colors">Editores</a>
-        <a href="#about" className="hover:text-primary transition-colors">Acerca de</a>
+        <a href="#features" className="hover:text-primary transition-colors">{t("Features")}</a>
+        <a href="#editors" className="hover:text-primary transition-colors">{t("Editors")}</a>
+        <a href="#about" className="hover:text-primary transition-colors">{t("About")}</a>
       </nav>
 
       <div className="flex items-center gap-3 md:gap-4">
@@ -73,7 +75,7 @@ export function LandingHeader() {
           className="px-4 md:px-5 py-2 md:py-2.5 bg-primary text-white rounded-lg font-semibold text-xs md:text-sm shadow-md hover:bg-primary/90 transition-all active:scale-[0.98]"
           onClick={() => localStorage.setItem('visited', 'true')}
         >
-          Empezar ahora
+          {t("Start Now")}
         </Link>
       </div>
     </header>

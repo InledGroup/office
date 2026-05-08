@@ -75,14 +75,19 @@ export class EditorServer {
     fontPromises.push(
       fetch(fontBinUrl)
         .then((r) => {
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          if (!r.ok) {
+            console.warn(`[server] No se pudo cargar ${fontBinUrl}, se continuará sin él.`);
+            return null;
+          }
           return r.arrayBuffer();
         })
         .then((buf) => {
-          fonts["font_selection.bin"] = new Uint8Array(buf);
-          console.log("[server] font_selection.bin cargado correctamente");
+          if (buf) {
+            fonts["font_selection.bin"] = new Uint8Array(buf);
+            console.log("[server] font_selection.bin cargado correctamente");
+          }
         })
-        .catch((e) => console.error(`Error crítico: no se pudo cargar ${fontBinUrl}`, e))
+        .catch((e) => console.error(`Error en fetch de ${fontBinUrl}`, e))
     );
 
     // 2. Cargar el índice de fuentes y luego cada archivo
@@ -475,12 +480,15 @@ export class EditorServer {
       }
 
       if (u.pathname.includes("/downloadas/") || u.pathname.includes("/downloadfile/")) {
+        // Capture isAutoSave state at the START of the request to prevent race conditions with concurrent saves
+        const requestIsAutoSave = this.isAutoSave;
         const cmd = JSON.parse(u.searchParams.get("cmd") || "{}");
+        const title = cmd.title || this.title || "document.docx";
         const buffer = await req.arrayBuffer();
 
-        console.log("downloadAs -> ", cmd, buffer);
+        console.log(`[server] downloadAs (${requestIsAutoSave ? "Auto" : "Manual"}):`, cmd);
 
-        const fileTo = "doc." + cmd.title.split(".").pop();
+        const fileTo = "doc." + title.split(".").pop();
         let formatTo = cmd.outputformat;
         if (!formatTo && fileTo.endsWith(".pdf")) {
           formatTo = 513;
@@ -529,6 +537,7 @@ export class EditorServer {
             themes: themes,
             fonts: fonts,
           });
+          
           if (!output && cmd.format == "pdf") {
             output = input;
           }
@@ -539,10 +548,10 @@ export class EditorServer {
           }
 
           // Save to Cloud Storage
-          const fileExt = cmd.title.split(".").pop() || this.fileType;
+          const fileExt = title.split(".").pop() || this.fileType;
           const cloudFile = await saveCloudFile({
             id: this.cloudId || this.id || randomId(),
-            name: cmd.title || this.title || "Document",
+            name: title,
             type: fileExt,
             data: new Uint8Array(output),
             folderId: null, // Always root on auto-save from editor for now
@@ -553,15 +562,23 @@ export class EditorServer {
           const blob = new Blob([new Uint8Array(output)]);
           const url = URL.createObjectURL(blob);
           
-          // Manual download trigger (Only if not auto-saving)
-          if (!this.isAutoSave) {
+          if (!requestIsAutoSave) {
+            console.log(`[server] Manual export finished: ${title}. Triggering browser download...`);
             const a = document.createElement("a");
+            a.style.display = "none";
             a.href = url;
-            a.download = cmd.title || "test.docx";
+            a.download = title;
+            document.body.appendChild(a);
             a.click();
+            setTimeout(() => {
+              if (document.body.contains(a)) document.body.removeChild(a);
+              // We don't revoke here because the editor might still need the URL for its internal state
+            }, 100);
+          } else {
+            console.log("[server] Auto-save complete, ensuring editor is unblocked.");
           }
           
-          return { status: "ok", url };
+          return { status: "ok", url: requestIsAutoSave ? "" : url };
         };
 
         let result: { status: string; url?: string } = {
@@ -594,12 +611,12 @@ export class EditorServer {
             type: "documentOpen",
             data: {
               type: "save",
-              // status: "ok",
               status: result.status,
-              data: result.url || "javascript:void(0);",
-              filetype: cmd.title.split(".").pop() || "pptx",
+              data: result.url || "", // Send URL (or empty for autosave)
+              filetype: title.split(".").pop() || "docx",
             },
           });
+          this.isAutoSave = false; // Reset global flag
         }, 100);
 
         return Response.json({

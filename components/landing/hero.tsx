@@ -6,16 +6,18 @@ import { useAppStore } from "@/store";
 import { ArrowRight, FileText, FileSpreadsheet, Presentation } from "lucide-react";
 import { EmbeddedEditor } from "./embedded-editor";
 import { cn } from "@/lib/utils";
+import { useExtracted } from "next-intl";
 
 export function LandingHero() {
   const { language } = useAppStore();
+  const t = useExtracted();
   const [activeTab, setActiveTab] = useState<"docx" | "xlsx" | "pptx">("docx");
   const markVisited = () => localStorage.setItem('visited', 'true');
 
   const tabs = [
-    { id: "docx", label: "Word", icon: FileText, color: "text-blue-600", url: "/files/checklist_templates_Restaurant Cleaning Checklist Doc.docx" },
-    { id: "xlsx", label: "Excel", icon: FileSpreadsheet, color: "text-green-600", url: "/files/employee-leave-tracker.xlsx" },
-    { id: "pptx", label: "PowerPoint", icon: Presentation, color: "text-orange-600", url: "/files/2024 Couple Wrapped Slides.pptx" },
+    { id: "docx", label: t("Word"), icon: FileText, color: "text-blue-600", url: "/files/checklist_templates_Restaurant Cleaning Checklist Doc.docx" },
+    { id: "xlsx", label: t("Excel"), icon: FileSpreadsheet, color: "text-green-600", url: "/files/employee-leave-tracker.xlsx" },
+    { id: "pptx", label: t("PowerPoint"), icon: Presentation, color: "text-orange-600", url: "/files/2024 Couple Wrapped Slides.pptx" },
   ];
 
   return (
@@ -28,18 +30,18 @@ export function LandingHero() {
 
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <span>Beta</span>
+          <span>{t("Beta")}</span>
         </div>
         
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700">
-          El Office gratuito, abierto y <br className="hidden md:block" />
+          {t("The free, open Office,")} <br className="hidden md:block" />
           <span className="inline-block mt-2 px-4 py-1 bg-red-600 text-yellow-300 transform -rotate-1 rounded-sm shadow-lg">
-            Made in Spain
+            {t("Made in Spain")}
           </span>
         </h1>
         
         <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150">
-          Privacidad total sin instalaciones. Abre, edita y guarda tus documentos directamente en el navegador. Tus archivos nunca abandonan tu ordenador.
+          {t("Total privacy without installations. Open, edit and save your documents directly in your browser. Your files never leave your computer.")}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
@@ -48,14 +50,14 @@ export function LandingHero() {
             onClick={markVisited}
             className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3"
           >
-            Empezar a usar gratis
+            {t("Start using for free")}
             <ArrowRight className="w-5 h-5" />
           </Link>
           <a
             href="#features"
             className="w-full sm:w-auto px-8 py-4 bg-zinc-50 border border-border text-foreground rounded-xl font-bold text-lg hover:bg-zinc-100 transition-all flex items-center justify-center"
           >
-            Ver características
+            {t("View features")}
           </a>
         </div>
 
@@ -89,7 +91,7 @@ export function LandingHero() {
                         </div>
                     </div>
                     <div className="text-[10px] md:text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                      ¡Pruébalo!
+                      {t("Try it!")}
                     </div>
                 </div>
                 
@@ -121,7 +123,7 @@ export function LandingHero() {
             
             {/* Legend / Info below the editor */}
             <p className="mt-6 text-sm text-text-secondary font-medium">
-              Interactúa con el editor. Es una <span className="text-primary">instancia real</span> ejecutándose 100% en tu navegador vía WebAssembly.
+              {t("Interact with the editor. It is a")} <span className="text-primary">{t("real instance")}</span> {t("running 100% in your browser via WebAssembly.")}
             </p>
         </div>
       </div>

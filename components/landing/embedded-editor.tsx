@@ -13,6 +13,7 @@ import { createFetchProxy } from "@/utils/editor/fetch";
 import { createXHRProxy } from "@/utils/editor/xhr";
 import { DocEditor } from "@/utils/editor/types";
 import { Loader2, Smartphone, Monitor } from "lucide-react";
+import { useExtracted } from "next-intl";
 
 interface EmbeddedEditorProps {
   fileUrl: string;
@@ -30,6 +31,7 @@ export function EmbeddedEditor({ fileUrl, fileType }: EmbeddedEditorProps) {
   const editorRef = useRef<DocEditor | null>(null);
   const reactId = useId();
   const placeholderId = `editor-${reactId.replace(/:/g, "")}`;
+  const t = useExtracted();
 
   // Detect mobile screen size after mount
   useEffect(() => {
@@ -177,13 +179,13 @@ export function EmbeddedEditor({ fileUrl, fileType }: EmbeddedEditorProps) {
         <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
           <Smartphone className="w-10 h-10 text-primary animate-pulse" />
         </div>
-        <h3 className="text-xl font-bold mb-4">Experiencia de escritorio</h3>
+        <h3 className="text-xl font-bold mb-4">{t("Desktop experience")}</h3>
         <p className="text-text-secondary leading-relaxed max-w-xs mx-auto mb-8">
-          Los editores de InSuite están diseñados para ofrecer la máxima potencia en pantallas grandes. Aún no están optimizados para teléfonos móviles.
+          {t("InSuite editors are designed to offer maximum power on large screens. They are not yet optimized for mobile phones.")}
         </p>
         <div className="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider">
           <Monitor className="w-4 h-4" />
-          <span>Pruébalo en tu ordenador</span>
+          <span>{t("Try it on your computer")}</span>
         </div>
       </div>
     );
@@ -194,8 +196,8 @@ export function EmbeddedEditor({ fileUrl, fileType }: EmbeddedEditorProps) {
       {loading && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
           <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-          <p className="text-sm font-medium text-text-secondary">Abriendo documento de prueba...</p>
-          <p className="text-xs text-text-secondary mt-2">Todo se ejecuta localmente en tu navegador</p>
+          <p className="text-sm font-medium text-text-secondary">{t("Opening test document...")}</p>
+          <p className="text-xs text-text-secondary mt-2">{t("Everything runs locally in your browser")}</p>
         </div>
       )}
       {hasHydrated && <div id={placeholderId} className="w-full h-full" />}

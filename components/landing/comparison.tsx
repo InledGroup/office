@@ -1,59 +1,62 @@
 "use client";
 
 import { Check, X, Star } from "lucide-react";
+import { useExtracted } from "next-intl";
 
 export function LandingComparison() {
+  const t = useExtracted();
+
   const suites = [
     {
       name: "InSuite",
       logo: "/logo.svg",
-      privacy: "Local",
+      privacy: t("Local"),
       auditable: true,
       comp: 5,
       install: false,
-      price: "Gratis",
-      diff: "Soporta Export PDF, IndexedDB",
+      price: t("Free"),
+      diff: t("Supports Export PDF, IndexedDB"),
       featured: true,
     },
     {
       name: "Ziziyi Office",
       logo: "https://hosted.inled.es/ziziyi-office-insuite.png",
-      privacy: "Local",
+      privacy: t("Local"),
       auditable: true,
       comp: 5,
       install: false,
-      price: "Freemium",
-      diff: "No puedes exportar a PDF. Sin guardado en navegador.",
+      price: t("Freemium"),
+      diff: t("Cannot export to PDF. No browser saving."),
     },
     {
       name: "OnlyOffice",
       logo: "https://hosted.inled.es/onlyoffice-insuite.png",
-      privacy: "Nube",
+      privacy: t("Cloud"),
       auditable: false,
       comp: 5,
       install: true,
-      price: "Freemium",
-      diff: "Ciertos componentes no son auditables.",
+      price: t("Freemium"),
+      diff: t("Certain components are not auditable."),
     },
     {
       name: "LibreOffice",
       logo: "https://hosted.inled.es/libreoffice-insuite.png",
-      privacy: "Local",
+      privacy: t("Local"),
       auditable: true,
       comp: 3,
       install: true,
-      price: "Gratis",
-      diff: "Interfaz pésima, necesidad de instalación, baja compatibilidad",
+      price: t("Free"),
+      diff: t("Paltry interface, installation needed, low compatibility"),
     },
     {
       name: "MS Office",
       logo: "https://hosted.inled.es/microslop-insuite.png",
-      privacy: "Baja (Nube)",
+      privacy: t("Low (Cloud)"),
       auditable: false,
       comp: 5,
       install: true,
-      price: "Suscripción",
-      diff: "Propietario, caro, espionaje de datos",
+      price: t("Subscription"),
+      diff: t("Proprietary, expensive, data spying"),
     },
   ];
 
@@ -61,9 +64,9 @@ export function LandingComparison() {
     <section className="py-24 px-6 bg-white overflow-x-auto">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">Comparativa honesta</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold mb-4">{t("Honest Comparison")}</h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            La mejor forma de que veas por qué InSuite es la mejor opción es comparándolo con el resto de opciones del mercado.
+            {t("The best way for you to see why InSuite is the best option is by comparing it with the rest of the options in the market.")}
           </p>
         </div>
 
@@ -71,13 +74,13 @@ export function LandingComparison() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b-2 border-zinc-100 text-left">
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Suite</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Privacidad</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Auditable</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Compatibilidad</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Sin Instalar</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Precio</th>
-                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">Diferencias clave</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Suite")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Privacy")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Auditable")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Compatibility")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("No Install")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Price")}</th>
+                <th className="py-6 px-4 font-bold text-zinc-400 uppercase text-xs">{t("Key Differences")}</th>
               </tr>
             </thead>
             <tbody>
@@ -103,7 +106,7 @@ export function LandingComparison() {
                     </div>
                   </td>
                   <td className="py-6 px-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${suite.privacy === "Local" ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-600'}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${suite.privacy === t("Local") ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-600'}`}>
                       {suite.privacy}
                     </span>
                   </td>
@@ -121,7 +124,7 @@ export function LandingComparison() {
                     {!suite.install ? <Check className="w-5 h-5 text-green-500 mx-auto" /> : <X className="w-5 h-5 text-red-500 mx-auto" />}
                   </td>
                   <td className="py-6 px-4">
-                    <span className={suite.price === "Gratis" ? 'text-green-600 font-bold' : 'text-zinc-600'}>{suite.price}</span>
+                    <span className={suite.price === t("Free") ? 'text-green-600 font-bold' : 'text-zinc-600'}>{suite.price}</span>
                   </td>
                   <td className="py-6 px-4 text-sm text-text-secondary italic">
                     {suite.diff}

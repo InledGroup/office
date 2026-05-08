@@ -20,11 +20,12 @@ export default function Page({ params }: { params: Promise<{}> }) {
   const hasHydrated = useHasHydrated();
   
   const [isDirty, setIsDirty] = useState(false);
+  const isSaving = useRef(false);
   const autoSaveTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-save logic
   useEffect(() => {
-    if (!isDirty) return;
+    if (!isDirty || isSaving.current) return;
 
     if (autoSaveTimer.current) {
       clearTimeout(autoSaveTimer.current);
@@ -32,12 +33,13 @@ export default function Page({ params }: { params: Promise<{}> }) {
 
     autoSaveTimer.current = setTimeout(() => {
       const editor = (window as any).editor;
-      if (editor && isDirty) {
+      if (editor && isDirty && !isSaving.current) {
         console.log("[editor] Auto-saving changes...");
+        isSaving.current = true;
         server.setAutoSave(true);
         editor.downloadAs();
       }
-    }, 3000);
+    }, 15000);
 
     return () => {
       if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
@@ -153,7 +155,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
             ...user,
           },
 
-          // callbackUrl: "https://example.com/url-to-callback.ashx",
+          callbackUrl: location.origin + "/api/onlyoffice/callback",
           customization: {
             // help: false,
             // about: false,
@@ -189,7 +191,11 @@ export default function Page({ params }: { params: Promise<{}> }) {
           onDocumentStateChange: (e: { data: boolean; target: unknown }) => {
             console.log("Document state change", e);
             if (e.data) {
-              setIsDirty(true);
+              if (isSaving.current) {
+                console.log("[editor] State change ignored during save");
+              } else {
+                setIsDirty(true);
+              }
             }
           },
           onRequestOpen: (e: unknown) => {
@@ -197,6 +203,7 @@ export default function Page({ params }: { params: Promise<{}> }) {
           },
           onError: (e: unknown) => {
             console.log("Error", e);
+            isSaving.current = false;
           },
           onInfo: (e: unknown) => {
             console.log("Info", e);
@@ -210,19 +217,25 @@ export default function Page({ params }: { params: Promise<{}> }) {
           onSaveDocument: (e: unknown) => {
             console.log("onSaveDocument", e);
             setIsDirty(false);
+            isSaving.current = false;
             server.setAutoSave(false);
           },
           onDownloadAs: (e: unknown) => {
             console.log("onDownloadAs", e);
+            isSaving.current = true;
+            setIsDirty(false);
+            server.setAutoSave(false);
           },
           onSave: (e: unknown) => {
             console.log("onSave", e);
             setIsDirty(false);
+            isSaving.current = false;
             server.setAutoSave(false);
           },
           writeFile: async (e: unknown) => {
             console.log("writeFile", e);
             setIsDirty(false);
+            isSaving.current = false;
             server.setAutoSave(false);
           },
         },

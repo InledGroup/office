@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { ArrowRight, Github } from "lucide-react";
+import { useExtracted } from "next-intl";
 
 export function LandingHeroCTA() {
   const markVisited = () => localStorage.setItem('visited', 'true');
+  const t = useExtracted();
 
   return (
     <section className="py-24 px-6 bg-white">
@@ -21,10 +23,10 @@ export function LandingHeroCTA() {
         {/* Text content at the bottom */}
         <div className="p-10 md:p-16 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-8 tracking-tight text-foreground">
-            Es el momento, <span className="text-red-600">tú decides</span>.
+            {t("It's time, you decide.")}
           </h2>
           <p className="text-lg md:text-xl text-text-secondary mb-10 leading-relaxed max-w-3xl mx-auto">
-            No permitas que tus datos se queden en el almacenamiento, que te cobren por simplemente editar documentos, que te obliguen a instalar algo o que te hagan pasar por regulaciones de países extranjeros.
+            {t("Don't let your data stay in storage, be charged for simply editing documents, be forced to install something or be made to go through foreign countries' regulations.")}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -33,7 +35,7 @@ export function LandingHeroCTA() {
               onClick={markVisited}
               className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-2xl font-bold text-lg hover:bg-primary/90 transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-primary/20"
             >
-              Empezar ahora
+              {t("Start Now")}
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a
@@ -42,13 +44,15 @@ export function LandingHeroCTA() {
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-8 py-4 bg-white border border-border text-foreground rounded-2xl font-bold text-lg hover:bg-zinc-100 transition-all flex items-center justify-center gap-3"
             >
-              <Github className="w-5 h-5" />
-              Revisa el código
+              <div className="flex items-center gap-3">
+                <Github className="w-5 h-5" />
+                {t("Review the code")}
+              </div>
             </a>
           </div>
           
-          <p className="mt-8 text-xs text-text-secondary tracking-widest font-bold opacity-60">
-            Al usar InSuite, estás usando software libre, privado y español
+          <p className="mt-8 text-xs text-text-secondary tracking-widest font-bold opacity-60 uppercase">
+            {t("By using InSuite, you are using free, private and Spanish software")}
           </p>
         </div>
       </div>
