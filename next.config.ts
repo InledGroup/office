@@ -21,6 +21,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; img-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:;",
+          },
+        ],
+      },
+      {
         source: "/x2t/x2t.wasm",
         headers: [
           {

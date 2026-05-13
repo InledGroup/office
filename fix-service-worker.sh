@@ -4,8 +4,8 @@ ASSET_PATH="public/$VERSION"
 echo "🔧 Arreglando rutas de ServiceWorker y activos..."
 
 # Copiar el ServiceWorker a la raíz de la carpeta de activos si existe
-if [ -f "$ASSET_PATH/web-apps/apps/api/documents/document_editor_service_worker.js" ]; then
-    cp "$ASSET_PATH/web-apps/apps/api/documents/document_editor_service_worker.js" "$ASSET_PATH/"
+if [ -f "$ASSET_PATH/sdkjs/common/serviceworker/document_editor_service_worker.js" ]; then
+    cp "$ASSET_PATH/sdkjs/common/serviceworker/document_editor_service_worker.js" "$ASSET_PATH/"
     echo "✅ document_editor_service_worker.js copiado a la raíz de activos."
 fi
 

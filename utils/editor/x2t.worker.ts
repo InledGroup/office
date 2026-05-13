@@ -108,24 +108,45 @@ function cleanMedia() {
 }
 
 /**
- * Read media files from the working directory
+ * Read all files in a directory recursively
  */
-function readMedia(): { [key: string]: Uint8Array<ArrayBuffer> } {
-  const media: { [key: string]: Uint8Array<ArrayBuffer> } = {};
+function readDirRecursive(dir: string, base: string = ""): { [key: string]: Uint8Array<ArrayBuffer> } {
+  const result: { [key: string]: Uint8Array<ArrayBuffer> } = {};
   try {
-    const files = x2t.FS.readdir("/working/media/");
+    const files = x2t.FS.readdir(dir);
     for (const file of files) {
-      if (file !== "." && file !== "..") {
-        const fileData = x2t.FS.readFile("/working/media/" + file, {
-          encoding: "binary",
-        });
-        media[file] = fileData;
+      if (file === "." || file === "..") continue;
+      const fullPath = dir + (dir.endsWith("/") ? "" : "/") + file;
+      const relPath = base ? base + "/" + file : file;
+      try {
+        const stat = x2t.FS.stat(fullPath);
+        if (x2t.FS.isDir(stat.mode)) {
+          Object.assign(result, readDirRecursive(fullPath, relPath));
+        } else {
+          result[relPath] = x2t.FS.readFile(fullPath, { encoding: "binary" });
+        }
+      } catch (e) {
+        console.warn(`[x2t.worker] Failed to read ${fullPath}:`, e);
       }
     }
   } catch (e) {
-    console.error(e);
+    // Directory might not exist
   }
-  return media;
+  return result;
+}
+
+/**
+ * Read media files from the working directory
+ */
+function readMedia(): { [key: string]: Uint8Array<ArrayBuffer> } {
+  return readDirRecursive("/working/media");
+}
+
+/**
+ * Read theme/style files from the working directory
+ */
+function readThemes(): { [key: string]: Uint8Array<ArrayBuffer> } {
+  return readDirRecursive("/working/themes");
 }
 
 const xmlPath = "/working/params.xml";
@@ -324,15 +345,16 @@ async function convert({
     console.error(e);
   }
 
-  // Read media files
+  // Read media and theme files
   const outputMedia = readMedia();
+  const outputThemes = readThemes();
 
   // Cleanup temporary files
   setTimeout(() => {
     cleanupFiles(files);
   });
 
-  return { output, media: outputMedia };
+  return { output, media: outputMedia, themes: outputThemes };
 }
 
 // Message types

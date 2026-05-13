@@ -247,6 +247,13 @@ export class EditorServer {
       });
       output = result.output;
       media = result.media;
+      
+      // Store themes and styles to preserve document fidelity
+      if (result.themes) {
+        for (const [name, data] of Object.entries(result.themes)) {
+          this.fsMap.set(name, data);
+        }
+      }
     }
 
     if (!output) {
@@ -264,7 +271,8 @@ export class EditorServer {
   }
 
   private addMedia(name: string, data: Uint8Array) {
-    const pathname = "media/" + name;
+    // OnlyOffice expects media to be in the 'media/' folder
+    const pathname = name.startsWith("media/") ? name : "media/" + name;
     const url = getUrl(data);
     this.fsMap.set(pathname, data);
     this.urlsMap.set(pathname, url);
@@ -452,6 +460,57 @@ export class EditorServer {
     const u = new URL(req.url);
     const { id: key, send } = this;
 
+    // 1. Handle image uploads first, before document download logic
+    if (u.pathname.includes("/upload/")) {
+      console.log(`[server] Detected upload attempt to ${u.pathname}`);
+      let data: Uint8Array;
+      let filename: string;
+
+      try {
+        const contentType = req.headers.get("content-type") || "";
+        if (contentType.includes("multipart/form-data")) {
+          const formData = await req.formData();
+          // OnlyOffice sometimes uses "file", sometimes "image"
+          const file = (formData.get("file") || formData.get("image") || formData.get("data")) as File;
+          
+          if (file && typeof file.arrayBuffer === 'function') {
+            data = new Uint8Array(await file.arrayBuffer());
+            filename = file.name || `${Date.now()}.png`;
+          } else {
+            console.warn("[server] Multipart upload without file field, raw fallback.");
+            const buffer = await req.arrayBuffer();
+            data = new Uint8Array(buffer);
+            filename = `${Date.now()}.png`;
+          }
+        } else {
+          const buffer = await req.arrayBuffer();
+          data = new Uint8Array(buffer);
+          filename = `${Date.now()}.png`;
+        }
+      } catch (e) {
+        console.error("[server] Error parsing upload request:", e);
+        try {
+          const buffer = await req.arrayBuffer();
+          data = new Uint8Array(buffer);
+          filename = `fallback-${Date.now()}.png`;
+        } catch (innerE) {
+          return Response.json({ error: "failed to read body" }, { status: 400 });
+        }
+      }
+
+      const pathname = "media/" + filename;
+      const url = this.addMedia(filename, data);
+      console.log(`[server] Image uploaded successfully: ${filename} (${data.length} bytes) -> ${url}`);
+      
+      // Some versions of OO expect a specific format
+      return Response.json({ 
+        [pathname]: url,
+        url: url,
+        filename: filename,
+        success: true
+      });
+    }
+
     // Broad matching for ANY request containing the key
     const isKeyPath = u.pathname.includes(key) && key.length > 0;
     
@@ -627,13 +686,56 @@ export class EditorServer {
       }
     }
 
-    if (u.pathname.endsWith("/upload/" + key)) {
-      const buffer = await req.arrayBuffer();
-      const data = new Uint8Array(buffer);
-      const filename = Date.now() + ".png";
-      const pathname = "media/" + filename;
-      const url = this.addMedia(filename, data);
-      return Response.json({ [pathname]: url });
+    // Redirect OnlyOffice internal resources that are requested from root
+    const ooResources = [
+      "/common/main/resources/",
+      "/resources/numbering/",
+      "/themes.json"
+    ];
+
+    if (ooResources.some(path => u.pathname.startsWith(path) || u.pathname === path)) {
+      let targetPath = u.pathname;
+      if (u.pathname === "/themes.json") {
+        targetPath = "/common/main/resources/themes/themes.json";
+      } else if (u.pathname.startsWith("/resources/numbering/")) {
+        targetPath = "/documenteditor/main" + u.pathname;
+      }
+      
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
+      const newUrl = `${origin}${APP_ROOT}/web-apps/apps${targetPath}`;
+      console.log(`[server] Redirecting internal resource: ${u.pathname} -> ${newUrl}`);
+      
+      try {
+        // Use global fetch but avoid the proxy loop if possible
+        // Actually, since this is in handleRequest which is called BY the proxy,
+        // calling fetch() here WILL trigger the proxy again.
+        // We should detect this to avoid infinite loops, but the ooResources paths 
+        // are different from the newUrl path (/v9.3.1-1/...), so it shouldn't loop.
+        const response = await fetch(newUrl);
+        if (response.ok) {
+          return response;
+        } else {
+          console.warn(`[server] Redirection failed with status ${response.status} for ${newUrl}`);
+          // Fallback for numbering if documenteditor fails
+          if (u.pathname.startsWith("/resources/numbering/")) {
+             const fallbackUrl = `${origin}${APP_ROOT}/web-apps/apps/common/main${u.pathname}`;
+             const fallbackRes = await fetch(fallbackUrl);
+             if (fallbackRes.ok) return fallbackRes;
+          }
+        }
+      } catch (e) {
+        console.error(`[server] Failed to proxy internal resource ${newUrl}:`, e);
+      }
+    }
+
+    // Handle Service Worker specifically to avoid 404
+    if (u.pathname.endsWith("document_editor_service_worker.js")) {
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
+      const swUrl = `${origin}${APP_ROOT}/document_editor_service_worker.js`;
+      try {
+        const response = await fetch(swUrl);
+        if (response.ok) return response;
+      } catch (e) {}
     }
 
     if (u.pathname == "/plugins.json") {
