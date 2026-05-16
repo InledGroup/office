@@ -248,6 +248,13 @@ export class EditorServer {
       output = result.output;
       media = result.media;
       
+      // Store media to ensure images are preserved
+      if (media) {
+        for (const [name, data] of Object.entries(media)) {
+          this.fsMap.set(name, data);
+        }
+      }
+
       // Store themes and styles to preserve document fidelity
       if (result.themes) {
         for (const [name, data] of Object.entries(result.themes)) {
@@ -569,16 +576,24 @@ export class EditorServer {
           console.log("[server] fsMap keys:", Object.keys(allFiles));
 
           for (const [path, data] of Object.entries(allFiles)) {
-            const isTheme = path.includes("theme") || 
+            const isMedia = path.startsWith("media/") || path.includes("/media/");
+            const isTheme = !isMedia && (
+                            path.includes("theme") || 
                             path.endsWith(".xml") || 
                             path.endsWith(".rels") ||
                             path.includes("styles") || 
-                            path.includes("settings");
+                            path.includes("settings") ||
+                            path.endsWith(".json") ||
+                            path.endsWith(".bin")
+            );
 
             if (isTheme) {
               themes[path] = data;
             } else {
-              media[path] = data;
+              // Only put in media if it's not the main document itself
+              if (path !== "Editor.bin") {
+                media[path] = data;
+              }
             }
           }
 

@@ -190,33 +190,32 @@ ${content}
     x2t.FS.writeFile(fileFrom, new Uint8Array(data));
   }
 
+  const writeFileWithDirs = (base: string, key: string, value: Uint8Array) => {
+    try {
+      const parts = key.split("/");
+      let current = base;
+      for (let i = 0; i < parts.length - 1; i++) {
+        current += "/" + parts[i];
+        try {
+          x2t.FS.mkdir(current);
+        } catch (e) {}
+      }
+      x2t.FS.writeFile(base + "/" + key, value);
+    } catch (err) {
+      console.error(`[x2t.worker] Error writing file ${key}:`, err);
+    }
+  };
+
   if (media) {
     cleanMedia();
     for (const [key, value] of Object.entries(media)) {
-      try {
-        x2t.FS.writeFile("/working/" + key, value);
-      } catch (err) {
-        console.error(key, err);
-      }
+      writeFileWithDirs("/working", key, value);
     }
   }
 
   if (themes) {
     for (const [key, value] of Object.entries(themes)) {
-      try {
-        // Asegurar que el directorio existe
-        const pathParts = key.split("/");
-        if (pathParts.length > 1) {
-          let currentPath = "/working/themes";
-          for (let i = 0; i < pathParts.length - 1; i++) {
-            currentPath += "/" + pathParts[i];
-            try { x2t.FS.mkdir(currentPath); } catch (e) {}
-          }
-        }
-        x2t.FS.writeFile("/working/themes/" + key, value);
-      } catch (err) {
-        console.error("[x2t.worker] Error writing theme file:", key, err);
-      }
+      writeFileWithDirs("/working", key, value);
     }
   }
 
@@ -303,6 +302,7 @@ async function convert({
     data,
     media,
     fonts,
+    themes,
   });
 
   if (
@@ -315,6 +315,7 @@ async function convert({
       fileTo: viaPath,
       data: null as never,
     });
+    x2t.FS.chdir('/working');
     x2t.ccall("main1", ["number"], ["string"], [xmlPath]);
     writeInputs({
       fileFrom: viaPath,
@@ -332,6 +333,7 @@ async function convert({
   } catch (err) {}
 
   try {
+    x2t.FS.chdir('/working');
     x2t.ccall("main1", ["number"], ["string"], [xmlPath]);
   } catch (e) {
     console.error("ccall", e);
