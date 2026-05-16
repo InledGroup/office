@@ -502,12 +502,9 @@ export class EditorServer {
       const url = this.addMedia(filename, data);
       console.log(`[server] Image uploaded successfully: ${filename} (${data.length} bytes) -> ${url}`);
       
-      // Some versions of OO expect a specific format
+      // Some versions of OO expect exactly this format
       return Response.json({ 
-        [pathname]: url,
-        url: url,
-        filename: filename,
-        success: true
+        [pathname]: url
       });
     }
 

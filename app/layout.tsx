@@ -96,7 +96,6 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <head>
-        <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; img-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; style-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:;" />
         <script>{`(${preload.toString()})()`}</script>
         <script
           type="application/ld+json"

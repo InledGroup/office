@@ -40,12 +40,6 @@ htmlFiles.forEach(file => {
         // Insert after <head>
         content = content.replace(/<head>/i, `<head>\n    <base href="${baseHref}">`);
     }
-
-    // Insert CSP meta tag
-    const cspMeta = '<meta http-equiv="Content-Security-Policy" content="default-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:; script-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:; connect-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:; img-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:; style-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:; frame-src * \'self\' \'unsafe-inline\' \'unsafe-eval\' data: blob:;">';
-    if (!content.includes('Content-Security-Policy')) {
-        content = content.replace(/<head>/i, `<head>\n    ${cspMeta}`);
-    }
     
     fs.writeFileSync(file, content);
     console.log(`Updated: ${file} -> base href="${baseHref}"`);

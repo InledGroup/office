@@ -35,31 +35,10 @@ export function createFetchProxy(
       }
     } catch (err) {
       console.error("ProxyFetch middleware error:", err);
+      return BaseFetch(request);
     }
 
-    const response = await BaseFetch(request);
-    
-    // Strip CSP and security headers from all responses to prevent blocking
-    const newHeaders = new Headers(response.headers);
-    newHeaders.delete("content-security-policy");
-    newHeaders.delete("content-security-policy-report-only");
-    newHeaders.delete("x-frame-options");
-    newHeaders.delete("x-content-type-options");
-    
-    // Create a new response with the stripped headers
-    // Note: for some responses (like opaque ones), we might not be able to read the body easily
-    // but for same-origin it should be fine.
-    try {
-      const body = await response.blob();
-      return new Response(body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: newHeaders,
-      });
-    } catch (e) {
-      // Fallback if body cannot be read as blob
-      return response;
-    }
+    return BaseFetch(request);
   }) as FetchProxy;
 
   proxy.use = (middleware: XHRMiddleware) => {

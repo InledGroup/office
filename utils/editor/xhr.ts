@@ -130,14 +130,6 @@ export function createXHRProxy(BaseXHR = globalThis.XMLHttpRequest) {
         writable: false,
         configurable: true,
       });
-      
-      // Strip CSP and security headers from the mocked response
-      const headers = new Headers(response.headers);
-      headers.delete("content-security-policy");
-      headers.delete("content-security-policy-report-only");
-      headers.delete("x-frame-options");
-      headers.delete("x-content-type-options");
-
       this.dispatchEvent(new Event("readystatechange"));
 
       // 3. LOADING (readyState = 3)
