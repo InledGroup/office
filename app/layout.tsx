@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getMessages } from "next-intl/server";
 import { I18nProvider } from "@/components/i18n-provider";
 import { ProgressProvider } from "@/components/progress-provider";
+import { LanguageSelectorPopup } from "@/components/language-selector-popup";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -104,7 +105,10 @@ export default async function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <ProgressProvider>
-          <I18nProvider initialMessages={messages}>{children}</I18nProvider>
+          <I18nProvider initialMessages={messages}>
+            {children}
+            <LanguageSelectorPopup />
+          </I18nProvider>
         </ProgressProvider>
       </body>
     </html>
