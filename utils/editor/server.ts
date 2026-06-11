@@ -5,6 +5,7 @@ import { emptyDocx, emptyPdf, emptyPptx, emptyXlsx } from "./empty";
 import { APP_ROOT, getDocumentType, getFileExt } from "./utils";
 import { allPlugins, featuredPlugins, getPluginsData } from "./plugins";
 import { saveCloudFile } from "../cloud-storage";
+import { generateCustomPdf } from "./pdf-custom";
 
 function mergeBuffers(buffers: Uint8Array[]) {
   const totalLength = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
@@ -549,7 +550,7 @@ export class EditorServer {
         const title = cmd.title || this.title || "document.docx";
         const buffer = await req.arrayBuffer();
 
-        console.log(`[server] downloadAs (${requestIsAutoSave ? "Auto" : "Manual"}):`, cmd);
+        console.log(`[server] downloadAs (${requestIsAutoSave ? "Auto" : "Manual"}):`, cmd, "savetype:", cmd.savetype);
 
         const fileTo = "doc." + title.split(".").pop();
         let formatTo = cmd.outputformat;
@@ -558,10 +559,37 @@ export class EditorServer {
         }
 
         const download = async () => {
-          const input = mergeBuffers(this.downloadParts);
-          let fileFrom = "from.bin";
+          let input = mergeBuffers(this.downloadParts);
+          
+          // OnlyOffice sometimes sends a small stub for manual downloads if it thinks 
+          // the server already has the latest state. We use our cache if needed.
+          if (input.length < 5000) {
+            const cached = this.fsMap.get("Editor.bin");
+            if (cached && cached.length > input.length) {
+               console.warn(`[server] Input data too small (${input.length} bytes), using cached Editor.bin (${cached.length} bytes)`);
+               input = cached;
+            }
+          }
+          
+          // Cache the latest large buffer as the source of truth
+          if (input.length > 5000) {
+            this.fsMap.set("Editor.bin", input);
+          }
+
+          let fileFrom = "Editor.bin"; // Standard OnlyOffice internal name
+          let formatFrom = 0x2001; // Default to Word internal
+
+          const docType = getDocumentType(this.fileType);
+          if (docType === "cell") {
+            formatFrom = 0x2002;
+          } else if (docType === "slide") {
+            formatFrom = 0x2003;
+          }
+
           if (cmd.format == "pdf") {
+            // If the input REALLY is a PDF, but usually it's not from the editor
             fileFrom = "from.pdf";
+            formatFrom = 513;
           }
 
           let fonts = undefined;
@@ -588,7 +616,10 @@ export class EditorServer {
             );
 
             if (isTheme) {
-              themes[path] = data;
+              // Don't put the main binary in themes
+              if (path !== "Editor.bin") {
+                themes[path] = data;
+              }
             } else {
               // Only put in media if it's not the main document itself
               if (path !== "Editor.bin") {
@@ -599,22 +630,40 @@ export class EditorServer {
 
           console.log(`[server] Conversion data: ${Object.keys(media).length} media files, ${Object.keys(themes).length} theme/style files.`);
 
+          const isPdfExport = formatTo === 513 || fileTo.endsWith(".pdf");
+          let finalFormatTo = formatTo;
+          let finalFileTo = fileTo;
+
+          // If PDF, we first go through DOCX to ensure high quality and image rendering via browser engine
+          if (isPdfExport && formatFrom === 0x2001) {
+            finalFormatTo = 65; // DOCX
+            finalFileTo = "temp.docx";
+          }
+
           let { output } = await converter.convert({
             data: input.buffer,
             fileFrom: fileFrom,
-            fileTo: fileTo,
-            formatTo: formatTo,
+            fileTo: finalFileTo,
+            formatFrom: formatFrom,
+            formatTo: finalFormatTo,
             media: media,
             themes: themes,
             fonts: fonts,
           });
           
-          if (!output && cmd.format == "pdf") {
-            output = input;
+          if (output && isPdfExport && formatFrom === 0x2001) {
+             console.log("[server] Hybrid export: Converting intermediate DOCX to PDF via browser engine...");
+             try {
+               const pdfBlob = await generateCustomPdf(output.buffer, title);
+               output = new Uint8Array(await pdfBlob.arrayBuffer());
+               console.log("[server] Hybrid PDF conversion success!");
+             } catch (e) {
+               console.error("[server] Hybrid PDF conversion failed, falling back to x2t output (if any):", e);
+             }
           }
+
           if (!output) {
-            console.error("Conversion failed");
-            // TODO: error message
+            console.error("[server] Conversion failed, output is null");
             return { status: "error" };
           }
 

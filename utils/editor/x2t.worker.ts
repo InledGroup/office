@@ -3,113 +3,84 @@
 import { AvsFileType, X2tConvertParams, X2tConvertResult } from "./types";
 
 /**
- * X2T Converter Web Worker
- *
- * This worker handles CPU-intensive document conversion operations
- * off the main thread to prevent UI blocking.
+ * X2T Converter Web Worker - Stabilized
  */
 
 /* eslint-disable no-restricted-globals */
 
-// Base URL for x2t files - hardcoded since blob URL workers can't determine origin
 const BASE_URL = self.location.origin + "/x2t-1/";
-// const BASE_URL = self.location.origin + "/wasm/x2t/";
 
 let x2t: any = null;
 let initPromise: Promise<void> | null = null;
 
-/**
- * Initialize x2t module in Worker context
- */
 async function initX2t(): Promise<void> {
   if (x2t) return;
-  // self.wasmBinaryFile = BASE_URL + "x2t.wasm";
-
   const scriptUrl = BASE_URL + "x2t.js";
+  
+  (self as any).Module = {
+    print: (text: string) => console.log("[x2t.stdout]", text),
+    printErr: (text: string) => console.error("[x2t.stderr]", text),
+    onRuntimeInitialized: () => {
+       console.log("[x2t.worker] WASM Runtime Initialized");
+    }
+  };
 
-  // fix .wasm loading
-  Object.assign(self, {
-    __filename: BASE_URL,
-  });
-
-  // Load x2t script in Worker context
+  Object.assign(self, { __filename: BASE_URL });
   importScripts(scriptUrl);
-
   x2t = (self as any).Module;
 
-  // Wait for WASM runtime initialization
   await new Promise<void>((resolve) => {
-    x2t.onRuntimeInitialized = () => resolve();
+    if (x2t.calledRun) resolve();
+    else {
+      const oldInit = x2t.onRuntimeInitialized;
+      x2t.onRuntimeInitialized = () => {
+        if (oldInit) oldInit();
+        resolve();
+      };
+    }
   });
 
-  // Create working directories
-  try {
-    const createDir = (path: string) => {
-      const parts = path.split("/").filter(Boolean);
-      let current = "";
-      for (const part of parts) {
-        current += "/" + part;
-        try { x2t.FS.mkdir(current); } catch (e) {}
-      }
-    };
+  const createDir = (path: string) => {
+    const parts = path.split("/").filter(Boolean);
+    let current = "";
+    for (const part of parts) {
+      current += "/" + part;
+      try {
+        if (!x2t.FS.analyzePath(current).exists) x2t.FS.mkdir(current);
+      } catch (e) {}
+    }
+  };
 
-    createDir("/working/media");
-    createDir("/working/fonts");
-    createDir("/working/themes");
-    createDir("/usr/share/fonts/truetype/msttcorefonts");
-    createDir("/var/www/onlyoffice/documentserver/core-fonts");
-  } catch (err) {
-    console.error("[x2t.worker] mkdir error:", err);
-  }
+  createDir("/working/media");
+  createDir("/working/fonts");
+  createDir("/working/themes");
+  createDir("/usr/share/fonts/truetype/msttcorefonts");
 
-  console.log("[x2t.worker] Initialized successfully");
+  console.log("[x2t.worker] Environment Ready");
 }
 
-/**
- * Ensure x2t is initialized before conversion
- */
 async function ensureInit(): Promise<void> {
-  if (!initPromise) {
-    initPromise = initX2t();
-  }
+  if (!initPromise) initPromise = initX2t();
   return initPromise;
 }
 
-// Auto-initialize on worker creation
-ensureInit().catch((err) => {
-  console.error("[x2t.worker] Auto-init failed:", err);
-});
-
-/**
- * Clean up temporary files after conversion
- */
-function cleanupFiles(files: string[]): void {
-  for (const file of files) {
-    try {
-      x2t.FS.unlink(file);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  cleanMedia();
-}
+ensureInit().catch(err => console.error("[x2t.worker] Init failed:", err));
 
 function cleanMedia() {
   try {
-    const mediaFiles = x2t.FS.readdir("/working/media/");
-    for (const file of mediaFiles) {
-      if (file !== "." && file !== "..") {
-        x2t.FS.unlink("/working/media/" + file);
-      }
+    const files = x2t.FS.readdir("/working/media/");
+    for (const file of files) {
+      if (file !== "." && file !== "..") x2t.FS.unlink("/working/media/" + file);
     }
-  } catch (err) {
-    console.error(err);
+  } catch (err) {}
+}
+
+function cleanupFiles(files: string[]): void {
+  for (const file of files) {
+    try { x2t.FS.unlink(file); } catch (err) {}
   }
 }
 
-/**
- * Read all files in a directory recursively
- */
 function readDirRecursive(dir: string, base: string = ""): { [key: string]: Uint8Array<ArrayBuffer> } {
   const result: { [key: string]: Uint8Array<ArrayBuffer> } = {};
   try {
@@ -125,69 +96,32 @@ function readDirRecursive(dir: string, base: string = ""): { [key: string]: Uint
         } else {
           result[relPath] = x2t.FS.readFile(fullPath, { encoding: "binary" });
         }
-      } catch (e) {
-        console.warn(`[x2t.worker] Failed to read ${fullPath}:`, e);
-      }
+      } catch (e) {}
     }
-  } catch (e) {
-    // Directory might not exist
-  }
+  } catch (e) {}
   return result;
-}
-
-/**
- * Read media files from the working directory
- */
-function readMedia(): { [key: string]: Uint8Array<ArrayBuffer> } {
-  return readDirRecursive("/working/media");
-}
-
-/**
- * Read theme/style files from the working directory
- */
-function readThemes(): { [key: string]: Uint8Array<ArrayBuffer> } {
-  return readDirRecursive("/working/themes");
 }
 
 const xmlPath = "/working/params.xml";
 
-function writeInputs({
-  fileFrom,
-  fileTo,
-  formatFrom,
-  formatTo,
-  data,
-  media,
-  fonts,
-  themes,
-}: X2tConvertParams) {
-  const params = {
-    m_sFileFrom: fileFrom,
-    m_sThemeDir: "/working/themes",
-    m_sFileTo: fileTo,
-    m_nFormatFrom: formatFrom,
-    m_nFormatTo: formatTo,
-    m_bIsPDFA: formatTo === AvsFileType.AVS_FILE_CROSSPLATFORM_PDFA,
-    m_bIsNoBase64: false,
-    m_sFontDir: "/working/fonts/",
-  };
+function generateXml(params: Record<string, any>) {
+  let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
+  xml += '<TaskQueueDataConvert xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">\n';
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== "") {
+      xml += `  <${k}>${v}</${k}>\n`;
+    }
+  }
+  xml += '</TaskQueueDataConvert>';
+  return xml;
+}
 
-  const content = Object.entries(params)
-    .filter(([k, v]) => v)
-    .reduce((a, [k, v]) => a + `<${k}>${v}</${k}>\n`, "");
-
-  const xml = `<?xml version="1.0" encoding="utf-8"?>
-<TaskQueueDataConvert
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
->
-${content}
-</TaskQueueDataConvert>`;
-
-  console.log("[x2t.worker] Task XML:", xml);
-  x2t.FS.writeFile(xmlPath, xml);
+function writeInputs(payload: X2tConvertParams) {
+  const { fileFrom, fileTo, formatFrom, formatTo, data, media, fonts, themes } = payload;
+  
   if (data) {
     x2t.FS.writeFile(fileFrom, new Uint8Array(data));
+    console.log(`[x2t.worker] Input: ${fileFrom} (${data.byteLength} bytes)`);
   }
 
   const writeFileWithDirs = (base: string, key: string, value: Uint8Array) => {
@@ -196,20 +130,23 @@ ${content}
       let current = base;
       for (let i = 0; i < parts.length - 1; i++) {
         current += "/" + parts[i];
-        try {
-          x2t.FS.mkdir(current);
-        } catch (e) {}
+        try { if (!x2t.FS.analyzePath(current).exists) x2t.FS.mkdir(current); } catch (e) {}
       }
       x2t.FS.writeFile(base + "/" + key, value);
-    } catch (err) {
-      console.error(`[x2t.worker] Error writing file ${key}:`, err);
-    }
+    } catch (err) {}
   };
 
   if (media) {
     cleanMedia();
+    const mediaDirFallback = fileFrom + "_media";
+    try { if (!x2t.FS.analyzePath(mediaDirFallback).exists) x2t.FS.mkdir(mediaDirFallback); } catch (e) {}
     for (const [key, value] of Object.entries(media)) {
       writeFileWithDirs("/working", key, value);
+      const fileNameOnly = key.split("/").pop();
+      if (fileNameOnly) {
+        try { x2t.FS.writeFile("/working/media/" + fileNameOnly, value); } catch (e) {}
+        try { x2t.FS.writeFile(mediaDirFallback + "/" + fileNameOnly, value); } catch (e) {}
+      }
     }
   }
 
@@ -220,196 +157,83 @@ ${content}
   }
 
   if (fonts) {
-    console.log(`[x2t.worker] Processing ${Object.keys(fonts).length} fonts for conversion`);
-    const systemFontDir = "/usr/share/fonts/truetype/msttcorefonts/";
-    const systemFontDir2 = "/var/www/onlyoffice/documentserver/core-fonts/";
-    
+    const sysFonts = "/usr/share/fonts/truetype/msttcorefonts/";
     for (const [key, value] of Object.entries(fonts)) {
-      if (!value || value.length === 0) {
-        console.warn(`[x2t.worker] Skipping empty font file: ${key}`);
-        continue;
-      }
+      if (!value || value.length === 0) continue;
       try {
+        x2t.FS.writeFile("/working/fonts/" + key, value);
         if (key === "font_selection.bin") {
           x2t.FS.writeFile("/working/font_selection.bin", value);
-          x2t.FS.writeFile("/working/fonts/font_selection.bin", value);
-        } else {
-          x2t.FS.writeFile("/working/fonts/" + key, value);
-          x2t.FS.writeFile(systemFontDir + key, value);
-          x2t.FS.writeFile(systemFontDir2 + key, value);
-          
-          const klow = key.toLowerCase();
-          // Mapeo exhaustivo de Arial usando Liberation
-          if (klow.includes("arial") || klow === "liberationsans-regular.ttf") {
-            x2t.FS.writeFile(systemFontDir + "Arial.ttf", value);
-            x2t.FS.writeFile(systemFontDir2 + "Arial.ttf", value);
-          }
-          if (klow.includes("arial_bold") || klow === "liberationsans-bold.ttf") {
-            x2t.FS.writeFile(systemFontDir + "Arial_Bold.ttf", value);
-            x2t.FS.writeFile(systemFontDir2 + "Arial_Bold.ttf", value);
-          }
-          if (klow.includes("arial_italic") || klow === "liberationsans-italic.ttf") {
-            x2t.FS.writeFile(systemFontDir + "Arial_Italic.ttf", value);
-            x2t.FS.writeFile(systemFontDir2 + "Arial_Italic.ttf", value);
-          }
-          if (klow.includes("arial_bolditalic") || klow === "liberationsans-bolditalic.ttf") {
-            x2t.FS.writeFile(systemFontDir + "Arial_BoldItalic.ttf", value);
-            x2t.FS.writeFile(systemFontDir2 + "Arial_BoldItalic.ttf", value);
-          }
         }
-      } catch (err) {
-        console.error("[x2t.worker] Error writing font to FS:", key, err);
-      }
+        const klow = key.toLowerCase();
+        if (klow.includes("arial") || klow.includes("liberation") || klow.includes("inter")) {
+          x2t.FS.writeFile(sysFonts + key, value);
+        }
+      } catch (err) {}
     }
-
-    // Asegurar que Arial.ttf existe de alguna manera si no se escribió arriba
-    try {
-      if (!x2t.FS.analyzePath(systemFontDir + "Arial.ttf").exists) {
-        // Buscar Liberation o Inter como último recurso
-        const fallbackKey = Object.keys(fonts).find(k => k.includes("LiberationSans-Regular")) || 
-                            Object.keys(fonts).find(k => k.toLowerCase().includes("inter"));
-        if (fallbackKey) {
-          console.log(`[x2t.worker] Emergency final fallback: using ${fallbackKey} as Arial.ttf`);
-          x2t.FS.writeFile(systemFontDir + "Arial.ttf", fonts[fallbackKey]);
-        }
-      }
-    } catch (e) {}
   }
 }
 
-/**
- * Convert document from one format to another
- */
-async function convert({
-  data,
-  fileFrom,
-  fileTo,
-  formatFrom,
-  formatTo,
-  media,
-  fonts,
-  themes,
-}: X2tConvertParams): Promise<X2tConvertResult> {
-  const fromPath = "/working/" + fileFrom;
-  const toPath = "/working/" + fileTo;
-  const files = [fromPath, toPath, xmlPath];
+async function runX2t(params: Record<string, any>) {
+  const xml = generateXml(params);
+  console.log("[x2t.worker] XML:\n", xml);
+  x2t.FS.writeFile(xmlPath, xml);
+  try {
+    x2t.FS.chdir('/working');
+    const result = x2t.ccall("main1", "number", ["string"], [xmlPath]);
+    console.log("[x2t.worker] x2t result:", result);
+    return result === 0;
+  } catch (e) {
+    console.error("[x2t.worker] x2t crash:", e);
+    return false;
+  }
+}
 
-  writeInputs({
-    fileFrom: fromPath,
-    fileTo: toPath,
-    formatFrom,
-    formatTo,
-    data,
-    media,
-    fonts,
-    themes,
+async function convert(payload: X2tConvertParams): Promise<X2tConvertResult> {
+  const fromPath = "/working/" + payload.fileFrom;
+  const toPath = "/working/" + payload.fileTo;
+  
+  writeInputs({ ...payload, fileFrom: fromPath, fileTo: toPath });
+
+  const success = await runX2t({
+    m_sFileFrom: fromPath,
+    m_sFileTo: toPath,
+    m_nFormatFrom: payload.formatFrom,
+    m_nFormatTo: payload.formatTo,
+    m_sThemeDir: "/working/themes",
+    m_sFontDir: "/working/fonts/",
+    m_bIsNoBase64: false
   });
 
-  if (
-    fileFrom.endsWith(".doc") ||
-    formatFrom == AvsFileType.AVS_FILE_DOCUMENT_DOC
-  ) {
-    const viaPath = fromPath + ".docx";
-    writeInputs({
-      fileFrom: fromPath,
-      fileTo: viaPath,
-      data: null as never,
-    });
-    x2t.FS.chdir('/working');
-    x2t.ccall("main1", ["number"], ["string"], [xmlPath]);
-    writeInputs({
-      fileFrom: viaPath,
-      fileTo: toPath,
-      data: null as never,
-    });
-    files.push(viaPath);
-  }
-
-  try {
-    const pathInfo = x2t.FS.analyzePath(toPath);
-    if (pathInfo.exists) {
-      x2t.FS.unlink(toPath);
-    }
-  } catch (err) {}
-
-  try {
-    x2t.FS.chdir('/working');
-    x2t.ccall("main1", ["number"], ["string"], [xmlPath]);
-  } catch (e) {
-    console.error("ccall", e);
-  }
-
-  // Read output file
   let output: Uint8Array<ArrayBuffer> | null = null;
-  try {
-    output = x2t.FS.readFile(toPath);
-  } catch (e) {
-    console.error(e);
+  if (success) {
+    try {
+      output = x2t.FS.readFile(toPath);
+    } catch (e) {}
   }
 
-  // Read media and theme files
-  const outputMedia = readMedia();
-  const outputThemes = readThemes();
+  const outputMedia = readDirRecursive("/working/media");
+  const outputThemes = readDirRecursive("/working/themes");
 
-  // Cleanup temporary files
-  setTimeout(() => {
-    cleanupFiles(files);
-  });
+  setTimeout(() => cleanupFiles([fromPath, toPath, xmlPath]), 100);
 
   return { output, media: outputMedia, themes: outputThemes };
 }
 
-// Message types
-interface WorkerMessage {
-  id?: number;
-  type: "convert";
-  payload?: any;
-}
-
-/**
- * Handle incoming messages from main thread
- */
-self.onmessage = async (event: MessageEvent<WorkerMessage>) => {
+self.onmessage = async (event: MessageEvent<any>) => {
   const { id, type, payload } = event.data;
-
   try {
-    switch (type) {
-      case "convert": {
-        // Ensure x2t is initialized before conversion
-        await ensureInit();
-        const result = await convert(payload);
-
-        // Use Transferable objects for zero-copy transfer
-        const transferables: Transferable[] = [];
-        if (result.output) {
-          transferables.push(result.output.buffer);
-        }
-        Object.values(result.media).forEach((m) =>
-          transferables.push(m.buffer),
-        );
-
-        self.postMessage(
-          { id, type: "convert:done", payload: result },
-          { transfer: transferables },
-        );
-        break;
-      }
-
-      default:
-        self.postMessage({
-          id,
-          type: "error",
-          error: `Unknown message type: ${type}`,
-        });
+    if (type === "convert") {
+      await ensureInit();
+      const result = await convert(payload);
+      const transferables: Transferable[] = [];
+      if (result.output) transferables.push(result.output.buffer);
+      Object.values(result.media).forEach(m => transferables.push(m.buffer));
+      self.postMessage({ id, type: "convert:done", payload: result }, { transfer: transferables });
     }
   } catch (error) {
-    self.postMessage({
-      id,
-      type: "error",
-      error: error instanceof Error ? error.message : String(error),
-    });
+    self.postMessage({ id, type: "error", error: String(error) });
   }
 };
 
-// Signal that worker is ready
 self.postMessage({ type: "ready" });
