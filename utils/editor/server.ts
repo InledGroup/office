@@ -559,7 +559,7 @@ export class EditorServer {
         }
 
         const download = async () => {
-          let input = mergeBuffers(this.downloadParts);
+          let input: any = mergeBuffers(this.downloadParts);
           
           // OnlyOffice sometimes sends a small stub for manual downloads if it thinks 
           // the server already has the latest state. We use our cache if needed.
