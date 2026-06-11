@@ -111,6 +111,17 @@ export async function generateCustomPdf(docxBuffer: ArrayBuffer, title: string):
     // Give docx-preview time to finalize layout after images load
     await new Promise(r => setTimeout(r, 1500));
 
+    // Force ALL elements to have a white background just to be absolutely sure
+    const allElements = iframeDoc.querySelectorAll("*");
+    allElements.forEach(el => {
+      const htmlEl = el as HTMLElement;
+      if (htmlEl.style) {
+        htmlEl.style.backgroundColor = "white";
+        htmlEl.style.borderColor = "white";
+        htmlEl.style.boxShadow = "none";
+      }
+    });
+
     // 5. Capture individual pages
     const pages = Array.from(iframeDoc.querySelectorAll(".docx-wrapper > section")) as HTMLElement[];
     if (pages.length === 0) {
@@ -132,8 +143,12 @@ export async function generateCustomPdf(docxBuffer: ArrayBuffer, title: string):
 
     for (let i = 0; i < pages.length; i++) {
       const pageEl = pages[i];
-      // Ensure the page is visible to html2canvas
-      pageEl.style.backgroundColor = "white";
+      
+      // Ensure the page takes exactly the full width
+      pageEl.style.margin = "0";
+      pageEl.style.padding = "0";
+      pageEl.style.width = "100%";
+      pageEl.style.border = "none";
       
       const canvas = await html2canvas(pageEl, {
           scale: 2, 
@@ -148,22 +163,9 @@ export async function generateCustomPdf(docxBuffer: ArrayBuffer, title: string):
         doc.addPage();
       }
       
-      // Calculate aspect ratio to fit A4 perfectly
-      const imgProps = doc.getImageProperties(imgData);
-      const ratio = imgProps.width / imgProps.height;
-      let finalWidth = pdfWidth;
-      let finalHeight = pdfWidth / ratio;
-      
-      // If it's taller than A4, scale it down to fit height
-      if (finalHeight > pdfHeight) {
-         finalHeight = pdfHeight;
-         finalWidth = pdfHeight * ratio;
-      }
-
-      // Center horizontally if needed
-      const xOffset = (pdfWidth - finalWidth) / 2;
-      
-      doc.addImage(imgData, "JPEG", xOffset, 0, finalWidth, finalHeight);
+      // DO NOT preserve aspect ratio if it causes letterboxing (the grey border might be the PDF background showing through)
+      // Force the image to cover the entire A4 page to eliminate any gaps
+      doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
     }
 
     console.log("[pdf-custom] PDF generation successful");
