@@ -142,5 +142,11 @@
   "W2sXxa": "Search for templates (e.g. 'Resume', 'Report', 'Pitch')...",
   "sc2DN9": "Use Template",
   "F03jGl": "No templates found matching your criteria.",
-  "jKKg2o": "Clear all filters"
+  "jKKg2o": "Clear all filters",
+  "knownBugsTitle": "Known Bugs & Issues",
+  "knownBugsDesc": "Tracking our progress and helping you avoid common pitfalls",
+  "reportOnGithub": "Report on GitHub",
+  "bugPhase": "Phase",
+  "bugAvoid": "How to avoid",
+  "bugDescription": "Description"
 }

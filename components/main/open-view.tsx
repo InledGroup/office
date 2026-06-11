@@ -11,6 +11,7 @@ import { FilePickerCard } from "@/components/file-picker-card";
 import { DocumentIcon } from "@/components/document-icon";
 import { getDocConfig } from "@/lib/document-types";
 import { useAppStore } from "@/store";
+import { BugsReport } from "./bugs-report";
 import {
   getRecentFiles,
   openRecentFile,
@@ -285,6 +286,9 @@ export function OpenView() {
           </div>
         )}
       </section>
+
+      {/* Known Bugs & Issues Section */}
+      <BugsReport />
     </div>
   );
 }

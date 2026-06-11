@@ -142,5 +142,11 @@
   "W2sXxa": "Buscar plantillas (ej. 'Currículum', 'Informe', 'Presentación')...",
   "sc2DN9": "Usar plantilla",
   "F03jGl": "No se encontraron plantillas que coincidan con tus criterios.",
-  "jKKg2o": "Limpiar todos los filtros"
+  "jKKg2o": "Limpiar todos los filtros",
+  "knownBugsTitle": "Errores Conocidos y Problemas",
+  "knownBugsDesc": "Rastreamos nuestro progreso y te ayudamos a evitar problemas comunes",
+  "reportOnGithub": "Reportar en GitHub",
+  "bugPhase": "Fase",
+  "bugAvoid": "Cómo evitar",
+  "bugDescription": "Descripción"
 }
