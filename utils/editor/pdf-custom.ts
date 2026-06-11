@@ -36,9 +36,39 @@ export async function generateCustomPdf(docxBuffer: ArrayBuffer, title: string):
     <html>
       <head>
         <style>
-          body { margin: 0; padding: 0; background: white; min-height: 100vh; }
-          .docx-wrapper { padding: 0 !important; background: white !important; box-shadow: none !important; margin: 0 !important; }
-          .docx-preview-custom { min-height: 1122px; }
+          body { margin: 0; padding: 0; background: #ffffff !important; min-height: 100vh; }
+          .docx-wrapper { 
+            padding: 0 !important; 
+            background: #ffffff !important; 
+            box-shadow: none !important; 
+            margin: 0 !important; 
+          }
+          .docx-preview-custom { min-height: 1122px; background: #ffffff !important; }
+          
+          /* Remove borders/shadows from individual pages */
+          .docx-wrapper > section.docx {
+            box-shadow: none !important;
+            margin: 0 !important;
+            border: none !important;
+            background: #ffffff !important;
+          }
+
+          /* Force images to not overlap text */
+          .docx-wrapper img {
+            position: relative !important;
+            display: inline-block !important;
+            max-width: 100% !important;
+            height: auto !important;
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
+            z-index: 10 !important;
+          }
+          
+          /* Ensure paragraphs have proper spacing */
+          .docx-wrapper p {
+            min-height: 1em;
+            clear: both;
+          }
         </style>
       </head>
       <body>
